@@ -2,7 +2,8 @@
  *  Agent.java 
  *  Sample Agent for Text-Based Adventure Game
  *  COMP3411 Artificial Intelligence
- *  UNSW Session 1, 2012
+ *  UNSW Session 1, 2015
+ *  Jordan East and Jack Single
 */
 
 import java.util.*;
