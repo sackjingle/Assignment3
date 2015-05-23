@@ -39,20 +39,20 @@ public class Agent {
    	  
    	  if (view[1][2] == ' ') {
    		  nextMove = 'f';
+   		  if (lastDirection == NORTH) {
+     	   	  learner.update(view, NORTH);
+     	  } else if (lastDirection == WEST) {
+     	   	  learner.update(view, WEST);
+     	  } else if (lastDirection == SOUTH) {
+     		  learner.update(view, SOUTH);
+     	  } else {
+     		  learner.update(view, EAST);
+     	  }
    	  } else {
-   		lastDirection = (lastDirection + 1) % 4;
    	  	nextMove = 'l';
+   	  	lastDirection = (lastDirection + 1) % 4;
    	  } 
    	  
-   	  if (lastDirection == NORTH) {
-   	   	  learner.update(view, NORTH);
-   	  } else if (lastDirection == WEST) {
-   	   	  learner.update(view, WEST);
-   	  } else if (lastDirection == SOUTH) {
-   		  learner.update(view, SOUTH);
-   	  } else {
-   		  learner.update(view, EAST);
-   	  }
    	  
 
       /*int ch=0;
