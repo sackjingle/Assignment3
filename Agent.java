@@ -44,13 +44,12 @@ public class Agent {
    	  } else {
    		lastDirection = (lastDirection + 1) % 4;
    	  	nextMove = 'l';
-   	  }
+   	  } 
    	  
    	  if (lastDirection == NORTH) {
    	   	  learner.update(view, NORTH);
    	  } else {
    	   	  learner.update(view, WEST);
-
    	  }
    	  
 
