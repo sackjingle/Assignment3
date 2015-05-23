@@ -77,9 +77,12 @@ public class Learner {
 			System.out.println("added "+ input[i][0]);
 			board[x0 + i][y0] = input[i][0];
 		}
+<<<<<<< Updated upstream
 		board[curX][curY] = ' ';
 		curY++;
 		board[curX][curY] = 'P';
+=======
+>>>>>>> Stashed changes
 		printBoard();
 	}
 	

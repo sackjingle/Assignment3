@@ -34,6 +34,7 @@ public class Agent {
    public char get_action( char view[][] ) {
 
    	  int intd = 0;
+<<<<<<< HEAD
    	  System.out.println("Here");
    	  learner.update(view, NORTH);
    	  return 'f';
@@ -42,6 +43,24 @@ public class Agent {
 //   	  } else {
 //   	  	return 'l';
 //   	  }
+=======
+<<<<<<< Updated upstream
+   	  learner.update(view, NORTH);
+   	  if (view[3][4] == ' ') {
+=======
+
+   	  learner.update(view, NORTH);
+
+   	  if (view[3][4] == ' ') {
+   		  return 'f';
+   	  }
+   	  if (view[3][2] == ' ') {
+>>>>>>> Stashed changes
+   	  	return 'f';
+   	  } else {
+   	  	return 'l';
+   	  }
+>>>>>>> origin/master
 
       /*int ch=0;
 
