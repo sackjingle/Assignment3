@@ -33,7 +33,7 @@ public class Agent {
    public char get_action( char view[][] ) {
 
    	  int intd = 0;
-   	  
+   	  learner.update(view, NORTH);
    	  if (view[3][4] == ' ') {
    	  	return 'f';
    	  } else {
@@ -123,6 +123,8 @@ public class Agent {
                         System.exit(-1);
                      }
                      view[i][j] = (char) ch;
+                  } else if (( i == 2 )&&( j == 2 )){
+                      view[i][j] = 'P';
                   }
                }
             }
