@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< Updated upstream
 	<name>Assignment3</name>
+=======
+	<name>Assignment33</name>
+>>>>>>> Stashed changes
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
+<<<<<<< Updated upstream
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
@@ -13,5 +18,9 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+=======
+	</buildSpec>
+	<natures>
+>>>>>>> Stashed changes
 	</natures>
 </projectDescription>
