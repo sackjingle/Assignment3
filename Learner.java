@@ -30,7 +30,7 @@ public class Learner {
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++){
 				//System.out.println("added "+ input[i][j]);
-				board[x+i][y+j] = input[i][j];
+				board[y+i][x+j] = input[i][j];
 			}
 		}
 	}
@@ -52,8 +52,8 @@ public class Learner {
 		int y = curY - 2;
 		
 		for (int i = 0; i < 5; i++) {
-			System.out.println("added "+ input[i][4]);
-			board[x][y+i] = input[i][4];
+			System.out.println("added "+ input[y+i][x]);
+			board[y][x] = input[x][y + i];
 		}
 		board[curX][curY] = ' ';
 		curX++;
@@ -78,16 +78,21 @@ public class Learner {
 	}
 	
 	private void updateNorth(char[][] input){
-		int x = curX - 2;
-		int y = curY - 3;
+
+		System.out.println("player is : '"+board[curY][curX]+"'");
+		System.out.println("behind player is : '"+board[curY+1][curX]+"'");
+		int x0 = curX - 3;
+		int y0 = curY - 2;
 		
 		for (int i = 0; i < 5; i++) {
-			System.out.println("added "+ input[i][4]);
-			board[x+i][y] = input[i][4];
+			System.out.println("added "+ input[0][i]);
+			board[y0][x0+i] = input[0][i];
 		}
-		board[curX][curY] = ' ';
-		curY++;
-		board[curX][curY] = 'P';
+
+		board[curY][curX] = ' ';
+		curY--;
+		board[curY][curX] = 'P';
+
 		printBoard();
 	}
 	
