@@ -26,29 +26,34 @@ public class Agent {
    private boolean have_key  = false;
    private boolean have_gold = false;
    private boolean in_boat   = false;
-   private static int currDirection;
    
    private static int lastDirection;
+   private static char lastMove;
    private static char nextMove;
    private static Learner learner;
    private static boolean firstTurn = true;
 
    public char get_action( char view[][] ) {
 
-   	  
+   	  if(lastMove == 'f'){
+		  if (lastDirection == NORTH) {
+	  	   	  learner.update(view, NORTH);
+	  	  } else if (lastDirection == WEST) {
+	  	   	  learner.update(view, WEST);
+	  	  } else if (lastDirection == SOUTH) {
+	  		  learner.update(view, SOUTH);
+	  	  } else {
+	  		  learner.update(view, EAST);
+	  	  }
+   	  } else {
+
+   	  }
    	  
    	  if (view[1][2] == ' ') {
    		  nextMove = 'f';
-   		  if (lastDirection == NORTH) {
-     	   	  learner.update(view, NORTH);
-     	  } else if (lastDirection == WEST) {
-     	   	  learner.update(view, WEST);
-     	  } else if (lastDirection == SOUTH) {
-     		  learner.update(view, SOUTH);
-     	  } else {
-     		  learner.update(view, EAST);
-     	  }
    	  } else {
+   		 System.out.println("Hit Object");
+   		 //learner.update(view,lastDirection);
    	  	nextMove = 'l';
    	  	lastDirection = (lastDirection + 1) % 4;
    	  } 
@@ -77,6 +82,7 @@ public class Agent {
 
       return 0;
       */
+   	  lastMove = nextMove;
    	  return nextMove;
    }
 
@@ -111,8 +117,7 @@ public class Agent {
       int port;
       int ch;
       int i,j;
-      currDirection = NORTH;
-
+      
       if( args.length < 2 ) {
          System.out.println("Usage: java Agent -p <port>\n");
          System.exit(-1);
@@ -149,6 +154,7 @@ public class Agent {
             	firstTurn = false;
             	learner = new Learner(view);
             	lastDirection = NORTH;
+            	lastMove = 'X';
             	
             }
             agent.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION

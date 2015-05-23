@@ -37,12 +37,16 @@ public class Learner {
 	
 	public void update(char[][] input, int direction){
 		if (direction == EAST){
+			System.out.println("EAST");
 			updateEast(input);
 		} else if (direction == NORTH){
+			System.out.println("NORTH");
 			updateNorth(input);
 		} else if (direction == WEST){
+			System.out.println("WEST");
 			updateWest(input);
 		} else if (direction == SOUTH){
+			System.out.println("SOUTH");
 			updateSouth(input);
 		}
 	}
@@ -64,21 +68,21 @@ public class Learner {
 //	}
 	
 	private void updateEast(char[][] input){
-		int x0 = curX - 2;
+		int x0 = curX - 1;
 		int y0 = curY - 2;
 		
 		for (int i = 0; i < 5; i++) {
 			System.out.println("added "+ input[0][i]);
 			board[y0+i][x0+4] = input[0][i];
 		}
-		board[curY][curX] = ' ';
+		board[curY][curX] = 'p';
 		curX++;
 		board[curY][curX] = 'P';
 		printBoard();
 	}
 	
 	private void updateWest(char[][] input){
-		int x0 = curX - 2;
+		int x0 = curX - 3;
 		int y0 = curY - 2;
 		
 		for (int i = 0; i < 5; i++) {
@@ -86,7 +90,7 @@ public class Learner {
 			board[y0+4-i][x0] = input[0][i];
 
 		}
-		board[curY][curX] = ' ';
+		board[curY][curX] = 'p';
 		curX--;
 		board[curY][curX] = 'P';
 		printBoard();
@@ -97,14 +101,14 @@ public class Learner {
 		System.out.println("player is : '"+board[curY][curX]+"'");
 		System.out.println("behind player is : '"+board[curY+1][curX]+"'");
 		int x0 = curX - 2;
-		int y0 = curY - 2;
+		int y0 = curY - 3;
 		
 		for (int i = 0; i < 5; i++) {
 			System.out.println("added "+ input[0][i]);
 			board[y0][x0+i] = input[0][i];
 		}
 
-		board[curY][curX] = ' ';
+		board[curY][curX] = 'p';
 		curY--;
 		board[curY][curX] = 'P';
 
@@ -113,12 +117,12 @@ public class Learner {
 	
 	private void updateSouth(char[][] input){
 		int x0 = curX - 2;
-		int y0 = curY - 2;	
+		int y0 = curY - 1;	
 		for (int i = 0; i < 5; i++) {
 			System.out.println("added "+ input[0][i]);
 			board[y0+4][x0+4-i] = input[0][i];
 		}
-		board[curY][curX] = ' ';
+		board[curY][curX] = 'p';
 		curY++;
 		board[curY][curX] = 'P';
 		printBoard();
