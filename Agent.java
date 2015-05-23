@@ -14,11 +14,26 @@ import java.net.*;
 
 
 public class Agent {
+	
+   final static int EAST   = 0;
+   final static int NORTH  = 1;
+   final static int WEST   = 2;
+   final static int SOUTH  = 3;
+   
+   private char[][] view;
+
+   private boolean have_axe  = false;
+   private boolean have_key  = false;
+   private boolean have_gold = false;
+   private boolean in_boat   = false;
+   
+   private static Learner learner;
+   private static boolean firstTurn = true;
 
    public char get_action( char view[][] ) {
 
    	  int intd = 0;
-
+   	  
    	  if (view[3][4] == ' ') {
    	  	return 'f';
    	  } else {
@@ -98,7 +113,7 @@ public class Agent {
          System.exit(-1);
       }
 
-      try { // scan 5-by-5 wintow around current location
+      try { // scan 5-by-5 window around current location
          while( true ) {
             for( i=0; i < 5; i++ ) {
                for( j=0; j < 5; j++ ) {
@@ -110,6 +125,11 @@ public class Agent {
                      view[i][j] = (char) ch;
                   }
                }
+            }
+            if (firstTurn == true){
+            	firstTurn = false;
+            	learner = new Learner(view);
+            	
             }
             agent.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION
             action = agent.get_action( view );
