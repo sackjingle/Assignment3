@@ -69,9 +69,14 @@ public class Learner {
 		
 		for (int i = 0; i < 5; i++) {
 			System.out.println("added "+ input[0][i]);
+<<<<<<< HEAD
 			board[y0+i][x0+4] = input[i][0];
 		}
 
+=======
+			board[y0+i][x0+4] = input[0][i];
+		}
+>>>>>>> origin/master
 		board[curY][curX] = ' ';
 		curX++;
 		board[curY][curX] = 'P';
@@ -84,11 +89,20 @@ public class Learner {
 		
 		for (int i = 0; i < 5; i++) {
 			System.out.println("added "+ input[0][i]);
+<<<<<<< HEAD
 			board[y0+i][x0] = input[i][0];
+=======
+			board[y0+i][x0] = input[0][i];
+>>>>>>> origin/master
 		}
 		board[curY][curX] = ' ';
 		curX--;
 		board[curY][curX] = 'P';
+<<<<<<< HEAD
+=======
+
+		
+>>>>>>> origin/master
 		printBoard();
 	}
 	
@@ -117,11 +131,19 @@ public class Learner {
 		
 		for (int i = 0; i < 5; i++) {
 			System.out.println("added "+ input[0][i]);
+<<<<<<< HEAD
 			board[y0+4][x0+i] = input[4][i];
+=======
+			board[y0+4][x0+i] = input[0][i];
+>>>>>>> origin/master
 		}
 		board[curY][curX] = ' ';
 		curY++;
 		board[curY][curX] = 'P';
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 		printBoard();
 	}
 	
