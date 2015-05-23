@@ -81,7 +81,7 @@ public class Learner {
 
 		System.out.println("player is : '"+board[curY][curX]+"'");
 		System.out.println("behind player is : '"+board[curY+1][curX]+"'");
-		int x0 = curX - 3;
+		int x0 = curX - 2;
 		int y0 = curY - 2;
 		
 		for (int i = 0; i < 5; i++) {
