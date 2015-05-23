@@ -28,17 +28,21 @@ public class Agent {
    private boolean in_boat   = false;
    private static int currDirection;
    
+   private static char nextMove;
    private static Learner learner;
    private static boolean firstTurn = true;
 
    public char get_action( char view[][] ) {
 
    	  int intd = 0;
+   	  
+   	  if (view[1][2] == ' ') {
+   		  nextMove = 'f';
+   	  } else {
+   	  	nextMove = 'l';
+   	  }
 
-   	  System.out.println("co behind is: "+view[3][2]);
    	  learner.update(view, NORTH);
-   	  return 'f';
-
 
       /*int ch=0;
 
@@ -62,6 +66,7 @@ public class Agent {
 
       return 0;
       */
+   	  return nextMove;
    }
 
    void print_view( char view[][] )
