@@ -52,9 +52,13 @@ public class Learner {
 		int y = curY - 2;
 		
 		for (int i = 0; i < 5; i++) {
-			System.out.println("added "+ input[x][y + i]);
-			board[x][y] = input[x][y + i];
+			System.out.println("added "+ input[i][4]);
+			board[x][y+i] = input[i][4];
 		}
+		board[curX][curY] = ' ';
+		curX++;
+		board[curX][curY] = 'P';
+		printBoard();
 		printBoard();
 	}
 	
@@ -63,13 +67,31 @@ public class Learner {
 		int y = curY - 2;
 		
 		for (int i = 0; i < 5; i++) {
-			System.out.println("added "+ input[x][i]);
-			board[x][y+i] = input[x][i];
+			System.out.println("added "+ input[i][4]);
+			board[x][y+i] = input[i][4];
 		}
+		
+		board[curX][curY] = ' ';
+		curX--;
+		board[curX][curY] = 'P';
 		printBoard();
 	}
 	
 	private void updateNorth(char[][] input){
+		int x = curX - 2;
+		int y = curY - 3;
+		
+		for (int i = 0; i < 5; i++) {
+			System.out.println("added "+ input[i][4]);
+			board[x+i][y] = input[i][4];
+		}
+		board[curX][curY] = ' ';
+		curY++;
+		board[curX][curY] = 'P';
+		printBoard();
+	}
+	
+	private void updateSouth(char[][] input){
 		int x = curX - 2;
 		int y = curY + 3;
 		
@@ -77,23 +99,9 @@ public class Learner {
 			System.out.println("added "+ input[i][4]);
 			board[x+i][y] = input[i][4];
 		}
-<<<<<<< Updated upstream
 		board[curX][curY] = ' ';
-		curY++;
+		curY--;
 		board[curX][curY] = 'P';
-=======
->>>>>>> Stashed changes
-		printBoard();
-	}
-	
-	private void updateSouth(char[][] input){
-		int x = curX - 2;
-		int y = curY - 3;
-		
-		for (int i = 0; i < 5; i++) {
-			System.out.println("added "+ input[x + i][y]);
-			board[x][y] = input[x + i][y];
-		}
 		printBoard();
 	}
 	
