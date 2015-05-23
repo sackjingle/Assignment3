@@ -35,8 +35,6 @@ public class Agent {
 
    public char get_action( char view[][] ) {
 
-   	  int intd = 0;
-   	  
    	  
    	  
    	  if (view[1][2] == ' ') {
@@ -48,8 +46,12 @@ public class Agent {
    	  
    	  if (lastDirection == NORTH) {
    	   	  learner.update(view, NORTH);
-   	  } else {
+   	  } else if (lastDirection == WEST) {
    	   	  learner.update(view, WEST);
+   	  } else if (lastDirection == SOUTH) {
+   		  learner.update(view, SOUTH);
+   	  } else {
+   		  learner.update(view, EAST);
    	  }
    	  
 
