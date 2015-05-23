@@ -33,8 +33,13 @@ public class Agent {
    public char get_action( char view[][] ) {
 
    	  int intd = 0;
+<<<<<<< Updated upstream
    	  
    	  if (view[3][4] == ' ') {
+=======
+
+   	  if (view[3][2] == ' ') {
+>>>>>>> Stashed changes
    	  	return 'f';
    	  } else {
    	  	return 'l';
