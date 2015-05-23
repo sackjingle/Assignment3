@@ -26,6 +26,7 @@ public class Agent {
    private boolean have_key  = false;
    private boolean have_gold = false;
    private boolean in_boat   = false;
+   private static int currDirection;
    
    private static Learner learner;
    private static boolean firstTurn = true;
@@ -33,12 +34,14 @@ public class Agent {
    public char get_action( char view[][] ) {
 
    	  int intd = 0;
+   	  System.out.println("Here");
    	  learner.update(view, NORTH);
-   	  if (view[3][4] == ' ') {
-   	  	return 'f';
-   	  } else {
-   	  	return 'l';
-   	  }
+   	  return 'f';
+//   	  if (view[3][4] == ' ') {
+//   	  	return 'f';
+//   	  } else {
+//   	  	return 'l';
+//   	  }
 
       /*int ch=0;
 
@@ -95,6 +98,7 @@ public class Agent {
       int port;
       int ch;
       int i,j;
+      currDirection = NORTH;
 
       if( args.length < 2 ) {
          System.out.println("Usage: java Agent -p <port>\n");

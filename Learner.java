@@ -70,12 +70,12 @@ public class Learner {
 	}
 	
 	private void updateNorth(char[][] input){
-		int x = curX - 2;
-		int y = curY + 3;
+		int x0 = curX - 2;
+		int y0 = curY - 3;
 		
 		for (int i = 0; i < 5; i++) {
-			System.out.println("added "+ input[i][4]);
-			board[x+i][y] = input[i][4];
+			System.out.println("added "+ input[i][0]);
+			board[x0 + i][y0] = input[i][0];
 		}
 		board[curX][curY] = ' ';
 		curY++;
