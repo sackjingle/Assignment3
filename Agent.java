@@ -28,6 +28,7 @@ public class Agent {
    private boolean in_boat   = false;
    private static int currDirection;
    
+   private static int lastDirection;
    private static char nextMove;
    private static Learner learner;
    private static boolean firstTurn = true;
@@ -36,13 +37,22 @@ public class Agent {
 
    	  int intd = 0;
    	  
+   	  
+   	  
    	  if (view[1][2] == ' ') {
    		  nextMove = 'f';
    	  } else {
+   		lastDirection = (lastDirection + 1) % 4;
    	  	nextMove = 'l';
    	  }
+   	  
+   	  if (lastDirection == NORTH) {
+   	   	  learner.update(view, NORTH);
+   	  } else {
+   	   	  learner.update(view, WEST);
 
-   	  learner.update(view, NORTH);
+   	  }
+   	  
 
       /*int ch=0;
 
@@ -137,6 +147,7 @@ public class Agent {
             if (firstTurn == true){
             	firstTurn = false;
             	learner = new Learner(view);
+            	lastDirection = NORTH;
             	
             }
             agent.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION
