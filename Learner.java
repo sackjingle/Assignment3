@@ -38,12 +38,16 @@ public class Learner {
 	
 	public void update(char[][] input, int direction){
 		if (direction == EAST){
+			System.out.println("EAST");
 			updateEast(input);
 		} else if (direction == NORTH){
+			System.out.println("NORTH");
 			updateNorth(input);
 		} else if (direction == WEST){
+			System.out.println("WEST");
 			updateWest(input);
 		} else if (direction == SOUTH){
+			System.out.println("SOUTH");
 			updateSouth(input);
 		}
 	}
@@ -65,6 +69,7 @@ public class Learner {
 //	}
 	
 	private void updateEast(char[][] input){
+		
 		int x0 = curX - 3;
 		int y0 = curY - 2;
 		
@@ -117,6 +122,7 @@ public class Learner {
 	private void updateSouth(char[][] input){
 		int x0 = curX - 2;
 		int y0 = curY - 3;	
+
 		for (int i = 0; i < 5; i++) {
 			System.out.println("added "+ input[0][i]);
 			board[y0+6][x0+4-i] = input[0][i];
