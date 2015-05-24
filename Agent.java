@@ -36,6 +36,7 @@ public class Agent {
    public char get_action( char view[][] ) {
 
    	  
+   	  System.out.println("In front of player is: " + view[1][2]);
    	  
    	  if (view[1][2] == ' ') {
    		  nextMove = 'f';
@@ -49,7 +50,18 @@ public class Agent {
      		  learner.update(view, EAST);
      	  }
    	  } else {
+   		  System.out.println("Turning Left");
+   		  if (lastDirection == NORTH) {
+     	   	  learner.update(view, NORTH);
+     	  } else if (lastDirection == WEST) {
+     	   	  learner.update(view, WEST);
+     	  } else if (lastDirection == SOUTH) {
+     		  learner.update(view, SOUTH);
+     	  } else {
+     		  learner.update(view, EAST);
+     	  }
    	  	nextMove = 'l';
+   	  	learner.printBoard();
    	  	lastDirection = (lastDirection + 1) % 4;
    	  } 
    	  
