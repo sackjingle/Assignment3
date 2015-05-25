@@ -49,6 +49,18 @@ public class Agent {
      	  } else {
      		  learner.update(view, EAST);
      	  }
+   	  } else if (view[1][2] == 'L') {
+   		  nextMove = 'r';
+   		  if (lastDirection == NORTH) {
+     	   	  learner.update(view, NORTH);
+     	  } else if (lastDirection == WEST) {
+     	   	  learner.update(view, WEST);
+     	  } else if (lastDirection == SOUTH) {
+     		  learner.update(view, SOUTH);
+     	  } else {
+     		  learner.update(view, EAST);
+     	  }
+   		  lastDirection = (lastDirection - 1) % 4;
    	  } else {
    		  System.out.println("Turning Left");
    		  if (lastDirection == NORTH) {
@@ -60,6 +72,7 @@ public class Agent {
      	  } else {
      		  learner.update(view, EAST);
      	  }
+   		  learner.turnedLeft();
    	  	nextMove = 'l';
    	  	learner.printBoard();
    	  	lastDirection = (lastDirection + 1) % 4;

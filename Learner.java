@@ -9,7 +9,7 @@ public class Learner {
 	private char[][] board;
 	private int curX;
 	private int curY;
-	
+	private boolean leftFlag;
 
 	public Learner(char[][] input){
 		board = new char[40][40];
@@ -77,7 +77,12 @@ public class Learner {
 			System.out.println("added "+ input[0][i]);
 			board[y0+i][x0+6] = input[0][i];
 		}
-		board[curY][curX] = ' ';
+		if (leftFlag == true) {
+			board[curY][curX] = 'L';
+			leftFlag = false;
+		} else {
+			board[curY][curX] = ' ';
+		}
 		curX++;
 		board[curY][curX] = 'P';
 		printBoard();
@@ -91,8 +96,15 @@ public class Learner {
 			System.out.println("added "+ input[0][i]);
 			board[y0+4-i][x0] = input[0][i];
 
+		}		
+		
+		if (leftFlag == true) {
+			board[curY][curX] = 'L';
+			leftFlag = false;
+		} else {
+			board[curY][curX] = ' ';
 		}
-		board[curY][curX] = ' ';
+		
 		curX--;
 		board[curY][curX] = 'P';
 		
@@ -111,7 +123,13 @@ public class Learner {
 			board[y0][x0+i] = input[0][i];
 		}
 
-		board[curY][curX] = ' ';
+		if (leftFlag == true) {
+			board[curY][curX] = 'L';
+			leftFlag = false;
+		} else {
+			board[curY][curX] = ' ';
+		}
+		
 		curY--;
 		board[curY][curX] = 'P';
 		
@@ -127,7 +145,14 @@ public class Learner {
 			System.out.println("added "+ input[0][i]);
 			board[y0+6][x0+4-i] = input[0][i];
 		}
-		board[curY][curX] = ' ';
+
+		if (leftFlag == true) {
+			board[curY][curX] = 'L';
+			leftFlag = false;
+		} else {
+			board[curY][curX] = ' ';
+		}
+		
 		curY++;
 		board[curY][curX] = 'P';
 		printBoard();
@@ -147,6 +172,10 @@ public class Learner {
 	         System.out.println("|");
 	      }
 	      System.out.println("+---------------------------------------------------------------------------------------------------------------------------------------------+");
+	}
+	
+	public void turnedLeft() {
+		leftFlag = true;
 	}
 	
 }
