@@ -121,16 +121,48 @@ public class Agent {
       }
       System.out.println("+-----+");
    }
+   public ArrayList<Position> breadthFirstSearch(Position start, Position goal){
+		System.out.println("bfs from "+start+" to "+ goal);
+		HashMap<Position,Position> connectedTo = new HashMap<Position,Position>();
+		ArrayList<Position> visited = new ArrayList<Position>();
+		Queue<Position> queue = new ArrayDeque<Position>();
+		queue.add(start);
+		visited.add(start);
+		while (!queue.isEmpty()){
+			Position parentVertex = queue.remove();
+			System.out.println(parentVertex);
+			for (ListIterator<Position> adjacent = getAdjacent(parentVertex); adjacent.hasNext();){
+				Position child = adjacent.next();
+				System.out.print("	"+child);
+				if(!visited.contains(child))
+				{
+					System.out.print(" - added");
+                   connectedTo.put(child, parentVertex);
+                   visited.add(child); 	
+					queue.add(child);
+				}
+				System.out.println();
+			}
+		}
+		ArrayList<Position> path = new ArrayList<Position>();
+		path.add(goal);
+		while (connectedTo.get(goal) != start){
+			goal = connectedTo.get(goal);
+			path.add(goal);
+		}
+		path.add(start);
+		Collections.reverse(path);
 
+		return path;
+	}
    
    
-   
-   
-   
-   
-   
-   
-   //Main
+   private ListIterator<Position> getAdjacent(Position parentVertex) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+//Main
    public static void main( String[] args )
    {
       InputStream in  = null;
