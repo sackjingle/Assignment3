@@ -40,38 +40,15 @@ public class Agent {
    	  
    	  if (view[1][2] == ' ') {
    		  nextMove = 'f';
-   		  if (lastDirection == NORTH) {
-     	   	  learner.update(view, NORTH);
-     	  } else if (lastDirection == WEST) {
-     	   	  learner.update(view, WEST);
-     	  } else if (lastDirection == SOUTH) {
-     		  learner.update(view, SOUTH);
-     	  } else {
-     		  learner.update(view, EAST);
-     	  }
+   		  updateLearner(view, lastDirection);
+   		  
    	  } else if (view[1][2] == 'L') {
    		  nextMove = 'r';
-   		  if (lastDirection == NORTH) {
-     	   	  learner.update(view, NORTH);
-     	  } else if (lastDirection == WEST) {
-     	   	  learner.update(view, WEST);
-     	  } else if (lastDirection == SOUTH) {
-     		  learner.update(view, SOUTH);
-     	  } else {
-     		  learner.update(view, EAST);
-     	  }
+   		  updateLearner(view, lastDirection);
    		  lastDirection = (lastDirection - 1) % 4;
    	  } else {
    		  System.out.println("Turning Left");
-   		  if (lastDirection == NORTH) {
-     	   	  learner.update(view, NORTH);
-     	  } else if (lastDirection == WEST) {
-     	   	  learner.update(view, WEST);
-     	  } else if (lastDirection == SOUTH) {
-     		  learner.update(view, SOUTH);
-     	  } else {
-     		  learner.update(view, EAST);
-     	  }
+   		  updateLearner(view, lastDirection);
    		  learner.turnedLeft();
    	  	nextMove = 'l';
    	  	learner.printBoard();
@@ -105,6 +82,18 @@ public class Agent {
    	  return nextMove;
    }
 
+   void updateLearner(char view[][], int lastDirection) {
+		  if (lastDirection == NORTH) {
+     	   	  learner.update(view, NORTH);
+     	  } else if (lastDirection == WEST) {
+     	   	  learner.update(view, WEST);
+     	  } else if (lastDirection == SOUTH) {
+     		  learner.update(view, SOUTH);
+     	  } else {
+     		  learner.update(view, EAST);
+     	  }
+   }
+   
    void print_view( char view[][] )
    {
       int i,j;
