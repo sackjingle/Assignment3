@@ -39,28 +39,35 @@ public class Agent {
 
 
    public char get_action( char view[][] ) {
-   		curX = learner.getX();
+	   if(moves.size()!=0){
+   			if (moves.get(moves.size()-1).getMove() == 'f') {
+   				updateLearner(view, lastDirection);
+   			}
+	   }
+	   
+	   curX = learner.getX();
    		curY = learner.getY();
    		System.out.println("[X,Y]=["+curX+","+curY+"]");
    	  
    	  System.out.println("In front of player is: " + view[1][2]);
    	  
+   	  
+   	  
    	  if (view[1][2] == ' ') {
    		  nextMove = 'f';
    	   	  System.out.println("Move is: "+nextMove);
 
-   		  updateLearner(view, lastDirection);
    		  
    	  } else if (getCOMove(curX,curY)=='l') {
    		  nextMove = 'r';
    	   	  System.out.println("Move is: "+nextMove);
-   		  updateLearner(view, lastDirection);
+   		  //updateLearner(view, lastDirection);
      	  learner.printBoard();
-   		  lastDirection = (lastDirection - 1) % 4;
+   		  lastDirection = (lastDirection + 3) % 4;
    	  } else {
    	  	  nextMove = 'l';
    	   	  System.out.println("Move is: "+nextMove);
-   		  updateLearner(view, lastDirection);
+   		  //updateLearner(view, lastDirection);
    	  	  learner.printBoard();
    	  	  lastDirection = (lastDirection + 1) % 4;
    	  } 
@@ -94,7 +101,7 @@ public class Agent {
    	  return nextMove;
    }
 
-   void updateLearner(char view[][], int lastDirection) {
+   static void updateLearner(char view[][], int lastDirection) {
 		  if (lastDirection == NORTH) {
      	   	  learner.update(view, NORTH);
      	  } else if (lastDirection == WEST) {
@@ -197,6 +204,7 @@ public class Agent {
             agent.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION
             action = agent.get_action( view );
             out.write( action );
+            
          }
       }
       catch( IOException e ) {
