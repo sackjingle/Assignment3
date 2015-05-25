@@ -53,27 +53,16 @@ public class Agent {
    		  
    	  } else if (getCOMove(curX,curY)=='l') {
    		  nextMove = 'r';
-<<<<<<< HEAD
-   		  System.out.println("Turning right");
-=======
    	   	  System.out.println("Move is: "+nextMove);
-
->>>>>>> origin/master
    		  updateLearner(view, lastDirection);
      	  learner.printBoard();
    		  lastDirection = (lastDirection - 1) % 4;
    	  } else {
+   	  	  nextMove = 'l';
    	   	  System.out.println("Move is: "+nextMove);
    		  updateLearner(view, lastDirection);
-<<<<<<< HEAD
-   	  	nextMove = 'l';
-   	  	learner.printBoard();
-   	  	lastDirection = (lastDirection + 1) % 4;
-=======
-   	  	  nextMove = 'l';
    	  	  learner.printBoard();
    	  	  lastDirection = (lastDirection + 1) % 4;
->>>>>>> origin/master
    	  } 
    	  
    	  
