@@ -77,12 +77,7 @@ public class Learner {
 			System.out.println("added "+ input[0][i]);
 			board[y0+i][x0+6] = input[0][i];
 		}
-//		if (leftFlag == true) {
-//			//board[curY][curX] = 'L';
-//			//leftFlag = false;
-//		} else {
-//			board[curY][curX] = ' ';
-//		}
+
 		board[curY][curX] = ' ';
 		curX++;
 		board[curY][curX] = 'P';
@@ -99,12 +94,6 @@ public class Learner {
 
 		}		
 		
-//		if (leftFlag == true) {
-//			//board[curY][curX] = 'L';
-//			//leftFlag = false;
-//		} else {
-//			board[curY][curX] = ' ';
-//		}
 		board[curY][curX] = ' ';
 		curX--;
 		board[curY][curX] = 'P';
@@ -124,12 +113,6 @@ public class Learner {
 			board[y0][x0+i] = input[0][i];
 		}
 
-//		IF (LEFTFLAG == TRUE) {
-//			//BOARD[CURY][CURX] = 'L';
-//			//LEFTFLAG = FALSE;
-//		} ELSE {
-//			BOARD[CURY][CURX] = ' ';
-//		}
 		board[curY][curX] = ' ';
 		curY--;
 		board[curY][curX] = 'P';
@@ -147,12 +130,6 @@ public class Learner {
 			board[y0+6][x0+4-i] = input[0][i];
 		}
 
-//		if (leftFlag == true) {
-//			//board[curY][curX] = 'L';
-//			//leftFlag = false;
-//		} else {
-//			board[curY][curX] = ' ';
-//		}
 		board[curY][curX] = ' ';
 		curY++;
 		board[curY][curX] = 'P';
