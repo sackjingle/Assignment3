@@ -30,7 +30,6 @@ public class Learner {
 		
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++){
-				System.out.println("added "+ input[i][j]);
 				board[y+i][x+j] = input[i][j];
 			}
 		}
@@ -74,7 +73,6 @@ public class Learner {
 		int y0 = curY - 2;
 		
 		for (int i = 0; i < 5; i++) {
-			System.out.println("added "+ input[0][i]);
 			board[y0+i][x0+6] = input[0][i];
 		}
 //		if (leftFlag == true) {
@@ -94,7 +92,6 @@ public class Learner {
 		int y0 = curY - 2;
 		
 		for (int i = 0; i < 5; i++) {
-			System.out.println("added "+ input[0][i]);
 			board[y0+4-i][x0] = input[0][i];
 
 		}		
@@ -113,14 +110,10 @@ public class Learner {
 	}
 	
 	private void updateNorth(char[][] input){
-
-		System.out.println("player is : '"+board[curY][curX]+"'");
-		System.out.println("behind player is : '"+board[curY+1][curX]+"'");
 		int x0 = curX - 2;
 		int y0 = curY - 3;
 		
 		for (int i = 0; i < 5; i++) {
-			System.out.println("added "+ input[0][i]);
 			board[y0][x0+i] = input[0][i];
 		}
 
@@ -143,7 +136,6 @@ public class Learner {
 		int y0 = curY - 3;	
 
 		for (int i = 0; i < 5; i++) {
-			System.out.println("added "+ input[0][i]);
 			board[y0+6][x0+4-i] = input[0][i];
 		}
 

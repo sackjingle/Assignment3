@@ -41,24 +41,28 @@ public class Agent {
    public char get_action( char view[][] ) {
    		curX = learner.getX();
    		curY = learner.getY();
+   		System.out.println("[X,Y]=["+curX+","+curY+"]");
    	  
    	  System.out.println("In front of player is: " + view[1][2]);
    	  
    	  if (view[1][2] == ' ') {
    		  nextMove = 'f';
+   	   	  System.out.println("Move is: "+nextMove);
+
    		  updateLearner(view, lastDirection);
    		  
    	  } else if (getCOMove(curX,curY)=='l') {
    		  nextMove = 'r';
+   	   	  System.out.println("Move is: "+nextMove);
+
    		  updateLearner(view, lastDirection);
    		  lastDirection = (lastDirection - 1) % 4;
    	  } else {
-   		  System.out.println("Turning Left");
+   	   	  System.out.println("Move is: "+nextMove);
    		  updateLearner(view, lastDirection);
-   		  learner.turnedLeft();
-   	  	nextMove = 'l';
-   	  	learner.printBoard();
-   	  	lastDirection = (lastDirection + 1) % 4;
+   	  	  nextMove = 'l';
+   	  	  learner.printBoard();
+   	  	  lastDirection = (lastDirection + 1) % 4;
    	  } 
    	  
    	  
@@ -189,6 +193,7 @@ public class Agent {
             	learner = new Learner(view);
             	lastDirection = NORTH;     	
             }
+            System.out.println(">>>NEW MOVE<<<");
             agent.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION
             action = agent.get_action( view );
             out.write( action );
