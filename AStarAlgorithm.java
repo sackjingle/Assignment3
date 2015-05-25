@@ -8,7 +8,7 @@ import java.util.Stack;
 
 public class AStarAlgorithm<E>{
 	
-   public ArrayList<E> search(Graph<E> graph, E source, E target, int size) {
+   public ArrayList<E> search(char[][] graph, E source, E target, int size) {
 	   System.out.println("Start Search from " + source + " to " + target);
 	   Comparator<AStarNode<E>> comparator = new AStarComparator<E>();
 	   
@@ -19,7 +19,7 @@ public class AStarAlgorithm<E>{
 	   // The map of navigated nodes.
 	   HashMap<E, AStarNode<E>> closeSet = new HashMap<E, AStarNode<E>>();
        
-	   AStarNode<E> start = new AStarNode<E>(source, null, 0, graph.getHeuristic(source, target));
+	   AStarNode<E> start = new AStarNode<E>(source, null, 0, getHeuristic(source, target));
        openSet.put(source, start);
        queue.add(start);
 
@@ -41,16 +41,16 @@ public class AStarAlgorithm<E>{
             } else {
             	//System.out.println("	Search for node:");
                 closeSet.put(parentNode.getNode(), parentNode);
-                for (ListIterator<E> adjacentList = graph.getAdjacent(parentNode.getNode()); adjacentList.hasNext();) {
+                for (ListIterator<E> adjacentList = getAdjacent(parentNode.getNode()); adjacentList.hasNext();) {
                     E adjacentE = adjacentList.next();
                 	AStarNode<E> visited = closeSet.get(adjacentE);
                     if (visited == null) {
-                        double tentative_g_score = parentNode.getG() + graph.getWeight(parentNode.getNode(), adjacentE);
+                        double tentative_g_score = parentNode.getG() + getWeight(parentNode.getNode(), adjacentE);
                         //System.out.println("		tentative score =" + tentative_g_score+" = "+ parentNode.getG()+" + "+graph.getWeight(parentNode.getNode(), adjacentE)+" (parent+weight)");
                         AStarNode<E> next = openSet.get(adjacentE);
                         if (next == null) {
                             //not in the open set
-                            next = new AStarNode<E>(adjacentE, parentNode, tentative_g_score, graph.getHeuristic(adjacentE, target));
+                            next = new AStarNode<E>(adjacentE, parentNode, tentative_g_score, getHeuristic(adjacentE, target));
                             next.setCameFrom(parentNode);
                             System.out.println("	" + next.getNode()+ "["+next.getScore()+"]");
                             openSet.put(adjacentE, next);
@@ -58,7 +58,7 @@ public class AStarAlgorithm<E>{
                         } else if (tentative_g_score < next.getG()) {
                             next.setCameFrom(parentNode);
                             next.setG(tentative_g_score);
-                            next.setH(graph.getHeuristic(adjacentE, target));
+                            next.setH(getHeuristic(adjacentE, target));
                             System.out.println("	next is now " + next.getNode() + " parent node = " + next.getCameFrom().getNode() + " with g()=" + next.getG() + " with h()=" + next.getH());
                         } else {
                         	System.out.println("	here");
@@ -89,5 +89,20 @@ public class AStarAlgorithm<E>{
         return null;  
       
     }
+
+private double getWeight(E node, E adjacentE) {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+private ListIterator<E> getAdjacent(E node) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+private double getHeuristic(E source, E target) {
+	// TODO Manhattan Distance heuristic
+	return 0;
+}
 
 }

@@ -9,7 +9,6 @@ public class Learner {
 	private char[][] board;
 	private int curX;
 	private int curY;
-	private boolean leftFlag;
 
 	public Learner(char[][] input){
 		board = new char[40][40];
@@ -144,9 +143,6 @@ public class Learner {
 	      System.out.println("+---------------------------------------------------------------------------------------------------------------------------------------------+");
 	}
 	
-	public void turnedLeft() {
-		leftFlag = true;
-	}
 	public int getX(){
 		return curX;
 	}

@@ -42,7 +42,6 @@ public class Agent {
    private static int searchMode = 0;
 
    public char get_action( char view[][] ) {
-<<<<<<< Updated upstream
 	   
 	   if (searchMode == FINDGOLD) {
 		   if(moves.size()!=0){
@@ -80,61 +79,7 @@ public class Agent {
 	   } else {
 		   // FIND DA PINGUZ
 	   }
-=======
-   		curX = learner.getX();
-   		curY = learner.getY();
-   		System.out.println("[X,Y]=["+curX+","+curY+"]");
-   	  
-   	  System.out.println("In front of player is: " + view[1][2]);
-   	  
-   	  if (view[1][2] == ' ') {
-   		  nextMove = 'f';
-   	   	  System.out.println("Move is: "+nextMove);
-
-   		  updateLearner(view, lastDirection);
-   		  
-   	  } else if (getCOMove(curX,curY)=='l') {
-   		  nextMove = 'r';
-   	   	  System.out.println("Move is: "+nextMove);
-   		  //updateLearner(view, lastDirection);
-     	  learner.printBoard();
-   		  lastDirection = (lastDirection - 1) % 4;
-   	  } else {
-   	  	  nextMove = 'l';
-   	   	  System.out.println("Move is: "+nextMove);
-   		  //updateLearner(view, lastDirection);
-   	  	  learner.printBoard();
-   	  	  lastDirection = (lastDirection + 1) % 4;
-   	  } 
-   	  
-   	  
-
-      /*int ch=0;
-
-      System.out.print("Enter Action(s): ");
-
-      try {
-         while ( ch != -1 ) {
-            // read character from keyboard
-            ch  = System.in.read();
-
-            switch( ch ) { // if character is a valid action, return it
-            case 'F': case 'L': case 'R': case 'C': case 'B':
-            case 'f': case 'l': case 'r': case 'c': case 'b':
-               return((char) ch );
-            }
-         }
-      }
-      catch (IOException e) {
-         System.out.println ("IO error:" + e );
-      }
-
-      return 0;
-      */
-   	  Move move = new Move(curX, curY, nextMove);
-   	  moves.add(move);
-   	  return nextMove;
->>>>>>> Stashed changes
+	return nullChar;
    }
 
    static void updateLearner(char view[][], int lastDirection) {
