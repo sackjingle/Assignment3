@@ -15,7 +15,7 @@ public class Move {
 	public int getY(){
 		return y;
 	}
-	public int getMove(){
+	public char getMove(){
 		return move;
 	}
 }

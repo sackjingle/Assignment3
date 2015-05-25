@@ -19,6 +19,8 @@ public class Agent {
    final static int NORTH  = 1;
    final static int WEST   = 2;
    final static int SOUTH  = 3;
+   final static char nullChar = '.';
+
    
    private char[][] view;
 
@@ -26,7 +28,8 @@ public class Agent {
    private boolean have_key  = false;
    private boolean have_gold = false;
    private boolean in_boat   = false;
-   private static int currDirection;
+   private static int curX;
+   private static int curY;
    
    private static int lastDirection;
    private static char nextMove;
@@ -34,8 +37,10 @@ public class Agent {
    private static boolean firstTurn = true;
    private static ArrayList<Move> moves;
 
-   public char get_action( char view[][] ) {
 
+   public char get_action( char view[][] ) {
+   		curX = learner.getX();
+   		curY = learner.getY();
    	  
    	  System.out.println("In front of player is: " + view[1][2]);
    	  
@@ -43,7 +48,7 @@ public class Agent {
    		  nextMove = 'f';
    		  updateLearner(view, lastDirection);
    		  
-   	  } else if (view[1][2] == 'L') {
+   	  } else if (getCOMove(curX,curY)=='l') {
    		  nextMove = 'r';
    		  updateLearner(view, lastDirection);
    		  lastDirection = (lastDirection - 1) % 4;
@@ -80,6 +85,8 @@ public class Agent {
 
       return 0;
       */
+   	  Move move = new Move(curX, curY, nextMove);
+   	  moves.add(move);
    	  return nextMove;
    }
 
@@ -95,6 +102,14 @@ public class Agent {
      	  }
    }
    
+   char getCOMove(int x, int y){
+	   for(Move m:moves){
+		   if ((m.getX()==x)&&(m.getY()==y)){
+			   return m.getMove();
+		   }	   
+	   }
+	   return nullChar;
+   }
    void print_view( char view[][] )
    {
       int i,j;
@@ -135,7 +150,6 @@ public class Agent {
       int port;
       int ch;
       int i,j;
-      currDirection = NORTH;
       moves = new ArrayList<Move>();
 
       if( args.length < 2 ) {
@@ -173,8 +187,7 @@ public class Agent {
             if (firstTurn == true){
             	firstTurn = false;
             	learner = new Learner(view);
-            	lastDirection = NORTH;
-            	
+            	lastDirection = NORTH;     	
             }
             agent.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION
             action = agent.get_action( view );
