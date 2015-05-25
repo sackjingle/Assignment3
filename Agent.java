@@ -32,6 +32,7 @@ public class Agent {
    private static char nextMove;
    private static Learner learner;
    private static boolean firstTurn = true;
+   private static ArrayList<Move> moves;
 
    public char get_action( char view[][] ) {
 
@@ -114,6 +115,15 @@ public class Agent {
       System.out.println("+-----+");
    }
 
+   
+   
+   
+   
+   
+   
+   
+   
+   //Main
    public static void main( String[] args )
    {
       InputStream in  = null;
@@ -126,6 +136,7 @@ public class Agent {
       int ch;
       int i,j;
       currDirection = NORTH;
+      moves = new ArrayList<Move>();
 
       if( args.length < 2 ) {
          System.out.println("Usage: java Agent -p <port>\n");
