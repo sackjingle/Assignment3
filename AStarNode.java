@@ -1,38 +1,50 @@
+import java.util.ArrayList;
+/**
+ * AStarNode is a state that represents a path through the graph
+ * @author Jordan
+ * 
+ * @param source: current Position
+ * @param path: the path taken to get to the Position
+ * @param g: cost score to generate the path so far
+ * @param h: extimated cost to get to the goal
+ * @param nodesLeft: number of nodes left to find
+ */
 
-public class AStarNode<E> {
-    private E node;
-
-    //used to construct the path after the search is done
-    private AStarNode<E> cameFrom;
-
-    // Distance from source along optimal path
+public class AStarNode{
+    private Position node;
+    private ArrayList<Position> path;
     private double g;
-
-    // Heuristic estimate of distance from the current node to the target node
     private double h;
 
-    public AStarNode(E source, AStarNode<E> cameFrom, double g, double h){
+    public AStarNode(Position source, ArrayList<Position> cameFrom, double g, double h){
     	this.setNode(source);
-    	this.setCameFrom(cameFrom);
+    	this.path = new ArrayList<Position>();
+    	if (cameFrom != null){
+        	this.path.addAll(cameFrom);
+    	}
     	this.setG(g);
     	this.setH(h);
     }
+    //return score(g+h)
 	public double getScore() {
 		return this.getG() + this.getH();
 	}
-	
+	//add new Position to path
+	public void addToPath(Position parentNode){
+		this.path.add(parentNode);
+	}
 	//getters + setters
-	public E getNode() {
+	public Position getNode() {
 		return node;
 	}
-	public void setNode(E source) {
-		this.node = (E) source;
+	public void setNode(Position source) {
+		this.node = source;
 	}
-	public AStarNode<E> getCameFrom() {
-		return cameFrom;
+	public ArrayList<Position> getPath() {
+		return path;
 	}
-	public void setCameFrom(AStarNode<E> cameFrom) {
-		this.cameFrom = cameFrom;
+	public void setPath(ArrayList <Position> cameFrom) {
+		this.path = cameFrom;
 	}
 	public double getG() {
 		return g;
@@ -46,5 +58,5 @@ public class AStarNode<E> {
 	public void setH(double h) {
 		this.h = h;
 	}
-    
+
 }

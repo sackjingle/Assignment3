@@ -1,17 +1,21 @@
 import java.util.Comparator;
 
+/**
+ * Compares the scores of two states or AStarNodes.
+ * @author Jordan
+ *
+ * @param <E> = city
+ */
+public class AStarComparator<E> implements Comparator<AStarNode>{
 
-public class AStarComparator<E> implements Comparator<AStarNode<E>>{
-
-	public int compare(AStarNode<E> o1, AStarNode<E> o2) {
-		if((int)o1.getNode().toString().charAt(0) < (int)o2.getNode().toString().charAt(0)){
+	public int compare(AStarNode o1, AStarNode o2) {
+		if(o1.getScore() < o2.getScore()){
             return -1;
-        }else if((int)o1.getNode().toString().charAt(0) > (int)o2.getNode().toString().charAt(0)){
+        }else if(o1.getScore() > o2.getScore()){
             return 1;
         }else{
             return 0;
         }
-		
 	}
 
 }
