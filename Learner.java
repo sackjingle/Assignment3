@@ -9,6 +9,7 @@ public class Learner {
 	private char[][] board;
 	private int curX;
 	private int curY;
+	private boolean foundGold;
 
 	public Learner(char[][] input){
 		board = new char[40][40];
@@ -19,6 +20,7 @@ public class Learner {
 		}
 		curX = 20;
 		curY = 20;
+		foundGold = false;
 		printBoard();
 		setUpMap(input);
 		printBoard();
@@ -48,6 +50,7 @@ public class Learner {
 			System.out.println("SOUTH");
 			updateSouth(input);
 		}
+		foundGold = checkIfGold(input);
 	}
 //	private void updateBoard(char[][] input){
 //
@@ -65,6 +68,18 @@ public class Learner {
 //		board[curY][curX] = 'P';
 //		printBoard();
 //	}
+	
+	private boolean checkIfGold(char[][] input) {
+		for(int i = 0; i<5; i++){
+			//System.out.print(input[0][i]);
+			if(input[0][i]=='g'){
+				System.out.println("Arrrr I see Gold!!!");
+				return true;
+			}
+		}
+		System.out.println();
+		return false;
+	}
 	
 	private void updateEast(char[][] input){
 		
@@ -128,7 +143,7 @@ public class Learner {
 	}
 	
 	public void printBoard(){
-		System.out.println("\n+---------------------------------------------------------------------------------------------------------------------------------------------+");
+		System.out.println("\n+----------------------------------------+");
 	      for(int i=0; i < 40; i++ ) {
 	         System.out.print("|");
 	         for(int j=0; j < 40; j++ ) {
@@ -140,7 +155,7 @@ public class Learner {
 	         }
 	         System.out.println("|");
 	      }
-	      System.out.println("+---------------------------------------------------------------------------------------------------------------------------------------------+");
+	      System.out.println("+----------------------------------------+");
 	}
 	
 	public int getX(){
@@ -148,6 +163,12 @@ public class Learner {
 	}
 	public int getY(){
 		return curY;
+	}
+	public boolean getFoundGold() {
+		return foundGold;
+	}
+	public char[][] getBoard() {
+		return board;
 	}
 	
 }

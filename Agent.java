@@ -62,13 +62,13 @@ public class Agent {
 	   		  nextMove = 'r';
 	   	   	  System.out.println("Move is: "+nextMove);
 	   		  //updateLearner(view, lastDirection);
-	     	  learner.printBoard();
+	     	  //learner.printBoard();
 	   		  lastDirection = (lastDirection + 3) % 4;
 	   	  } else {
 	   	  	  nextMove = 'l';
 	   	   	  System.out.println("Move is: "+nextMove);
 	   		  //updateLearner(view, lastDirection);
-	   	  	  learner.printBoard();
+	   	  	  //learner.printBoard();
 	   	  	  lastDirection = (lastDirection + 1) % 4;
 	   	  } 
 	   	  
@@ -213,6 +213,7 @@ public class Agent {
             	learner = new Learner(view);
             	lastDirection = NORTH;     	
             }
+            System.out.println("\n"+"////////////////////////////////////////////////////////////////////////");
             System.out.println(">>>NEW MOVE<<<");
             agent.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION
             action = agent.get_action( view );
