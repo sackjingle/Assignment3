@@ -55,6 +55,9 @@ public class Agent {
 	   	  System.out.println("[X,Y]=["+curX+","+curY+"]");
 	   	  System.out.println("In front of player is: " + view[1][2]);
 	   	  
+	   	  //Position p = new Position(20, 18);		   
+		  //nextMove = goToAdjacent(view, p);
+		   
 	   	  if (view[1][2] == ' ') {
 	   		  nextMove = 'f';
 	   	   	  System.out.println("Move is: "+nextMove);
@@ -62,19 +65,17 @@ public class Agent {
 	   		  nextMove = 'r';
 	   	   	  System.out.println("Move is: "+nextMove);
 	   		  //updateLearner(view, lastDirection);
-	     	  learner.printBoard();
 	   		  lastDirection = (lastDirection + 3) % 4;
 	   	  } else {
 	   	  	  nextMove = 'l';
 	   	   	  System.out.println("Move is: "+nextMove);
 	   		  //updateLearner(view, lastDirection);
-	   	  	  learner.printBoard();
 	   	  	  lastDirection = (lastDirection + 1) % 4;
 	   	  } 
-	   	  
-	   	  Move move = new Move(curX, curY, nextMove);
-	   	  moves.add(move);
-	   	  return nextMove;
+
+	   	Move move = new Move(curX, curY, nextMove);
+	   	moves.add(move);
+	   	return nextMove;
 	   	  
 	   } else {
 		   // FIND DA PINGUZ 
@@ -94,7 +95,7 @@ public class Agent {
      	  }
    }
    
-   char getCOMove(int x, int y){
+   private char getCOMove(int x, int y){
 	   for(Move m:moves){
 		   if ((m.getX()==x)&&(m.getY()==y)){
 			   return m.getMove();
@@ -102,6 +103,59 @@ public class Agent {
 	   }
 	   return nullChar;
    }
+   
+   private char goToAdjacent(char view[][], Position p) {
+	   
+	   // Test to see which direction player is headed by comparing current and goal coordinates
+	   // Test to see if facing in the direction of goal coordinates, if so
+	   // Move forward, otherwise turn left. Keep turning left until facing goal coordinate
+	   // If empty space, move forward otherwise return nullChar, meaning theres a wall
+	   
+	   if (p.getX() - curX == 1) {
+		   if (lastDirection == EAST) {
+			   if (view[1][2] == ' ') {
+				   return 'f';
+			   } else {
+				   return nullChar;
+			   }
+		   } else {
+				   return 'l';
+		   }
+	   } else if (p.getX() - curX == -1) {
+			   if (lastDirection == WEST) {
+			 		if (view[1][2] == ' ') {
+			 			return 'f';
+			 		} else {
+			 			return nullChar;
+			 		}
+			   } else {
+				   return 'l';
+			   }
+	   } else if (p.getY() - curY == 1) {
+		   if (lastDirection == SOUTH) {
+			   if (view[1][2] == ' ') {
+				  return 'f'; 
+			   } else {
+				   return nullChar;
+			   }
+		   } else {
+			   return 'l';
+		   }
+	   } else if (p.getY() - curY == -1) {
+		   if (lastDirection == NORTH) {
+			   if (view[1][2] == ' ') {
+				   return 'f';
+			   } else {
+				   return nullChar;
+			   }
+		   } else {
+			   return 'l';
+		   }
+	   } else {
+		   return 'l';
+	   }
+   }
+   
    void print_view( char view[][] )
    {
       int i,j;
@@ -121,6 +175,7 @@ public class Agent {
       }
       System.out.println("+-----+");
    }
+   
    public ArrayList<Position> breadthFirstSearch(Position start, Position goal){
 		System.out.println("bfs from "+start+" to "+ goal);
 		HashMap<Position,Position> connectedTo = new HashMap<Position,Position>();
