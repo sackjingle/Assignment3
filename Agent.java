@@ -40,7 +40,7 @@ public class Agent {
    private static Learner learner;
    private static boolean firstTurn = true;
    private static ArrayList<Move> moves;
-   private static int searchMode = 0;
+   private static int searchMode = 2;
    
    //NEEDS TO ACCESS out, in IN PLACES OTHER THAN main()
    private static OutputStream out = null;
@@ -174,11 +174,8 @@ public class Agent {
 			   return 'l';
 		   }
 	   } else {
-<<<<<<< HEAD
-		   System.out.println("Turn Left");
-=======
 	   	   lastDirection = (lastDirection + 1) % 4;
->>>>>>> origin/master
+
 		   return 'l';
 	   }
    }
@@ -317,7 +314,7 @@ public class Agent {
       }
    }
 
-	public void makeMove(Position p) {	
+	public boolean makeMove(Position p) {	
 		System.out.println("Make Move towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]");	
 		System.out.println("Starting at [X,Y] = ["+ curX + ", " +  curY + "]");
 		while ((curX != p.getX())||(curY != p.getY())){
@@ -325,10 +322,13 @@ public class Agent {
 			    System.out.println(">>>MAKE MOVE towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]<<<");
 			    System.out.println(">>>Starting at [X,Y] = ["+ curX + ", " +  curY + "]<<<");
 				char action = this.goToAdjacent(view, p);
+				if (action == '.'){
+					System.out.println("    hit object");
+					return false;
+				}
 				Move move = new Move(curX, curY, action);
 				moves.add(move);
-				startUpdate(view);
-				System.out.println("AStar Action is:"+action);
+				System.out.println("AStar Action is:"+action);				
 			    try {
 					out.write( action );
 				} catch (IOException e) {
@@ -337,9 +337,11 @@ public class Agent {
 				}
 			    view = getCurrentView();
 	            this.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION	
+				startUpdate(view);
+			    
 		//	 }
 		}
-		//
+		return true;
 	}
 	public char[][] getCurrentView(){
 		System.out.println("get current view");

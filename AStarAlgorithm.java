@@ -27,6 +27,7 @@ public class AStarAlgorithm{
 	   	//System.out.println("Start Search");
 	   	comparator = new AStarComparator<Position>();
 	   	queue = new PriorityQueue<AStarNode>(size, comparator);  
+	   	ArrayList<Position> visited = new ArrayList<Position>();
 	   	
    		ArrayList<Position> tempPath = new ArrayList<Position>();
    		//Start with empty state
@@ -39,20 +40,27 @@ public class AStarAlgorithm{
         AStarNode parentNode = start;
         //if queue is empty and no solution found; failure
         while(!queue.isEmpty()){
-        	
+        	visited.add(parentNode.getNode());
         	//make the sad walk home
+        	System.out.println("Sad walk home from {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}: ");
         	for(int j = parentNode.getPath().size() - 1; j >= 0; j--){
                 Position temp = parentNode.getPath().get(j);
                 System.out.println("["+temp.getX()+", "+temp.getY()+"]");
-            	agent.makeMove(temp);
+            	agent.makeMove(temp);           
             }
         	//pop next best node off priority queue
             parentNode = queue.poll();
+            System.out.println("\npop off {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}");
             
             // walk through path to popped off position           
             for(int j = 0; j < parentNode.getPath().size(); j++){
                 Position temp = parentNode.getPath().get(j);
-            	agent.makeMove(temp);
+                System.out.println("walk to ["+temp.getX()+", "+temp.getY()+"]");
+            	agent.makeMove(temp);            
+            }
+            System.out.println("walk to ["+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"]");
+            if (agent.makeMove(parentNode.getNode()) == false){
+            	continue;
             }
 		    nodesExpanded++;		 
             
@@ -66,7 +74,6 @@ public class AStarAlgorithm{
             // else check through all adjacent states and add them to the queue    
             } else {
                 for (Position adjacent: getAdjacent(parentNode.getNode(), learner.getBoard())) {
-                    //Position adjacentCity = adjacentList.next();
                     //score given by current cost to state + appropriate heuristic
                     double score = parentNode.getG() + getWeight(parentNode.getNode(), adjacent);                    
                     tempPath.clear();
@@ -76,7 +83,10 @@ public class AStarAlgorithm{
                     AStarNode next = new AStarNode(adjacent, tempPath, score, getHeuristic(adjacent));                              
                     //System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
                     // add to queue
-                    queue.add(next);
+                    if (!visitedContains(adjacent.getX(),adjacent.getY(), visited)){
+                    	System.out.println("Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
+                    	queue.add(next);
+                    }
                 }
             }
         }        
@@ -84,7 +94,16 @@ public class AStarAlgorithm{
         return goal.getPath();  
     }
    
-   private boolean foundGoal(Learner learner) {
+   private boolean visitedContains(int x, int y, ArrayList<Position>visited) {
+	   for (Position p: visited){
+		   if ((p.getX()==x)&&(p.getY()==y)){
+			   return true;
+		   }
+	   }
+	   return false;
+	}
+
+private boolean foundGoal(Learner learner) {
 	   return learner.getFoundGold();
 	}
 
@@ -104,19 +123,19 @@ public class AStarAlgorithm{
 		Position pL = new Position(node.getX()-1, node.getY());
 		Position pR = new Position(node.getX()+1, node.getY());
 		if(board[pU.getY()][pU.getX()]==' '){
-			System.out.println("Added pU["+ pU.getX() + ", " +  pU.getY() + "] to A* priority list");
+			//System.out.println("Added pU["+ pU.getX() + ", " +  pU.getY() + "] to A* priority list");
 			adjacentList.add(pU);
 		}
 		if(board[pD.getY()][pD.getX()]==' '){
-			System.out.println("Added pD["+ pD.getX() + ", " +  pD.getY() + "] to A* priority list");
+			//System.out.println("Added pD["+ pD.getX() + ", " +  pD.getY() + "] to A* priority list");
 			adjacentList.add(pD);
 		}
 		if(board[pR.getY()][pR.getX()]==' '){
-			System.out.println("Added pR["+ pR.getX() + ", " +  pR.getY() + "] to A* priority list");
+			//System.out.println("Added pR["+ pR.getX() + ", " +  pR.getY() + "] to A* priority list");
 			adjacentList.add(pR);
 		}
 		if(board[pL.getY()][pL.getX()]==' '){
-			System.out.println("Added pL["+ pL.getX() + ", " +  pL.getY() + "] to A* priority list");
+			//System.out.println("Added pL["+ pL.getX() + ", " +  pL.getY() + "] to A* priority list");
 			adjacentList.add(pL);
 		}
 		return adjacentList;
