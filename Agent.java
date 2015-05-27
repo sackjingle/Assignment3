@@ -313,7 +313,8 @@ public class Agent {
 		System.out.println("Starting at [X,Y] = ["+ curX + ", " +  curY + "]");
 		while ((curX != p.getX())||(curY != p.getY())){
 			    System.out.println("\n"+"////////////////////////////////////////////////////////////////////////");
-			    System.out.println(">>>NEW make Move MOVE<<<");
+			    System.out.println(">>>MAKE MOVE towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]<<<");
+			    System.out.println(">>>Starting at [X,Y] = ["+ curX + ", " +  curY + "]<<<");
 				char action = this.goToAdjacent(view, p);
 				Move move = new Move(curX, curY, action);
 				moves.add(move);

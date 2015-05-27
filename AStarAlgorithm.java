@@ -42,7 +42,11 @@ public class AStarAlgorithm{
         	
         	//pop next best node off priority queue
             AStarNode parentNode = queue.poll();
-            agent.makeMove(parentNode.getNode());
+            // walk through path to popped off position           
+            for(int j = parentNode.getPath().size() - 1; j >= 0; j--){
+                Position temp = parentNode.getPath().get(j);
+            	agent.makeMove(temp);
+            }
 		    nodesExpanded++;		 
             
 		    //check current.path if it has visited all required nodes
