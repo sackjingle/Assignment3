@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -111,7 +110,7 @@ public class AStarAlgorithm{
 		return adjacentList;
 	}
 }
-=======
+
 //
 //import java.util.ArrayList;
 //import java.util.Comparator;
@@ -332,5 +331,4 @@ public class AStarAlgorithm{
 //		return start.getName();
 //   }*/
 //}
-//*/
->>>>>>> origin/master
+

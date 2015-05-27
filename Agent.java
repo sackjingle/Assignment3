@@ -65,19 +65,12 @@ public class Agent {
 	   		  nextMove = 'r';
 	   	   	  System.out.println("Move is: "+nextMove);
 	   		  //updateLearner(view, lastDirection);
-<<<<<<< HEAD
-	     	  //learner.printBoard();
-=======
->>>>>>> origin/master
 	   		  lastDirection = (lastDirection + 3) % 4;
 	   	  } else {
 	   	  	  nextMove = 'l';
 	   	   	  System.out.println("Move is: "+nextMove);
 	   		  //updateLearner(view, lastDirection);
-<<<<<<< HEAD
-	   	  	  //learner.printBoard();
-=======
->>>>>>> origin/master
+
 	   	  	  lastDirection = (lastDirection + 1) % 4;
 	   	  } 
 
