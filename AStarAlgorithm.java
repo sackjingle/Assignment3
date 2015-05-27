@@ -73,7 +73,7 @@ public class AStarAlgorithm{
                     tempPath.addAll(parentNode.getPath());
                     tempPath.add(parentNode.getNode());                    
                     //create new state
-                    AStarNode next = new AStarNode(adjacent, tempPath, score, getHeuristic(adjacent));                              
+                    AStarNode next = new AStarNode(adjacent, tempPath, score, getHeuristic(adjacent, queue.peek().getNode()));                              
                     //System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
                     // add to queue
                     queue.add(next);
@@ -88,9 +88,10 @@ public class AStarAlgorithm{
 	   return learner.getFoundGold();
 	}
 
-   private double getHeuristic(Position adjacent) {
-		// TODO Auto-generated method stub
-		return 0;
+   private double getHeuristic(Position current, Position goal ) {
+		int xDist = Math.abs(current.getX() - goal.getX());
+		int yDist = Math.abs(current.getY() - goal.getY());
+		return (xDist + yDist);	
 	}
 
 	private double getWeight(Position node, Position adjacentCity) {
