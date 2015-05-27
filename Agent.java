@@ -26,7 +26,7 @@ public class Agent {
    final static int ASTARMODE = 2;
    
    
-   private char[][] view;
+   private static char[][] view;
 
    private boolean have_axe  = false;
    private boolean have_key  = false;
@@ -40,15 +40,16 @@ public class Agent {
    private static Learner learner;
    private static boolean firstTurn = true;
    private static ArrayList<Move> moves;
-   private static int searchMode = 0;
+   private static int searchMode = 2;
    
    //NEEDS TO ACCESS out, in IN PLACES OTHER THAN main()
    private static OutputStream out = null;
    private static InputStream in  = null;
+   private static int port;
 
    public char get_action( char view[][] ) {  	  
 	   startUpdate(view);
-  	  getCurrentView();
+  	  //getCurrentView();
   	  //Make Move now
 	   if (searchMode == FINDGOLD) {
 	   	  
@@ -59,20 +60,13 @@ public class Agent {
 	   		  nextMove = 'r';
 	   	   	  System.out.println("Move is: "+nextMove);
 	   		  //updateLearner(view, lastDirection);
-<<<<<<< HEAD
-	     	  //learner.printBoard();
-=======
->>>>>>> origin/master
 	   		  lastDirection = (lastDirection + 3) % 4;
 	   	  } else {
 	   	  	  nextMove = 'l';
 	   	   	  System.out.println("Move is: "+nextMove);
 	   		  //updateLearner(view, lastDirection);
-<<<<<<< HEAD
-	   	  	  //learner.printBoard();
-=======
 
->>>>>>> origin/master
+	   	  	  //learner.printBoard();
 	   	  	  lastDirection = (lastDirection + 1) % 4;
 	   	  } 
 	   	  
@@ -248,9 +242,8 @@ public class Agent {
       //OutputStream out= null;
       Socket socket   = null;
       Agent  agent    = new Agent();
-      char   view[][] = new char[5][5];
+      view = new char[5][5];
       char   action   = 'F';
-      int port;
       int ch;
       int i,j;
       moves = new ArrayList<Move>();
@@ -265,6 +258,7 @@ public class Agent {
       try { // open socket to Game Engine
          socket = new Socket( "localhost", port );
          in  = socket.getInputStream();
+         System.out.println("herehIn" + in);
          out = socket.getOutputStream();
       }
       catch( IOException e ) {
@@ -278,6 +272,7 @@ public class Agent {
                for( j=0; j < 5; j++ ) {
                   if( !(( i == 2 )&&( j == 2 ))) {
                      ch = in.read();
+                     //System.out.println("ch = "+ch);
                      if( ch == -1 ) {
                         System.exit(-1);
                      }
@@ -314,14 +309,14 @@ public class Agent {
    }
 
 	public void makeMove(Position p) {	
-		System.out.println("Make Move");
-		int i,j, ch = 0;
-		
-		while ((curX != p.getX())&&(curY != p.getY())){
+		System.out.println("Make Move towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]");	
+		System.out.println("Starting at [X,Y] = ["+ curX + ", " +  curY + "]");
+		while ((curX != p.getX())||(curY != p.getY())){
 			    System.out.println("\n"+"////////////////////////////////////////////////////////////////////////");
-			    System.out.println(">>>NEW MOVE<<<");
-			    char[][] v = getCurrentView();
+			    System.out.println(">>>NEW make Move MOVE<<<");
 				char action = this.goToAdjacent(view, p);
+				Move move = new Move(curX, curY, action);
+				moves.add(move);
 				startUpdate(view);
 				System.out.println("AStar Action is:"+action);
 			    try {
@@ -330,37 +325,42 @@ public class Agent {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			    
+			    view = getCurrentView();
+	            this.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION	
 		//	 }
 		}
 	}
 	public char[][] getCurrentView(){
-		
+		System.out.println("get current view");
+		boolean gotView = true;
 		int i,j, ch = 0;
 	      char   v[][] = new char[5][5];
-			while( true ) {
-			    for( i=0; i < 5; i++ ) {
-			       for( j=0; j < 5; j++ ) {
-			          if( !(( i == 2 )&&( j == 2 ))) {
-			             try {
-							ch = in.read();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-			             if( ch == -1 ) {
-			                System.exit(-1);
-			             }
-			             v[i][j] = (char) ch;
-			          } else if (( i == 2 )&&( j == 2 )){
-			              v[i][j] = 'P';
-			          }
-			       }
-			    }
-
-			    this.print_view( v ); // COMMENT THIS OUT BEFORE SUBMISSION	
-				return v;
-			}		
+	      try { // scan 5-by-5 window around current location
+	          while( gotView ) {
+	             for( i=0; i < 5; i++ ) {
+	                for( j=0; j < 5; j++ ) {
+	                   if( !(( i == 2 )&&( j == 2 ))) {
+	                      //System.out.println("Reading in:");
+	                	  ch = in.read();
+	                      //System.out.print("ch = "+ch+", ");
+	                      if( ch == -1 ) {
+	                         System.exit(-1);
+	                      }
+	                      v[i][j] = (char) ch;
+	                   } else if (( i == 2 )&&( j == 2 )){
+	                       v[i][j] = 'P';
+	                   }
+	                }
+	             }	           
+	             gotView = false;
+	             System.out.println("got view");             
+	          }
+	       }
+	       catch( IOException e ) {
+	          System.out.println("Lost connection to port: "+ port );
+	          System.exit(-1);
+	       }
+	      return v;
 	}
 }
 
