@@ -24,6 +24,7 @@ public class Agent {
    final static int FINDGOLD = 0;
    final static int RETURNHOME = 1;
    final static int ASTARMODE = 2;
+   final static int GETGOLD = 3;
    
    
    private static char[][] view;
@@ -41,6 +42,7 @@ public class Agent {
    private static boolean firstTurn = true;
    private static ArrayList<Move> moves;
    private static int searchMode = 2;
+   private static ArrayList<Position> pathHome1;
    
    //NEEDS TO ACCESS out, in IN PLACES OTHER THAN main()
    private static OutputStream out = null;
@@ -50,6 +52,7 @@ public class Agent {
    public char get_action( char view[][] ) {  	  
 	   startUpdate(view);
   	  //getCurrentView();
+	  
   	  //Make Move now
 	   if (searchMode == FINDGOLD) {
 	   	  
@@ -77,8 +80,24 @@ public class Agent {
 	   } else if (searchMode == ASTARMODE){
 		   Position start = new Position(curX, curY);
 		   AStarAlgorithm aStar = new AStarAlgorithm();
-		   aStar.search(learner, start, 40*40, this);
+		   pathHome1 = aStar.search(learner, start, 40*40, this);
+		   searchMode = GETGOLD;
+		   System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		   start = new Position(curX, curY);
+		   //Position gold = learner.getGoldPos();
+		   Position gold = new Position(17,7);
+		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
+		   pathHome1.addAll(aStarFindGold.searchForGold(learner, start, gold, 40*40, this));
+		   //pathHome1.remove(pathHome1.size());
 		   searchMode = RETURNHOME;
+		   nextMove = '.';
+		   return nextMove;
+	   } else if (searchMode == RETURNHOME){
+		   for(int j = pathHome1.size() - 2; j >= 0; j--){
+               Position temp = pathHome1.get(j);
+               System.out.println("["+temp.getX()+", "+temp.getY()+"]");
+           		this.makeMove(temp);           
+           }
 	   } else {
 	   
 		   // FIND DA PINGUZ 
@@ -131,7 +150,7 @@ public class Agent {
 	   
 	   if (p.getX() - curX == -1) {
 		   if (lastDirection == WEST) {
-			   if (view[1][2] == ' ') {
+			   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
 				   return 'f';
 			   } else {
 				   return nullChar;
@@ -142,7 +161,7 @@ public class Agent {
 		   }
 	   } else if (p.getX() - curX == 1) {
 			   if (lastDirection == EAST) {
-			 		if (view[1][2] == ' ') {
+			 		if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
 			 			return 'f';
 			 		} else {
 			 			return nullChar;
@@ -153,7 +172,7 @@ public class Agent {
 			   }
 	   } else if (p.getY() - curY == -1) {
 		   if (lastDirection == NORTH) {
-			   if (view[1][2] == ' ') {
+			   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
 				  return 'f'; 
 			   } else {
 				   return nullChar;
@@ -164,7 +183,7 @@ public class Agent {
 		   }
 	   } else if (p.getY() - curY == 1) {
 		   if (lastDirection == SOUTH) {
-			   if (view[1][2] == ' ') {
+			   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
 				   return 'f';
 			   } else {
 				   return nullChar;
@@ -174,13 +193,8 @@ public class Agent {
 			   return 'l';
 		   }
 	   } else {
-<<<<<<< HEAD
-		   System.out.println("Turn Left");
-	   	   lastDirection = (lastDirection + 1) % 4;
-=======
-	   	   lastDirection = (lastDirection + 1) % 4;
 
->>>>>>> origin/master
+	   	   lastDirection = (lastDirection + 1) % 4;
 		   return 'l';
 	   }
    }
@@ -258,6 +272,7 @@ public class Agent {
       int ch;
       int i,j;
       moves = new ArrayList<Move>();
+	  pathHome1 = new ArrayList<Position>();
 
       if( args.length < 2 ) {
          System.out.println("Usage: java Agent -p <port>\n");
