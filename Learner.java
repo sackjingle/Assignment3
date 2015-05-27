@@ -5,6 +5,7 @@ public class Learner {
 	final static int WEST   = 2;
 	final static int SOUTH  = 3;
 	final static char nullpointer = '.';
+	final static int BOARD_SIZE = 40;
 	
 	private char[][] board;
 	private int curX;
@@ -12,14 +13,14 @@ public class Learner {
 	private boolean foundGold;
 
 	public Learner(char[][] input){
-		board = new char[40][40];
-		for (int i = 0; i < 40; i++) {
-			for (int j = 0; j < 40; j++){
+		board = new char[BOARD_SIZE][BOARD_SIZE];
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			for (int j = 0; j < BOARD_SIZE; j++){
 				board[i][j] = nullpointer;
 			}
 		}
-		curX = 20;
-		curY = 20;
+		curX = BOARD_SIZE/2;
+		curY = BOARD_SIZE/2;
 		foundGold = false;
 		printBoard();
 		setUpMap(input);
@@ -144,9 +145,9 @@ public class Learner {
 	
 	public void printBoard(){
 		System.out.println("\n+----------------------------------------+");
-	      for(int i=0; i < 40; i++ ) {
+	      for(int i=0; i < BOARD_SIZE; i++ ) {
 	         System.out.print("|");
-	         for(int j=0; j < 40; j++ ) {
+	         for(int j=0; j < BOARD_SIZE; j++ ) {
 	        	 if (board[i][j]== nullpointer){
 	        		 System.out.print(".");
 	        	 } else {

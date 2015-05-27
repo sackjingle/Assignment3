@@ -23,6 +23,7 @@ public class Agent {
 
    final static int FINDGOLD = 0;
    final static int RETURNHOME = 1;
+   final static int ASTARMODE = 2;
    
    
    private char[][] view;
@@ -40,24 +41,17 @@ public class Agent {
    private static boolean firstTurn = true;
    private static ArrayList<Move> moves;
    private static int searchMode = 0;
+   
+   //NEEDS TO ACCESS out, in IN PLACES OTHER THAN main()
+   private static OutputStream out = null;
+   private static InputStream in  = null;
 
-   public char get_action( char view[][] ) {
-	   
+   public char get_action( char view[][] ) {  	  
+	   startUpdate(view);
+  	  getCurrentView();
+  	  //Make Move now
 	   if (searchMode == FINDGOLD) {
-		   if(moves.size()!=0){
-	   			if (moves.get(moves.size()-1).getMove() == 'f') {
-	   				updateLearner(view, lastDirection);
-	   			}
-		   }
-		   
-		  curX = learner.getX();
-	   	  curY = learner.getY();
-	   	  System.out.println("[X,Y]=["+curX+","+curY+"]");
-	   	  System.out.println("In front of player is: " + view[1][2]);
 	   	  
-	   	  //Position p = new Position(20, 18);		   
-		  //nextMove = goToAdjacent(view, p);
-		   
 	   	  if (view[1][2] == ' ') {
 	   		  nextMove = 'f';
 	   	   	  System.out.println("Move is: "+nextMove);
@@ -65,30 +59,45 @@ public class Agent {
 	   		  nextMove = 'r';
 	   	   	  System.out.println("Move is: "+nextMove);
 	   		  //updateLearner(view, lastDirection);
-<<<<<<< HEAD
 	     	  //learner.printBoard();
-=======
->>>>>>> origin/master
 	   		  lastDirection = (lastDirection + 3) % 4;
 	   	  } else {
 	   	  	  nextMove = 'l';
 	   	   	  System.out.println("Move is: "+nextMove);
 	   		  //updateLearner(view, lastDirection);
-<<<<<<< HEAD
 	   	  	  //learner.printBoard();
-=======
->>>>>>> origin/master
 	   	  	  lastDirection = (lastDirection + 1) % 4;
 	   	  } 
-
-	   	Move move = new Move(curX, curY, nextMove);
-	   	moves.add(move);
-	   	return nextMove;
 	   	  
+	   	  Move move = new Move(curX, curY, nextMove);
+	   	  moves.add(move);
+	   	  return nextMove;
+	   	  
+	   } else if (searchMode == ASTARMODE){
+		   Position start = new Position(curX, curY);
+		   AStarAlgorithm aStar = new AStarAlgorithm();
+		   aStar.search(learner, start, 40*40, this);
+		   searchMode = RETURNHOME;
 	   } else {
+	   
 		   // FIND DA PINGUZ 
 	   }
 	return nullChar;
+   }
+   
+   //need to update stuff before making a move
+   static void startUpdate(char[][] view){
+	 //update learner if last move was an 'f'
+	   if(moves.size()!=0){
+  			if (moves.get(moves.size()-1).getMove() == 'f') {
+  				updateLearner(view, lastDirection);
+  			}
+	   }
+	  // update curX, Y
+	  curX = learner.getX();
+  	  curY = learner.getY();
+  	  System.out.println("[X,Y]=["+curX+","+curY+"]");
+  	  System.out.println("In front of player is: " + view[1][2]);
    }
 
    static void updateLearner(char view[][], int lastDirection) {
@@ -228,8 +237,8 @@ public class Agent {
 //Main
    public static void main( String[] args )
    {
-      InputStream in  = null;
-      OutputStream out= null;
+      //InputStream in  = null;
+      //OutputStream out= null;
       Socket socket   = null;
       Agent  agent    = new Agent();
       char   view[][] = new char[5][5];
@@ -274,8 +283,9 @@ public class Agent {
             if (firstTurn == true){
             	firstTurn = false;
             	learner = new Learner(view);
-            	lastDirection = NORTH;     	
+            	lastDirection = NORTH;              	
             }
+            
             System.out.println("\n"+"////////////////////////////////////////////////////////////////////////");
             System.out.println(">>>NEW MOVE<<<");
             agent.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION
@@ -295,4 +305,56 @@ public class Agent {
          catch( IOException e ) {}
       }
    }
+
+	public void makeMove(Position p) {	
+		System.out.println("Make Move");
+		int i,j, ch = 0;
+		
+		while ((curX != p.getX())&&(curY != p.getY())){
+			    System.out.println("\n"+"////////////////////////////////////////////////////////////////////////");
+			    System.out.println(">>>NEW MOVE<<<");
+			    char[][] v = getCurrentView();
+				char action = this.goToAdjacent(view, p);
+				startUpdate(view);
+				System.out.println("AStar Action is:"+action);
+			    try {
+					out.write( action );
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			    
+		//	 }
+		}
+	}
+	public char[][] getCurrentView(){
+		
+		int i,j, ch = 0;
+	      char   v[][] = new char[5][5];
+			while( true ) {
+			    for( i=0; i < 5; i++ ) {
+			       for( j=0; j < 5; j++ ) {
+			          if( !(( i == 2 )&&( j == 2 ))) {
+			             try {
+							ch = in.read();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+			             if( ch == -1 ) {
+			                System.exit(-1);
+			             }
+			             v[i][j] = (char) ch;
+			          } else if (( i == 2 )&&( j == 2 )){
+			              v[i][j] = 'P';
+			          }
+			       }
+			    }
+
+			    this.print_view( v ); // COMMENT THIS OUT BEFORE SUBMISSION	
+				return v;
+			}		
+	}
 }
+
+
