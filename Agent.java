@@ -129,47 +129,52 @@ public class Agent {
 	   // Move forward, otherwise turn left. Keep turning left until facing goal coordinate
 	   // If empty space, move forward otherwise return nullChar, meaning theres a wall
 	   
-	   if (p.getX() - curX == 1) {
-		   if (lastDirection == EAST) {
+	   if (p.getX() - curX == -1) {
+		   if (lastDirection == WEST) {
 			   if (view[1][2] == ' ') {
 				   return 'f';
 			   } else {
 				   return nullChar;
 			   }
 		   } else {
-				   return 'l';
+		   	   lastDirection = (lastDirection + 1) % 4;
+			   return 'l';
 		   }
-	   } else if (p.getX() - curX == -1) {
-			   if (lastDirection == WEST) {
+	   } else if (p.getX() - curX == 1) {
+			   if (lastDirection == EAST) {
 			 		if (view[1][2] == ' ') {
 			 			return 'f';
 			 		} else {
 			 			return nullChar;
 			 		}
 			   } else {
+			   	   lastDirection = (lastDirection + 1) % 4;
 				   return 'l';
 			   }
-	   } else if (p.getY() - curY == 1) {
-		   if (lastDirection == SOUTH) {
+	   } else if (p.getY() - curY == -1) {
+		   if (lastDirection == NORTH) {
 			   if (view[1][2] == ' ') {
 				  return 'f'; 
 			   } else {
 				   return nullChar;
 			   }
 		   } else {
+		   	   lastDirection = (lastDirection + 1) % 4;
 			   return 'l';
 		   }
-	   } else if (p.getY() - curY == -1) {
-		   if (lastDirection == NORTH) {
+	   } else if (p.getY() - curY == 1) {
+		   if (lastDirection == SOUTH) {
 			   if (view[1][2] == ' ') {
 				   return 'f';
 			   } else {
 				   return nullChar;
 			   }
 		   } else {
+		   	   lastDirection = (lastDirection + 1) % 4;
 			   return 'l';
 		   }
 	   } else {
+	   	   lastDirection = (lastDirection + 1) % 4;
 		   return 'l';
 	   }
    }
@@ -330,6 +335,7 @@ public class Agent {
 	            this.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION	
 		//	 }
 		}
+		//
 	}
 	public char[][] getCurrentView(){
 		System.out.println("get current view");
