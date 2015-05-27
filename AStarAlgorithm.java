@@ -36,14 +36,21 @@ public class AStarAlgorithm{
         AStarNode goal = null;	
         //no. of nodes expanded so far
         int nodesExpanded = 0;
-        
+        AStarNode parentNode = start;
         //if queue is empty and no solution found; failure
         while(!queue.isEmpty()){
         	
+        	//make the sad walk home
+        	for(int j = parentNode.getPath().size() - 1; j >= 0; j--){
+                Position temp = parentNode.getPath().get(j);
+                System.out.println("["+temp.getX()+", "+temp.getY()+"]");
+            	agent.makeMove(temp);
+            }
         	//pop next best node off priority queue
-            AStarNode parentNode = queue.poll();
+            parentNode = queue.poll();
+            
             // walk through path to popped off position           
-            for(int j = parentNode.getPath().size() - 1; j >= 0; j--){
+            for(int j = 0; j < parentNode.getPath().size(); j++){
                 Position temp = parentNode.getPath().get(j);
             	agent.makeMove(temp);
             }

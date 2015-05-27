@@ -40,7 +40,7 @@ public class Agent {
    private static Learner learner;
    private static boolean firstTurn = true;
    private static ArrayList<Move> moves;
-   private static int searchMode = 2;
+   private static int searchMode = 0;
    
    //NEEDS TO ACCESS out, in IN PLACES OTHER THAN main()
    private static OutputStream out = null;
@@ -170,6 +170,7 @@ public class Agent {
 			   return 'l';
 		   }
 	   } else {
+		   System.out.println("Turn Left");
 		   return 'l';
 	   }
    }
