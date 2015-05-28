@@ -11,7 +11,7 @@ public class Learner {
 	private int curX;
 	private int curY;
 	private boolean foundGold;
-	public Position goldLocation;
+	public Position goldLocation = new Position (0,0);
 
 	public Learner(char[][] input){
 		board = new char[BOARD_SIZE][BOARD_SIZE];
@@ -36,6 +36,9 @@ public class Learner {
 				board[y+i][x+j] = input[i][j];
 			}
 		}
+		foundGold = false;
+		
+		//goldLocation.set(1, 1);
 	}
 	
 	public void update(char[][] input, int direction){
@@ -52,7 +55,13 @@ public class Learner {
 			System.out.println("SOUTH");
 			updateSouth(input);
 		}
+		System.out.println("Input is [");
+		for (int i = 0; i < 5; i++) {
+			System.out.println(input[0][i] + ", ");
+		}
+		System.out.println("]");
 		foundGold = checkIfGold(input, direction);
+		
 	}
 //	private void updateBoard(char[][] input){
 //
@@ -72,16 +81,27 @@ public class Learner {
 //	}
 	
 	private boolean checkIfGold(char[][] input, int direction) {
+		System.out.println("Input is [");
+		for (int i = 0; i < 5; i++) {
+			System.out.println(input[0][i] + ", ");
+		}
+		System.out.println("]");
+
+		
 		for(int i = 0; i<5; i++){
 			if(input[0][i]=='g'){
 				System.out.println("Arrrr I see Gold!!!");
 				if (direction == EAST) {
+					System.out.println("Setting gold EAST");
 					goldLocation.set(curX + 2, curY - 2 + i);
 				} else if (direction == NORTH) {
+					System.out.println("Setting gold NORTH, cur [x, y, i] is : [" + curX + ", " + curY + ", " + i + "].");
 					goldLocation.set(curX - 2 + i, curY - 2);
 				} else if (direction == WEST) {
+					System.out.println("Setting gold WEST");
 					goldLocation.set(curX - 2, curY + 2 - i);
 				} else {
+					System.out.println("Setting gold SOUTH");
 					goldLocation.set(curX + 2 - i, curY + 2);
 				}
 					System.out.println("Arrrr I see Gold!!!");
@@ -113,7 +133,6 @@ public class Learner {
 		
 		for (int i = 0; i < 5; i++) {
 			board[y0+4-i][x0] = input[0][i];
-
 		}		
 		
 		board[curY][curX] = ' ';
@@ -181,4 +200,5 @@ public class Learner {
 	public char[][] getBoard() {
 		return board;
 	}
+	
 }

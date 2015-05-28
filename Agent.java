@@ -82,22 +82,29 @@ public class Agent {
 		   AStarAlgorithm aStar = new AStarAlgorithm();
 		   pathHome1 = aStar.search(learner, start, 40*40, this);
 		   searchMode = GETGOLD;
+	   } else if (searchMode == GETGOLD) { 
 		   System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-		   start = new Position(curX, curY);
+		   Position start = new Position(curX, curY);
 		   //Position gold = learner.getGoldPos();
-		   Position gold = new Position(17,7);
 		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
-		   pathHome1.addAll(aStarFindGold.searchForGold(learner, start, gold, 40*40, this));
+		   pathHome1.addAll(aStarFindGold.searchForGold(learner, start, learner.goldLocation, 40*40, this));
 		   //pathHome1.remove(pathHome1.size());
 		   searchMode = RETURNHOME;
-		   nextMove = '.';
-		   return nextMove;
-	   } else if (searchMode == RETURNHOME){
-		   for(int j = pathHome1.size() - 2; j >= 0; j--){
-               Position temp = pathHome1.get(j);
-               System.out.println("["+temp.getX()+", "+temp.getY()+"]");
-           		this.makeMove(temp);           
-           }
+   	   } else if (searchMode == RETURNHOME){
+   		   // Goal position for a star here is just [20,20]
+   		   // Start is [curX, curY]
+   		   
+//		   for(int j = pathHome1.size() - 2; j >= 0; j--){
+//               Position temp = pathHome1.get(j);
+//               System.out.println("["+temp.getX()+", "+temp.getY()+"]");
+//           		this.makeMove(temp);           
+           //}
+		   Position start = new Position(curX, curY);
+		   Position home = new Position(20, 20);
+   		AStarAlgorithm aStarFindGold = new AStarAlgorithm();
+		   pathHome1.addAll(aStarFindGold.searchForGold(learner, start, home, 40*40, this));
+		   //pathHome1.remove(pathHome1.size());
+		   searchMode = RETURNHOME;
 	   } else {
 	   
 		   // FIND DA PINGUZ 
@@ -130,6 +137,10 @@ public class Agent {
      	  } else {
      		  learner.update(view, EAST);
      	  }
+		  
+ 	   	  if (learner.getFoundGold() == true) {
+ 	   		  searchMode = GETGOLD;
+ 	   	  }
    }
    
    private char getCOMove(int x, int y){
@@ -193,10 +204,6 @@ public class Agent {
 			   return 'l';
 		   }
 	   } else {
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 	   	   lastDirection = (lastDirection + 1) % 4;
 		   return 'l';
 	   }
