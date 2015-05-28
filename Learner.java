@@ -11,6 +11,7 @@ public class Learner {
 	private int curX;
 	private int curY;
 	private boolean foundGold;
+	public Position goldLocation;
 
 	public Learner(char[][] input){
 		board = new char[BOARD_SIZE][BOARD_SIZE];
@@ -51,7 +52,7 @@ public class Learner {
 			System.out.println("SOUTH");
 			updateSouth(input);
 		}
-		foundGold = checkIfGold(input);
+		foundGold = checkIfGold(input, direction);
 	}
 //	private void updateBoard(char[][] input){
 //
@@ -70,15 +71,24 @@ public class Learner {
 //		printBoard();
 //	}
 	
-	private boolean checkIfGold(char[][] input) {
+	private boolean checkIfGold(char[][] input, int direction) {
 		for(int i = 0; i<5; i++){
-			//System.out.print(input[0][i]);
 			if(input[0][i]=='g'){
 				System.out.println("Arrrr I see Gold!!!");
-				return true;
+				if (direction == EAST) {
+					goldLocation.set(curX + 2, curY - 2 + i);
+				} else if (direction == NORTH) {
+					goldLocation.set(curX - 2 + i, curY - 2);
+				} else if (direction == WEST) {
+					goldLocation.set(curX - 2, curY + 2 - i);
+				} else {
+					goldLocation.set(curX + 2 - i, curY + 2);
+				}
+					System.out.println("Arrrr I see Gold!!!");
+					System.out.println(" Set the gold location as [X,Y] = [" + goldLocation.getX() + goldLocation.getY() + "]");
+					return true;
 			}
 		}
-		System.out.println();
 		return false;
 	}
 	
@@ -171,5 +181,4 @@ public class Learner {
 	public char[][] getBoard() {
 		return board;
 	}
-	
 }

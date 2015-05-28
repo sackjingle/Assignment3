@@ -174,13 +174,7 @@ public class Agent {
 			   return 'l';
 		   }
 	   } else {
-<<<<<<< HEAD
-		   System.out.println("Turn Left");
 	   	   lastDirection = (lastDirection + 1) % 4;
-=======
-	   	   lastDirection = (lastDirection + 1) % 4;
-
->>>>>>> origin/master
 		   return 'l';
 	   }
    }
