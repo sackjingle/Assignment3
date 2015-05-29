@@ -105,7 +105,7 @@ public class Learner {
 					goldLocation.set(curX + 2 - i, curY + 2);
 				}
 					System.out.println("Arrrr I see Gold!!!");
-					System.out.println(" Set the gold location as [X,Y] = [" + goldLocation.getX() + goldLocation.getY() + "]");
+					System.out.println(" Set the gold location as [X,Y] = [" + goldLocation.getX() + ", " + goldLocation.getY() + "]");
 					return true;
 			}
 		}

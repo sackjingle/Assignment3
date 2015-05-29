@@ -282,22 +282,37 @@ private boolean foundGoal(Learner learner) {
 		Position pD = new Position(node.getX(), node.getY()+1);
 		Position pL = new Position(node.getX()-1, node.getY());
 		Position pR = new Position(node.getX()+1, node.getY());
-		if((board[pU.getY()][pU.getX()]==' ')||(board[pU.getY()][pU.getX()]=='g')){
+		if (canWalkOver(pU, board) == true) {
 			//System.out.println("Added pU["+ pU.getX() + ", " +  pU.getY() + "] to A* priority list");
 			adjacentList.add(pU);
 		}
-		if((board[pD.getY()][pD.getX()]==' ')||(board[pD.getY()][pD.getX()]=='g')){
+		if (canWalkOver(pD, board) == true) {
 			//System.out.println("Added pD["+ pD.getX() + ", " +  pD.getY() + "] to A* priority list");
 			adjacentList.add(pD);
 		}
-		if((board[pR.getY()][pR.getX()]==' ')||(board[pR.getY()][pR.getX()]=='g')){
+		if (canWalkOver(pL, board) == true) {
 			//System.out.println("Added pR["+ pR.getX() + ", " +  pR.getY() + "] to A* priority list");
 			adjacentList.add(pR);
 		}
-		if((board[pL.getY()][pL.getX()]==' ')||(board[pL.getY()][pL.getX()]=='g')){
+		if (canWalkOver(pR, board) == true) {
 			//System.out.println("Added pL["+ pL.getX() + ", " +  pL.getY() + "] to A* priority list");
 			adjacentList.add(pL);
 		}
 		return adjacentList;
+	}
+	
+	private boolean canWalkOver (Position p, char[][] board) {
+		if(board[p.getY()][p.getX()]==' '){
+			return true;
+		} else if (board[p.getY()][p.getX()]=='g'){
+			return true;
+		} else if (board[p.getY()][p.getX()]=='a') {
+			return true;
+		} else if (board[p.getY()][p.getX()]=='d') {
+			return true;
+		} else if (board[p.getY()][p.getX()]=='b') {
+			return true;
+		}
+		return false;
 	}
 }
