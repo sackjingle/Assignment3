@@ -183,25 +183,41 @@ public class Agent {
 	   if (p.getX() - curX == -1) {
 		   if (lastDirection == WEST) {
 			  move = checkIfCanMoveFoward(view);
-		   } else {
+		   } else if (lastDirection == SOUTH) {		   	   
+			   lastDirection = (lastDirection + 3) % 4;
+			   move = 'r';
+	   	   } else {
+	   		   // Turns left by default, need to update lastDirection
 		   	   lastDirection = (lastDirection + 1) % 4;
 		   }
 	   } else if (p.getX() - curX == 1) {
 		   if (lastDirection == EAST) {
 			   move = checkIfCanMoveFoward(view);
+		   } else if (lastDirection == NORTH){
+		   	   lastDirection = (lastDirection + 3) % 4;
+			   move = 'r';
 		   } else {
+	   		   // Turns left by default, need to update lastDirection
 		   	   lastDirection = (lastDirection + 1) % 4;
 		   }
 	   } else if (p.getY() - curY == -1) {
 		   if (lastDirection == NORTH) {
 			   move = checkIfCanMoveFoward(view);
+		   } else if (lastDirection == WEST) {
+		   	   lastDirection = (lastDirection + 3) % 4;
+			   move = 'r';
 		   } else {
+	   		   // Turns left by default, need to update lastDirection
 		   	   lastDirection = (lastDirection + 1) % 4;
 		   }
 	   } else if (p.getY() - curY == 1) {
 		   if (lastDirection == SOUTH) {
 			   move = checkIfCanMoveFoward(view);
-		   } else {
+		   } else if (lastDirection == EAST) {
+		   	   lastDirection = (lastDirection + 3) % 4;
+			   move = 'r';
+	   	   } else {
+	   		   // Turns left by default, need to update lastDirection
 		   	   lastDirection = (lastDirection + 1) % 4;
 		   }
 	   } else {
