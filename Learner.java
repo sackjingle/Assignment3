@@ -5,7 +5,7 @@ public class Learner {
 	final static int WEST   = 2;
 	final static int SOUTH  = 3;
 	final static char nullpointer = '.';
-	final static int BOARD_SIZE = 40;
+	final static int BOARD_SIZE = 80;
 	
 	private char[][] board;
 	private int curX;
@@ -54,31 +54,10 @@ public class Learner {
 		} else if (direction == SOUTH){
 			System.out.println("SOUTH");
 			updateSouth(input);
-		}
-		System.out.println("Input is [");
-		for (int i = 0; i < 5; i++) {
-			System.out.println(input[0][i] + ", ");
-		}
-		System.out.println("]");
+		}	
 		foundGold = checkIfGold(input, direction);
 		
 	}
-//	private void updateBoard(char[][] input){
-//
-//		System.out.println("player is : '"+board[curY][curX]+"'");
-//		System.out.println("behind player is : '"+board[curY+1][curX]+"'");
-//		int x0 = curX - 2;
-//		int y0 = curY - 2;
-//		
-//		for (int i = 0; i < 5; i++) {
-//			for(int j = 0; j< 5; j++){
-//				System.out.println("added "+ input[0][i]);
-//				board[y0+i][x0+j] = input[i][j];
-//			}
-//		}
-//		board[curY][curX] = 'P';
-//		printBoard();
-//	}
 	
 	private boolean checkIfGold(char[][] input, int direction) {
 		System.out.println("Input is [");

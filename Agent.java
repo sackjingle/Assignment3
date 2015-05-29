@@ -20,6 +20,7 @@ public class Agent {
    final static int WEST   = 2;
    final static int SOUTH  = 3;
    final static char nullChar = '.';
+   final static int BOARD_SIZE = 80;
 
    final static int FINDGOLD = 0;
    final static int RETURNHOME = 1;
@@ -84,7 +85,7 @@ public class Agent {
 		   // then set searchMode to GETGOLD
 		   Position start = new Position(curX, curY);
 		   AStarAlgorithm aStar = new AStarAlgorithm();
-		   pathHome1 = aStar.search(learner, start, 40*40, this);
+		   pathHome1 = aStar.search(learner, start, BOARD_SIZE*BOARD_SIZE, this);
 		   searchMode = GETGOLD;
 	   }
 	   if (searchMode == GETGOLD) { 
@@ -94,7 +95,7 @@ public class Agent {
 		   Position start = new Position(curX, curY);
 		   //Position gold = learner.getGoldPos();
 		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
-		   pathHome1.addAll(aStarFindGold.searchForGold(learner, start, learner.goldLocation, 40*40, this));
+		   pathHome1.addAll(aStarFindGold.searchForGold(learner, start, learner.goldLocation, BOARD_SIZE*BOARD_SIZE, this));
 		   //pathHome1.remove(pathHome1.size());
 		   searchMode = RETURNHOME;
 	   }
@@ -102,7 +103,7 @@ public class Agent {
    		   // RETURNHOME uses an a star search to get from current location (gold location)
    		   // to starting position [20,20]
    		   // **** SHOULD USE A STAR ON BUILT UP MAP IN LEARNER< THAT WAY DOESNT HAVE TO WASTE MOVES UNTIL KNOWS SHORTEST PATH TO HOM
-   		   // Goal position for a star here is just [20,20]
+   		   // Goal position for a star here is just [BOARD_SIZE,BOARD_SIZE]
    		   // Start is [curX, curY]
    		   
 //		   for(int j = pathHome1.size() - 2; j >= 0; j--){
@@ -111,10 +112,10 @@ public class Agent {
 //           		this.makeMove(temp);           
            //}
 		   Position start = new Position(curX, curY);
-		   Position home = new Position(20, 20);
+		   Position home = new Position(BOARD_SIZE/2, BOARD_SIZE/2);
 		   ArrayList<Position> path = new ArrayList<Position>();
    		AStarAlgorithm aStarFindGold = new AStarAlgorithm();
-		   path = aStarFindGold.searchForPosition(learner, start, home, 40*40, this);
+		   path = aStarFindGold.searchForPosition(learner, start, home, BOARD_SIZE*BOARD_SIZE, this);
 		   path.add(home);
 		   printPositions(path);
 		   moveAlongPath(path);
