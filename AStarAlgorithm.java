@@ -312,7 +312,8 @@ private boolean foundGoal(Learner learner) {
 			return true;
 		} else if (board[p.getY()][p.getX()]=='b') {
 			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
 }

@@ -170,6 +170,7 @@ public class Agent {
    
    private char goToAdjacent(char view[][], Position p) {
 	   
+	   char move = 'l';
 	   // Test to see which direction player is headed by comparing current and goal coordinates
 	   // Test to see if facing in the direction of goal coordinates, if so
 	   // Move forward, otherwise turn left. Keep turning left until facing goal coordinate
@@ -177,95 +178,50 @@ public class Agent {
 	   
 	   if (p.getX() - curX == -1) {
 		   if (lastDirection == WEST) {
-			   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
-				   return 'f';
-			   } else if (view[1][2] == 'a') {
-				   have_axe = true;
-				   return 'f';  
-		   	   } else if (view[1][2] == 'd') {
-		   		   num_dynamite++;
-		   		   return 'f';
-		   	   } else if (view[1][2] == 'b') {
-		   		   in_boat = true;
-		   		   return 'f';
-		   	   } else if ((view[1][2] == 'T') && (have_axe == true)) { 
-		   		   return 'c';
-		       } else {
-				   return nullChar;
-			   }
+			  move = checkIfCanMoveFoward(view);
 		   } else {
 		   	   lastDirection = (lastDirection + 1) % 4;
-			   return 'l';
 		   }
 	   } else if (p.getX() - curX == 1) {
-			   if (lastDirection == EAST) {
-			 		if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
-			 			return 'f';
-			 		} else if (view[1][2] == 'a') {
-						have_axe = true;
-						return 'f';  
-				   	} else if (view[1][2] == 'd') {
-				   		num_dynamite++;
-				    	return 'f';
-				   	} else if (view[1][2] == 'b') {
-				   		in_boat = true;
-				        return 'f';
-				   	} else if ((view[1][2] == 'T') && (have_axe == true)) { 
-				   		return 'c';
-				    } else {
-			 			return nullChar;
-			 		}
-			   } else {
-			   	   lastDirection = (lastDirection + 1) % 4;
-				   return 'l';
-			   }
-	   } else if (p.getY() - curY == -1) {
-		   if (lastDirection == NORTH) {
-			   if ((view[1][2] == ' ') || (view[1][2] == 'g')) {
-				  return 'f'; 
-			   } else if (view[1][2] == 'a') {
-				   have_axe = true;
-				   return 'f';  
-		   	   } else if (view[1][2] == 'd') {
-		   		   num_dynamite++;
-		   		   return 'f';
-		   	   } else if (view[1][2] == 'b') {
-		   		   in_boat = true;
-		   		   return 'f';
-		   	   } else if ((view[1][2] == 'T') && (have_axe == true)) { 
-		   		   return 'c';
-		       } else {
-				   return nullChar;
-			   }
+		   if (lastDirection == EAST) {
+			   move = checkIfCanMoveFoward(view);
 		   } else {
 		   	   lastDirection = (lastDirection + 1) % 4;
-			   return 'l';
+		   }
+	   } else if (p.getY() - curY == -1) {
+		   if (lastDirection == NORTH) {
+			   move = checkIfCanMoveFoward(view);
+		   } else {
+		   	   lastDirection = (lastDirection + 1) % 4;
 		   }
 	   } else if (p.getY() - curY == 1) {
 		   if (lastDirection == SOUTH) {
-			   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
-				   return 'f';
-			   } else if (view[1][2] == 'a') {
-				   have_axe = true;
-				   return 'f';  
-		   	   } else if (view[1][2] == 'd') {
-		   		   num_dynamite++;
-		   		   return 'f';
-		   	   } else if (view[1][2] == 'b') {
-		   		   in_boat = true;
-		   		   return 'f';
-		   	   } else if ((view[1][2] == 'T') && (have_axe == true)) { 
-		   		   return 'c';
-		       } else {
-				   return nullChar;
-			   }
+			   move = checkIfCanMoveFoward(view);
 		   } else {
 		   	   lastDirection = (lastDirection + 1) % 4;
-			   return 'l';
 		   }
 	   } else {
 	   	   lastDirection = (lastDirection + 1) % 4;
-		   return 'l';
+	   }
+	   return move;
+   }
+   
+   private char checkIfCanMoveFoward(char[][] view) {
+	   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
+		   return 'f';
+	   } else if (view[1][2] == 'a') {
+		   have_axe = true;
+		   return 'f';  
+   	   } else if (view[1][2] == 'd') {
+   		   num_dynamite++;
+   		   return 'f';
+   	   } else if (view[1][2] == 'b') {
+   		   in_boat = true;
+   		   return 'f';
+   	   } else if ((view[1][2] == 'T') && (have_axe == true)) { 
+   		   return 'c';
+       } else {
+		   return nullChar;
 	   }
    }
    
