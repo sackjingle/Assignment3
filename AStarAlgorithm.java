@@ -41,27 +41,40 @@ public class AStarAlgorithm{
         //if queue is empty and no solution found; failure
         while(!queue.isEmpty()){
         	visited.add(parentNode.getNode());
+        	
         	//make the sad walk home
-        	System.out.println("Sad walk home from {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}: ");
-        	for(int j = parentNode.getPath().size() - 1; j >= 0; j--){
-                Position temp = parentNode.getPath().get(j);
-                System.out.println("["+temp.getX()+", "+temp.getY()+"]");
-            	agent.makeMove(temp);           
-            }
-        	//pop next best node off priority queue
-            parentNode = queue.poll();
-            System.out.println("\npop off {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}");
-            
-            // walk through path to popped off position           
-            for(int j = 0; j < parentNode.getPath().size(); j++){
-                Position temp = parentNode.getPath().get(j);
-                System.out.println("walk to ["+temp.getX()+", "+temp.getY()+"]");
-            	agent.makeMove(temp);            
-            }
-            System.out.println("walk to ["+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"]");
-            if (agent.makeMove(parentNode.getNode()) == false){
-            	continue;
-            }
+        	
+//        	System.out.println("Sad walk home from {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}: ");
+//        	for(int j = parentNode.getPath().size() - 1; j >= 0; j--){
+//                Position temp = parentNode.getPath().get(j);
+//                System.out.println("["+temp.getX()+", "+temp.getY()+"]");
+//            	agent.makeMove(temp);           
+//            }
+//        	//pop next best node off priority queue
+//            parentNode = queue.poll();
+//            System.out.println("\npop off {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}");
+//            
+//            // walk through path to popped off position           
+//            for(int j = 0; j < parentNode.getPath().size(); j++){
+//                Position temp = parentNode.getPath().get(j);
+//                System.out.println("walk to ["+temp.getX()+", "+temp.getY()+"]");
+//            	agent.makeMove(temp);            
+//            }
+//            System.out.println("walk to ["+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"]");
+//            if (agent.makeMove(parentNode.getNode()) == false){
+//            	continue;
+//            }        	
+        	Position current = parentNode.getNode();
+        	parentNode = queue.poll();
+        	System.out.print("Walk from {"+current.getX()+", "+current.getY()+"} to ");
+        	System.out.println("{"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}");
+        	
+        	AStarAlgorithm subSearch = new AStarAlgorithm();
+        	ArrayList<Position> path = new ArrayList<Position>();
+            path = subSearch.searchForPosition(learner, current, parentNode.getNode(), size, agent);
+            path.add(parentNode.getNode());
+            agent.printPositions(path);
+            agent.moveAlongPath(path);
 		    nodesExpanded++;		 
             
 		    //check current.path if it has visited all required nodes
@@ -124,28 +137,18 @@ public class AStarAlgorithm{
         while(!queue.isEmpty()){
         	visited.add(parentNode.getNode());
         	
-        	//make the sad walk home
-        	System.out.println("Sad walk home from {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}: ");
-        	for(int j = parentNode.getPath().size() - 1; j >= 0; j--){
-                Position temp = parentNode.getPath().get(j);
-                System.out.println("["+temp.getX()+", "+temp.getY()+"]");
-            	agent.makeMove(temp);           
-            }
-        	//pop next best node off priority queue
-            parentNode = queue.poll();
-            System.out.println("\npop off {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}");
-            
-            // walk through path to popped off position           
-            for(int j = 0; j < parentNode.getPath().size(); j++){
-                Position temp = parentNode.getPath().get(j);
-                System.out.println("walk to ["+temp.getX()+", "+temp.getY()+"]");
-            	agent.makeMove(temp);            
-            }
-            System.out.println("walk to ["+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"]");
-            if (agent.makeMove(parentNode.getNode()) == false){
-            	continue;
-            }
-            
+        	Position current = parentNode.getNode();
+        	parentNode = queue.poll();
+        	System.out.print("Walk from {"+current.getX()+", "+current.getY()+"} to ");
+        	System.out.println("{"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}");
+        	
+        	AStarAlgorithm subSearch = new AStarAlgorithm();
+        	ArrayList<Position> path = new ArrayList<Position>();
+            path = subSearch.searchForPosition(learner, current, parentNode.getNode(), size, agent);
+            path.add(parentNode.getNode());
+            agent.printPositions(path);
+            agent.moveAlongPath(path);
+		    nodesExpanded++;		 
 		    nodesExpanded++;		 
             
 		    //check current.path if it has visited all required nodes
@@ -210,7 +213,7 @@ public class AStarAlgorithm{
 			    //check current.path if it has visited all required nodes
 	     	    if((parentNode.getNode().getX() == gold.getX())&&(parentNode.getNode().getY() == gold.getY())){
 	                //found target nodes
-	                System.out.println("	Found the GOLLLLLDD ARRR!");
+	                System.out.println("		Sub - Found the position");
 	                
 	                goal = parentNode;
 	                break;
@@ -236,14 +239,14 @@ public class AStarAlgorithm{
 	                    //System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
 	                    // add to queue
 	                    if (!visitedContains(adjacent.getX(),adjacent.getY(), visited)){
-	                    	System.out.println("Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
+	                    	System.out.println("		Sub - Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
 	                    	visited.add(adjacent);
 	                    	queue.add(next);
 	                    }
 	                }
 	            }
 	        }        
-	        System.out.println(nodesExpanded +" nodes expanded");
+	        System.out.println("		Sub - "+nodesExpanded +" nodes expanded");
 	        return goal.getPath();  
 	    }
    

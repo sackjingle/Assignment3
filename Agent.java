@@ -494,7 +494,7 @@ public class Agent {
 	      return v;
 	}
 	
-	private void printPositions(ArrayList<Position> list){
+	public void printPositions(ArrayList<Position> list){
 		for (Position p: list){
 			System.out.print("["+p.getX()+", "+p.getY()+"]->");
 		}
