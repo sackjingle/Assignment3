@@ -204,29 +204,6 @@ public class AStarAlgorithm{
 	        
 	        //if queue is empty and no solution found; failure
 	        while(!queue.isEmpty()){
-	        	//visited.add(parentNode.getNode());
-	        	
-//	        	//make the sad walk home
-//	        	System.out.println("Sad walk home from {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}: ");
-//	        	for(int j = parentNode.getPath().size() - 1; j >= 0; j--){
-//	                Position temp = parentNode.getPath().get(j);
-//	                System.out.println("["+temp.getX()+", "+temp.getY()+"]");
-//	            	agent.makeMove(temp);           
-//	            }
-//	        	//pop next best node off priority queue
-//	            parentNode = queue.poll();
-//	            System.out.println("\npop off {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}");
-//	            
-//	            // walk through path to popped off position           
-//	            for(int j = 0; j < parentNode.getPath().size(); j++){
-//	                Position temp = parentNode.getPath().get(j);
-//	                System.out.println("walk to ["+temp.getX()+", "+temp.getY()+"]");
-//	            	agent.makeMove(temp);            
-//	            }
-//	            System.out.println("walk to ["+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"]");
-//	            if (agent.makeMove(parentNode.getNode()) == false){
-//	            	continue;
-//	            }
 	        	parentNode = queue.poll();
 			    nodesExpanded++;		 
 	            

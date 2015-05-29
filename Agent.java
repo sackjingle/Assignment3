@@ -86,17 +86,19 @@ public class Agent {
 		   AStarAlgorithm aStar = new AStarAlgorithm();
 		   pathHome1 = aStar.search(learner, start, 40*40, this);
 		   searchMode = GETGOLD;
-	   } else if (searchMode == GETGOLD) { 
+	   }
+	   if (searchMode == GETGOLD) { 
 		   // GETGOLD uses an a star search to travel from current position to golds position
 		   // Then set searchMode to RETURNHOME
 		   System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		   Position start = new Position(curX, curY);
 		   //Position gold = learner.getGoldPos();
 		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
-		   pathHome1.addAll(aStarFindGold.searchForPosition(learner, start, learner.goldLocation, 40*40, this));
+		   pathHome1.addAll(aStarFindGold.searchForGold(learner, start, learner.goldLocation, 40*40, this));
 		   //pathHome1.remove(pathHome1.size());
 		   searchMode = RETURNHOME;
-   	   } else if (searchMode == RETURNHOME){
+	   }
+   	   if (searchMode == RETURNHOME){
    		   // RETURNHOME uses an a star search to get from current location (gold location)
    		   // to starting position [20,20]
    		   // **** SHOULD USE A STAR ON BUILT UP MAP IN LEARNER< THAT WAY DOESNT HAVE TO WASTE MOVES UNTIL KNOWS SHORTEST PATH TO HOM
@@ -110,18 +112,14 @@ public class Agent {
            //}
 		   Position start = new Position(curX, curY);
 		   Position home = new Position(20, 20);
-<<<<<<< HEAD
 		   ArrayList<Position> path = new ArrayList<Position>();
    		AStarAlgorithm aStarFindGold = new AStarAlgorithm();
 		   path = aStarFindGold.searchForPosition(learner, start, home, 40*40, this);
+		   path.add(home);
 		   printPositions(path);
-=======
-   		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
-		   pathHome1.addAll(aStarFindGold.searchForGold(learner, start, home, 40*40, this));
-   		   moveAlongPath(pathHome1);
->>>>>>> origin/master
+		   moveAlongPath(path);
 		   //pathHome1.remove(pathHome1.size());
-		   searchMode = DONE;
+		   searchMode = DONE;		   
 	   } else {
 		   
 		   // FIND DA PINGUZ 
