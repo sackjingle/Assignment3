@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Learner {
 	final static int EAST   = 0;
@@ -8,18 +10,20 @@ public class Learner {
 	final static int BOARD_SIZE = 80;
 	
 	private char[][] board;
+	private Agent agent;
 	private int curX;
 	private int curY;
 	private boolean foundGold;
 	public Position goldLocation = new Position (0,0);
 
-	public Learner(char[][] input){
+	public Learner(char[][] input, Agent agent){
 		board = new char[BOARD_SIZE][BOARD_SIZE];
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++){
 				board[i][j] = nullpointer;
 			}
 		}
+		this.agent = agent;
 		curX = BOARD_SIZE/2;
 		curY = BOARD_SIZE/2;
 		foundGold = false;
@@ -60,13 +64,6 @@ public class Learner {
 	}
 	
 	private boolean checkIfGold(char[][] input, int direction) {
-		System.out.println("Input is [");
-		for (int i = 0; i < 5; i++) {
-			System.out.println(input[0][i] + ", ");
-		}
-		System.out.println("]");
-
-		
 		for(int i = 0; i<5; i++){
 			if(input[0][i]=='g'){
 				System.out.println("Arrrr I see Gold!!!");
@@ -99,8 +96,12 @@ public class Learner {
 		for (int i = 0; i < 5; i++) {
 			board[y0+i][x0+6] = input[0][i];
 		}
-
-		board[curY][curX] = ' ';
+		
+		if (agent.hasDeparted()==true){
+			board[curY][curX] = 'B';
+		} else {
+			board[curY][curX] = ' ';
+		}
 		curX++;
 		board[curY][curX] = 'P';
 		printBoard();
@@ -114,8 +115,11 @@ public class Learner {
 			board[y0+4-i][x0] = input[0][i];
 		}		
 		
-		board[curY][curX] = ' ';
-		curX--;
+		if (agent.hasDeparted()==true){
+			board[curY][curX] = 'B';
+		} else {
+			board[curY][curX] = ' ';
+		}		curX--;
 		board[curY][curX] = 'P';
 		
 		printBoard();
@@ -129,8 +133,11 @@ public class Learner {
 			board[y0][x0+i] = input[0][i];
 		}
 
-		board[curY][curX] = ' ';
-		curY--;
+		if (agent.hasDeparted()==true){
+			board[curY][curX] = 'B';
+		} else {
+			board[curY][curX] = ' ';
+		}		curY--;
 		board[curY][curX] = 'P';
 		
 		System.out.println("Just moved one north, printing updated board");
@@ -145,14 +152,17 @@ public class Learner {
 			board[y0+6][x0+4-i] = input[0][i];
 		}
 
-		board[curY][curX] = ' ';
-		curY++;
+		if (agent.hasDeparted()==true){
+			board[curY][curX] = 'B';
+		} else {
+			board[curY][curX] = ' ';
+		}		curY++;
 		board[curY][curX] = 'P';
 		printBoard();
 	}
 	
 	public void printBoard(){
-		System.out.println("\n+----------------------------------------+");
+		System.out.println("\n+--------------------------------------------------------------------------------+");
 	      for(int i=0; i < BOARD_SIZE; i++ ) {
 	         System.out.print("|");
 	         for(int j=0; j < BOARD_SIZE; j++ ) {
@@ -164,7 +174,7 @@ public class Learner {
 	         }
 	         System.out.println("|");
 	      }
-	      System.out.println("+----------------------------------------+");
+	      System.out.println("+--------------------------------------------------------------------------------+");
 	}
 	
 	public int getX(){
@@ -178,6 +188,22 @@ public class Learner {
 	}
 	public char[][] getBoard() {
 		return board;
+	}
+	public ArrayList<Position> getWallsClosestToGold(){
+		// fucked if this will work
+		ArrayList<Position> wallList = new ArrayList<Position>();
+		int x = goldLocation.getX();
+		int y = goldLocation.getY();
+		for(int i = 0; i < 3; i++){
+			for(int j = 0; j < 3; j++){
+				x = x+i;
+				y = y+j;
+				Position p = new Position(x, y);
+				wallList.add(p);
+				
+			}
+		}
+		return wallList;
 	}
 	
 }

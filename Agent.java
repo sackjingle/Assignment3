@@ -27,6 +27,7 @@ public class Agent {
    final static int ASTARMODE = 2;
    final static int GETGOLD = 3;
    final static int DONE = 4;
+   final static int STUCK = 5;
    
    
    private static char[][] view;
@@ -35,6 +36,7 @@ public class Agent {
    private boolean have_key  = false;
    private boolean have_gold = false;
    private boolean in_boat   = false;
+   private boolean just_departed_vessel = false;
    private static int num_dynamite = 0;
    private static int curX;
    private static int curY;
@@ -86,6 +88,11 @@ public class Agent {
 		   Position start = new Position(curX, curY);
 		   AStarAlgorithm aStar = new AStarAlgorithm();
 		   pathHome1 = aStar.search(learner, start, BOARD_SIZE*BOARD_SIZE, this);
+		   if (pathHome1 == null){
+			   searchMode = STUCK;			 
+		   } else {
+			   searchMode = RETURNHOME;
+		   }
 		   searchMode = GETGOLD;
 	   }
 	   if (searchMode == GETGOLD) { 
@@ -95,34 +102,41 @@ public class Agent {
 		   Position start = new Position(curX, curY);
 		   //Position gold = learner.getGoldPos();
 		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
-		   pathHome1.addAll(aStarFindGold.searchForGold(learner, start, learner.goldLocation, BOARD_SIZE*BOARD_SIZE, this));
-		   //pathHome1.remove(pathHome1.size());
-		   searchMode = RETURNHOME;
+		   pathHome1 = aStarFindGold.searchForGold(learner, start, learner.goldLocation, BOARD_SIZE*BOARD_SIZE, this);
+		   if (pathHome1 == null){
+			   searchMode = STUCK;			 
+		   } else {
+			   searchMode = RETURNHOME;
+		   }
 	   }
-   	   if (searchMode == RETURNHOME){
-   		   // RETURNHOME uses an a star search to get from current location (gold location)
-   		   // to starting position [20,20]
-   		   // **** SHOULD USE A STAR ON BUILT UP MAP IN LEARNER< THAT WAY DOESNT HAVE TO WASTE MOVES UNTIL KNOWS SHORTEST PATH TO HOM
-   		   // Goal position for a star here is just [BOARD_SIZE,BOARD_SIZE]
-   		   // Start is [curX, curY]
-   		   
-//		   for(int j = pathHome1.size() - 2; j >= 0; j--){
-//               Position temp = pathHome1.get(j);
-//               System.out.println("["+temp.getX()+", "+temp.getY()+"]");
-//           		this.makeMove(temp);           
-           //}
+	   
+		   // RETURNHOME uses an a star search to get from current location (gold location)
+		   // to starting position [20,20]
+		   // **** SHOULD USE A STAR ON BUILT UP MAP IN LEARNER< THAT WAY DOESNT HAVE TO WASTE MOVES UNTIL KNOWS SHORTEST PATH TO HOM
+		   // Goal position for a star here is just [BOARD_SIZE,BOARD_SIZE]
+		   // Start is [curX, curY]
+	   if (searchMode == RETURNHOME){  		  
 		   Position start = new Position(curX, curY);
 		   Position home = new Position(BOARD_SIZE/2, BOARD_SIZE/2);
 		   ArrayList<Position> path = new ArrayList<Position>();
-   		AStarAlgorithm aStarFindGold = new AStarAlgorithm();
+		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
 		   path = aStarFindGold.searchForPosition(learner, start, home, BOARD_SIZE*BOARD_SIZE, this);
+		   if (path == null){
+			   searchMode = STUCK;			 
+		   } else {
+			   searchMode = RETURNHOME;
+		   }
 		   path.add(home);
 		   printPositions(path);
 		   moveAlongPath(path);
 		   //pathHome1.remove(pathHome1.size());
 		   searchMode = DONE;		   
-	   } else {
-		   
+	   } 
+	   if (searchMode == STUCK){
+		   System.out.println("Help Im Stuck");
+		   lastDirection = (lastDirection + 1) % 4;
+		   return 'l';
+	   } else {		   		   
 		   // FIND DA PINGUZ 
 	   }
 	return nullChar;
@@ -154,9 +168,9 @@ public class Agent {
      		  learner.update(view, EAST);
      	  }
 		  
- 	   	  if (learner.getFoundGold() == true) {
- 	   		  searchMode = GETGOLD;
- 	   	  }
+// 	   	  if (learner.getFoundGold() == true) {
+// 	   		  searchMode = GETGOLD;
+// 	   	  }
    }
    
    private char getCOMove(int x, int y){
@@ -228,16 +242,27 @@ public class Agent {
    
    private char checkIfCanMoveFoward(char[][] view) {
 	   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
+		   if(in_boat==true){
+			   in_boat = false;
+			   just_departed_vessel=true;
+		   } else {
+			   just_departed_vessel=false;
+		   }
 		   return 'f';
 	   } else if (view[1][2] == 'a') {
+		   in_boat = false;
 		   have_axe = true;
 		   return 'f';  
    	   } else if (view[1][2] == 'd') {
+   		in_boat = false;
    		   num_dynamite++;
    		   return 'f';
-   	   } else if (view[1][2] == 'b') {
+   	   } else if (view[1][2] == 'B') {
    		   in_boat = true;
+   		   System.out.println("in boat!");
    		   return 'f';
+   	   } else if ((view[1][2] == '~')&&(in_boat==true)) {		   
+		   return 'f';
    	   } else if ((view[1][2] == 'T') && (have_axe == true)) { 
    		   return 'c';
        } else {
@@ -356,7 +381,7 @@ public class Agent {
             }
             if (firstTurn == true){
             	firstTurn = false;
-            	learner = new Learner(view);
+            	learner = new Learner(view, agent);
             	lastDirection = NORTH;              	
             }
             
@@ -471,12 +496,28 @@ public class Agent {
 	      return v;
 	}
 	
+	
+	//helpers	
 	public void printPositions(ArrayList<Position> list){
+		System.out.print("Path is:");
 		for (Position p: list){
 			System.out.print("["+p.getX()+", "+p.getY()+"]->");
 		}
 		System.out.println();
 	}
+	
+	//getters
+	public boolean hasAxe() {
+		return have_axe;		
+	}
+
+	public boolean hasBoat() {
+		return in_boat;
+	}
+	public boolean hasDeparted() {
+		return just_departed_vessel;
+	}
+
 }
 
 
