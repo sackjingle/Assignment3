@@ -292,11 +292,11 @@ private boolean foundGoal(Learner learner) {
 		}
 		if (canWalkOver(pL, board) == true) {
 			//System.out.println("Added pR["+ pR.getX() + ", " +  pR.getY() + "] to A* priority list");
-			adjacentList.add(pR);
+			adjacentList.add(pL);
 		}
 		if (canWalkOver(pR, board) == true) {
 			//System.out.println("Added pL["+ pL.getX() + ", " +  pL.getY() + "] to A* priority list");
-			adjacentList.add(pL);
+			adjacentList.add(pR);
 		}
 		return adjacentList;
 	}

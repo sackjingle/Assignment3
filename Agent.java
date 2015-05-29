@@ -168,6 +168,10 @@ public class Agent {
 	   return nullChar;
    }
    
+   
+
+   
+   
    private char goToAdjacent(char view[][], Position p) {
 	   
 	   char move = 'l';
