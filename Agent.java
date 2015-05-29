@@ -34,6 +34,7 @@ public class Agent {
    private boolean have_key  = false;
    private boolean have_gold = false;
    private boolean in_boat   = false;
+   private static int num_dynamite = 0;
    private static int curX;
    private static int curY;
    
@@ -79,11 +80,15 @@ public class Agent {
 	   	  return nextMove;
 	   	  
 	   } else if (searchMode == ASTARMODE){
+		   // Use a star search until player can see gold from starting position blindly through map
+		   // then set searchMode to GETGOLD
 		   Position start = new Position(curX, curY);
 		   AStarAlgorithm aStar = new AStarAlgorithm();
 		   pathHome1 = aStar.search(learner, start, 40*40, this);
 		   searchMode = GETGOLD;
 	   } else if (searchMode == GETGOLD) { 
+		   // GETGOLD uses an a star search to travel from current position to golds position
+		   // Then set searchMode to RETURNHOME
 		   System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		   Position start = new Position(curX, curY);
 		   //Position gold = learner.getGoldPos();
@@ -92,6 +97,9 @@ public class Agent {
 		   //pathHome1.remove(pathHome1.size());
 		   searchMode = RETURNHOME;
    	   } else if (searchMode == RETURNHOME){
+   		   // RETURNHOME uses an a star search to get from current location (gold location)
+   		   // to starting position [20,20]
+   		   // **** SHOULD USE A STAR ON BUILT UP MAP IN LEARNER< THAT WAY DOESNT HAVE TO WASTE MOVES UNTIL KNOWS SHORTEST PATH TO HOM
    		   // Goal position for a star here is just [20,20]
    		   // Start is [curX, curY]
    		   
@@ -102,10 +110,16 @@ public class Agent {
            //}
 		   Position start = new Position(curX, curY);
 		   Position home = new Position(20, 20);
+<<<<<<< HEAD
 		   ArrayList<Position> path = new ArrayList<Position>();
    		AStarAlgorithm aStarFindGold = new AStarAlgorithm();
 		   path = aStarFindGold.searchForPosition(learner, start, home, 40*40, this);
 		   printPositions(path);
+=======
+   		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
+		   pathHome1.addAll(aStarFindGold.searchForGold(learner, start, home, 40*40, this));
+   		   moveAlongPath(pathHome1);
+>>>>>>> origin/master
 		   //pathHome1.remove(pathHome1.size());
 		   searchMode = DONE;
 	   } else {
@@ -166,7 +180,18 @@ public class Agent {
 		   if (lastDirection == WEST) {
 			   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
 				   return 'f';
-			   } else {
+			   } else if (view[1][2] == 'a') {
+				   have_axe = true;
+				   return 'f';  
+		   	   } else if (view[1][2] == 'd') {
+		   		   num_dynamite++;
+		   		   return 'f';
+		   	   } else if (view[1][2] == 'b') {
+		   		   in_boat = true;
+		   		   return 'f';
+		   	   } else if ((view[1][2] == 'T') && (have_axe == true)) { 
+		   		   return 'c';
+		       } else {
 				   return nullChar;
 			   }
 		   } else {
@@ -177,7 +202,18 @@ public class Agent {
 			   if (lastDirection == EAST) {
 			 		if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
 			 			return 'f';
-			 		} else {
+			 		} else if (view[1][2] == 'a') {
+						have_axe = true;
+						return 'f';  
+				   	} else if (view[1][2] == 'd') {
+				   		num_dynamite++;
+				    	return 'f';
+				   	} else if (view[1][2] == 'b') {
+				   		in_boat = true;
+				        return 'f';
+				   	} else if ((view[1][2] == 'T') && (have_axe == true)) { 
+				   		return 'c';
+				    } else {
 			 			return nullChar;
 			 		}
 			   } else {
@@ -186,9 +222,20 @@ public class Agent {
 			   }
 	   } else if (p.getY() - curY == -1) {
 		   if (lastDirection == NORTH) {
-			   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
+			   if ((view[1][2] == ' ') || (view[1][2] == 'g')) {
 				  return 'f'; 
-			   } else {
+			   } else if (view[1][2] == 'a') {
+				   have_axe = true;
+				   return 'f';  
+		   	   } else if (view[1][2] == 'd') {
+		   		   num_dynamite++;
+		   		   return 'f';
+		   	   } else if (view[1][2] == 'b') {
+		   		   in_boat = true;
+		   		   return 'f';
+		   	   } else if ((view[1][2] == 'T') && (have_axe == true)) { 
+		   		   return 'c';
+		       } else {
 				   return nullChar;
 			   }
 		   } else {
@@ -199,7 +246,18 @@ public class Agent {
 		   if (lastDirection == SOUTH) {
 			   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
 				   return 'f';
-			   } else {
+			   } else if (view[1][2] == 'a') {
+				   have_axe = true;
+				   return 'f';  
+		   	   } else if (view[1][2] == 'd') {
+		   		   num_dynamite++;
+		   		   return 'f';
+		   	   } else if (view[1][2] == 'b') {
+		   		   in_boat = true;
+		   		   return 'f';
+		   	   } else if ((view[1][2] == 'T') && (have_axe == true)) { 
+		   		   return 'c';
+		       } else {
 				   return nullChar;
 			   }
 		   } else {
@@ -346,6 +404,35 @@ public class Agent {
          catch( IOException e ) {}
       }
    }
+   
+   public void moveAlongPath(ArrayList<Position> sequenceOfMoves) {
+	   for (Position p: sequenceOfMoves) {	
+		   while ((curX != p.getX())||(curY != p.getY())){
+			    System.out.println("\n"+"////////////////////////////////////////////////////////////////////////");
+			    System.out.println(">>>MAKE MOVE towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]<<<");
+			    System.out.println(">>>Starting at [X,Y] = ["+ curX + ", " +  curY + "]<<<");
+				char action = this.goToAdjacent(view, p);
+				if (action == '.'){
+					System.out.println("    hit object");
+				}
+				Move move = new Move(curX, curY, action);
+				moves.add(move);
+				System.out.println("AStar Action is:"+action);				
+			    try {
+					out.write( action );
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			    view = getCurrentView();
+	           this.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION	
+				startUpdate(view);
+			    
+			 }
+		}
+	   
+   }
+   
 
 	public boolean makeMove(Position p) {	
 		System.out.println("Make Move towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]");	
