@@ -25,6 +25,7 @@ public class Agent {
    final static int RETURNHOME = 1;
    final static int ASTARMODE = 2;
    final static int GETGOLD = 3;
+   final static int DONE = 4;
    
    
    private static char[][] view;
@@ -87,7 +88,7 @@ public class Agent {
 		   Position start = new Position(curX, curY);
 		   //Position gold = learner.getGoldPos();
 		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
-		   pathHome1.addAll(aStarFindGold.searchForGold(learner, start, learner.goldLocation, 40*40, this));
+		   pathHome1.addAll(aStarFindGold.searchForPosition(learner, start, learner.goldLocation, 40*40, this));
 		   //pathHome1.remove(pathHome1.size());
 		   searchMode = RETURNHOME;
    	   } else if (searchMode == RETURNHOME){
@@ -101,12 +102,14 @@ public class Agent {
            //}
 		   Position start = new Position(curX, curY);
 		   Position home = new Position(20, 20);
+		   ArrayList<Position> path = new ArrayList<Position>();
    		AStarAlgorithm aStarFindGold = new AStarAlgorithm();
-		   pathHome1.addAll(aStarFindGold.searchForGold(learner, start, home, 40*40, this));
+		   path = aStarFindGold.searchForPosition(learner, start, home, 40*40, this);
+		   printPositions(path);
 		   //pathHome1.remove(pathHome1.size());
-		   searchMode = RETURNHOME;
+		   searchMode = DONE;
 	   } else {
-	   
+		   
 		   // FIND DA PINGUZ 
 	   }
 	return nullChar;
@@ -404,6 +407,13 @@ public class Agent {
 	          System.exit(-1);
 	       }
 	      return v;
+	}
+	
+	private void printPositions(ArrayList<Position> list){
+		for (Position p: list){
+			System.out.print("["+p.getX()+", "+p.getY()+"]->");
+		}
+		System.out.println();
 	}
 }
 

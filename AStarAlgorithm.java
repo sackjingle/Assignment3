@@ -123,6 +123,7 @@ public class AStarAlgorithm{
         //if queue is empty and no solution found; failure
         while(!queue.isEmpty()){
         	visited.add(parentNode.getNode());
+        	
         	//make the sad walk home
         	System.out.println("Sad walk home from {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}: ");
         	for(int j = parentNode.getPath().size() - 1; j >= 0; j--){
@@ -144,6 +145,7 @@ public class AStarAlgorithm{
             if (agent.makeMove(parentNode.getNode()) == false){
             	continue;
             }
+            
 		    nodesExpanded++;		 
             
 		    //check current.path if it has visited all required nodes
@@ -182,6 +184,91 @@ public class AStarAlgorithm{
         System.out.println(nodesExpanded +" nodes expanded");
         return goal.getPath();  
     }
+	//search for gold
+		public ArrayList<Position> searchForPosition(Learner learner, Position source, Position gold, int size, Agent agent) {
+		   	//System.out.println("Start Search");
+		   	Comparator<AStarNode> comparator = new AStarComparator<Position>();
+		   	PriorityQueue<AStarNode> queue = new PriorityQueue<AStarNode>(size, comparator);  
+		   	
+		   	ArrayList<Position> visited = new ArrayList<Position>();
+		   	
+	   		ArrayList<Position> tempPath = new ArrayList<Position>();
+	   		//Start with empty state
+	   		AStarNode start = new AStarNode(source, tempPath, 0, 0);
+	   		//add to queue
+	   		queue.add(start);
+	        AStarNode goal = null;	
+	        //no. of nodes expanded so far
+	        int nodesExpanded = 0;
+	        AStarNode parentNode = start;
+	        
+	        //if queue is empty and no solution found; failure
+	        while(!queue.isEmpty()){
+	        	//visited.add(parentNode.getNode());
+	        	
+//	        	//make the sad walk home
+//	        	System.out.println("Sad walk home from {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}: ");
+//	        	for(int j = parentNode.getPath().size() - 1; j >= 0; j--){
+//	                Position temp = parentNode.getPath().get(j);
+//	                System.out.println("["+temp.getX()+", "+temp.getY()+"]");
+//	            	agent.makeMove(temp);           
+//	            }
+//	        	//pop next best node off priority queue
+//	            parentNode = queue.poll();
+//	            System.out.println("\npop off {"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}");
+//	            
+//	            // walk through path to popped off position           
+//	            for(int j = 0; j < parentNode.getPath().size(); j++){
+//	                Position temp = parentNode.getPath().get(j);
+//	                System.out.println("walk to ["+temp.getX()+", "+temp.getY()+"]");
+//	            	agent.makeMove(temp);            
+//	            }
+//	            System.out.println("walk to ["+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"]");
+//	            if (agent.makeMove(parentNode.getNode()) == false){
+//	            	continue;
+//	            }
+	        	parentNode = queue.poll();
+			    nodesExpanded++;		 
+	            
+			    //check current.path if it has visited all required nodes
+	     	    if((parentNode.getNode().getX() == gold.getX())&&(parentNode.getNode().getY() == gold.getY())){
+	                //found target nodes
+	                System.out.println("	Found the GOLLLLLDD ARRR!");
+	                
+	                goal = parentNode;
+	                break;
+	                
+	            // else check through all adjacent states and add them to the queue    
+	            } else {
+	                for (Position adjacent: getAdjacent(parentNode.getNode(), learner.getBoard())) {
+	                    //score given by current cost to state + appropriate heuristic
+	                    double score = parentNode.getG() + getWeight(parentNode.getNode(), adjacent);  
+	                    //System.out.println(score);
+	                    tempPath.clear();
+	                    tempPath.addAll(parentNode.getPath());
+	                    tempPath.add(parentNode.getNode());                    
+	                    //create new state
+	                    double h;
+	                    if (queue.peek() == null){
+	                    	h = 0;
+	                    } else {
+	                    	h = getHeuristic(adjacent, gold);
+	                    }
+	                    //System.out.println(h);
+	                    AStarNode next = new AStarNode(adjacent, tempPath, score, h);                              
+	                    //System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
+	                    // add to queue
+	                    if (!visitedContains(adjacent.getX(),adjacent.getY(), visited)){
+	                    	System.out.println("Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
+	                    	visited.add(adjacent);
+	                    	queue.add(next);
+	                    }
+	                }
+	            }
+	        }        
+	        System.out.println(nodesExpanded +" nodes expanded");
+	        return goal.getPath();  
+	    }
    
 	
 	
