@@ -4,7 +4,31 @@
  *  COMP3411 Artificial Intelligence
  *  UNSW Session 1, 2015
  *  Jordan East and Jack Single
+ *  z3462985 & z3462998
 */
+
+/**
+ * Briefly describe how your program works, including any algorithms and data structures employed, and explain any design decisions you made along the way.
+ * 
+ * Our Agent Makes use of multiple search modes that implement an A* Search algorithm slightly differently to find the best set of moves between two states,
+ * such as finding the gold from home position, collecting the gold once found, returning to home once the gold is collected, destroying the appropriate walls with
+ * dynamite or sailing the boat to find the gold on another island.
+ * The A* search is set out in standard format with a priority queue, visited node set, start node and path home once goal is found, but has a variety of 
+ * methods which are slightly altered to suit the job they have to perform.
+ * For example, at first you do not know where the gold is, so the A* roughly performs Dijkstra's algorithm , until the gold is found, and can be recorded in the learner.
+ * Once we know where the gold is we can perform a normal A* search with a goal, using the Manhattan distance algorithm to guide us toward the goal quickly.
+ * We also used A* to discover if a path exists between two positions. This is useful when trying to figure out how to best use the dynamite you have picked up, as the
+ * algorithm can check if it has reached its goal before it performs any in-game moves.
+ * 
+ * As for data structures, we had to keep track of what the agent has learned somehow, and so we though it would be best if we had a north-orientated board that could
+ * remember what was in each position in the map. We used a 2D array of chars, much like the view[][] input, so we could quickly and efficiently look up any positions data.
+ * The challenge was ensuring that the orientation of learner's board was consistent with the input map. This board allowed us to run A* searches with the knowledge of
+ * what we had already seen, letting us easily create paths between two positions.
+ * 
+ * We approached this project with baby-steps; firstly getting the agent to slowly make its way around the map until it found the gold, then returning home.
+ * Gradually we added more search modes and search algorithms, increasing the agents ability to navigate more difficult maps. 
+ * By using different search modes we could ensure that the agent could still complete basic maps even if it struggles with the extremely complex maps.
+ */
 
 import java.util.*;
 import java.io.*;
