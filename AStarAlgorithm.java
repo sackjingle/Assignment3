@@ -3,10 +3,9 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 /**
  * AStar Algorithm
- * Implements and a star search for a path through particular 
- * vertices in a given graph, using a priority queue.
- *	
- * @author Jordan
+ * Implements a variety of A* searches depending on the need of the agent. It is set out in standard format with a priority queue, visited node set, start node and 
+ * path home once goal is found, but has a variety of methods which are slightly altered to suit the job they have to perform.
+ *
  *@param queue: priority queue of AStarNodes, ordered according to comparator
  *@param comparator: compares the score of two given AStarNodes
  */
@@ -16,7 +15,7 @@ public class AStarAlgorithm{
 	/**
 	 * search uses an A Star search algorithm to search across the map to find the gold. It uses a basic A
 	 * Star search algorithm to build up an ArrayList of the best nodes to explore, using another A Star
-	 * search to look through the map Learner has build up and find the most efficient way to get there.
+	 * search to look through the map Learner has built up and find the most efficient way to get there.
 	 * The basic search has no goal, and so no heuristic making it a Breadth First Search. Depending on 
 	 * whether or not the start/end positions are on land or water, will determine how the search manages
 	 * to reach its destination.
