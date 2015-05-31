@@ -111,9 +111,9 @@ public class Agent {
 		   }
 	   }
 	   if (searchMode == DYNO){
-		   System.out.println("Find Dyno");
+		   ////System.out.println("Find Dyno");
 		   if(num_dynamite==0){
-			   System.out.println("no dynamite :(");
+			   ////System.out.println("no dynamite :(");
 			   searchMode = GETGOLD;			   
 		   } else {
 			   Position gold = learner.getGoldLocation();
@@ -125,7 +125,7 @@ public class Agent {
 			   while((curX != gold.getX())||(curY != gold.getY())){
 				   path = aStarFindGoldWDyno.searchForPositionWDynamite(learner, start, gold, BOARD_SIZE*BOARD_SIZE, this);
 				   if (path != null){
-					   System.out.println("found suitable path!!!");
+					   //System.out.println("found suitable path!!!");
 					   path.add(gold);
 					   printPositions(path);
 					   moveAlongPath(path);	 
@@ -134,11 +134,11 @@ public class Agent {
 				   } else {
 //					   Position r = removeClosestWall();
 //					   walls.add(r);
-//					   System.out.println("removed wall["+r.getX()+", "+r.getY()+"]");
+//					   //System.out.println("removed wall["+r.getX()+", "+r.getY()+"]");
 				   }
 			   }
 			   if (searchMode!=RETURNHOME){
-				   System.out.println("Failed to find path with Dynamite");
+				   //System.out.println("Failed to find path with Dynamite");
 				   searchMode = GETGOLD;
 			   }
 		   }
@@ -146,10 +146,10 @@ public class Agent {
 	   if (searchMode == GETGOLD) { 
 		   // GETGOLD uses an a star search to travel from current position to golds position
 		   // Then set searchMode to RETURNHOME
-		   System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		   //System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		   Position start = new Position(curX, curY);
 		   Position gold = learner.getGoldLocation();
-		   System.out.println(gold.getX()+", "+gold.getY());
+		   //System.out.println(gold.getX()+", "+gold.getY());
 		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
 		   ArrayList<Position> path = new ArrayList<Position>();
 		   if(hasBoat()){
@@ -167,7 +167,7 @@ public class Agent {
 		   }
 	   }
 	   if (searchMode == RETURNHOME){  	
-		   System.out.println("return home");
+		   //System.out.println("return home");
 		   Position start = new Position(curX, curY);
 		   Position home = new Position(BOARD_SIZE/2, BOARD_SIZE/2);
 		   ArrayList<Position> path = new ArrayList<Position>();
@@ -175,21 +175,21 @@ public class Agent {
 		   
 		   if ((getBoatPosition().getX() != -1) && (getBoatPosition().getY() != -1)) {
 			   if (hasBoat() == false) {
-				   System.out.println("Finding path to the boat");
-				   System.out.println("Boat is at " + getBoatPosition().getY() + getBoatPosition().getX());
+				   //System.out.println("Finding path to the boat");
+				   //System.out.println("Boat is at " + getBoatPosition().getY() + getBoatPosition().getX());
 				   path = aStarFindGold.searchForPosition(learner, start, getBoatPosition(), BOARD_SIZE*BOARD_SIZE, this);
 				   //ArrayList<Position> pathTwo = new ArrayList<Position>();
 				   path.add(getBoatPosition());
-				   System.out.println("just made path to boat");
+				   //System.out.println("just made path to boat");
 				   moveAlongPath(path);
 
-				   System.out.println("Finding path from boat to home");
+				   //System.out.println("Finding path from boat to home");
 				   path = aStarFindGold.searchForPosition(learner, getBoatPosition(), home, BOARD_SIZE*BOARD_SIZE, this);
 				   path.add(home);
 			   }
-			   System.out.println("Heading out of condition amoved boat");
+			   //System.out.println("Heading out of condition amoved boat");
 		   } else {
-			   System.out.println("In the else here");
+			   //System.out.println("In the else here");
 			   path = aStarFindGold.searchForPosition(learner, start, home, BOARD_SIZE*BOARD_SIZE, this);
 			   path.add(home);
 
@@ -200,7 +200,7 @@ public class Agent {
 		   //pathHome1.remove(pathHome1.size()); 
 	   } 
 	   if (searchMode == STUCK){
-		   System.out.println("Help Im Stuck");
+		   //System.out.println("Help Im Stuck");
 		   lastDirection = (lastDirection + 1) % 4;
 		   return 'l';
 	   } else {		   		   
@@ -225,8 +225,8 @@ public class Agent {
 	  // update curX, Y
 	  curX = learner.getX();
   	  curY = learner.getY();
-  	  System.out.println("[X,Y]=["+curX+","+curY+"]");
-  	  System.out.println("In front of player is: " + view[1][2]);
+  	  //System.out.println("[X,Y]=["+curX+","+curY+"]");
+  	  //System.out.println("In front of player is: " + view[1][2]);
    }
 
    /** updateLearner updates the learner, giving it the current view and direction so that
@@ -344,12 +344,12 @@ public class Agent {
 	   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
 		   if(in_boat==true){
 			   boatPosition.set(curX, curY);
-			   System.out.println("just dropped boat at: " + curX + curY);
+			   //System.out.println("just dropped boat at: " + curX + curY);
 			   in_boat = false;
 			   just_departed_vessel = true;
 		   } else if (just_departed_vessel == true) {
 			   just_departed_vessel=false;
-			   System.out.println(just_departed_vessel);
+			   //System.out.println(just_departed_vessel);
 		   }
 		   return 'f';
 	   } else if (view[1][2] == 'a') {
@@ -362,7 +362,7 @@ public class Agent {
    		   return 'f';
    	   } else if (view[1][2] == 'B') {
    		   in_boat = true;
-   		   System.out.println("in boat!");
+   		   //System.out.println("in boat!");
    		   return 'f';
    	   } else if ((view[1][2] == '~')&&(in_boat==true)) {		   
 		   return 'f';
@@ -385,20 +385,20 @@ public class Agent {
    {
       int i,j;
 
-      System.out.println("\n+-----+");
+      //System.out.println("\n+-----+");
       for( i=0; i < 5; i++ ) {
-         System.out.print("|");
+         //System.out.print("|");
          for( j=0; j < 5; j++ ) {
             if(( i == 2 )&&( j == 2 )) {
-               System.out.print('^');
+               //System.out.print('^');
             }
             else {
-               System.out.print( view[i][j] );
+               //System.out.print( view[i][j] );
             }
          }
-         System.out.println("|");
+         //System.out.println("|");
       }
-      System.out.println("+-----+");
+      //System.out.println("+-----+");
    }
 
 
@@ -421,7 +421,7 @@ public class Agent {
 	  pathHome1 = new ArrayList<Position>();
 
       if( args.length < 2 ) {
-         System.out.println("Usage: java Agent -p <port>\n");
+         //System.out.println("Usage: java Agent -p <port>\n");
          System.exit(-1);
       }
 
@@ -430,11 +430,11 @@ public class Agent {
       try { // open socket to Game Engine
          socket = new Socket( "localhost", port );
          in  = socket.getInputStream();
-         System.out.println("herehIn" + in);
+         //System.out.println("herehIn" + in);
          out = socket.getOutputStream();
       }
       catch( IOException e ) {
-         System.out.println("Could not bind to port: "+port);
+         //System.out.println("Could not bind to port: "+port);
          System.exit(-1);
       }
 
@@ -444,7 +444,7 @@ public class Agent {
                for( j=0; j < 5; j++ ) {
                   if( !(( i == 2 )&&( j == 2 ))) {
                      ch = in.read();
-                     //System.out.println("ch = "+ch);
+                     ////System.out.println("ch = "+ch);
                      if( ch == -1 ) {
                         System.exit(-1);
                      }
@@ -460,8 +460,8 @@ public class Agent {
             	lastDirection = NORTH;              	
             }
             
-            System.out.println("\n"+"////////////////////////////////////////////////////////////////////////");
-            System.out.println(">>>NEW MOVE<<<");
+            //System.out.println("\n"+"////////////////////////////////////////////////////////////////////////");
+            //System.out.println(">>>NEW MOVE<<<");
             agent.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION
             action = agent.get_action( view );
             out.write( action );
@@ -469,7 +469,7 @@ public class Agent {
          }
       }
       catch( IOException e ) {
-         System.out.println("Lost connection to port: "+ port );
+         //System.out.println("Lost connection to port: "+ port );
          System.exit(-1);
       }
       finally {
@@ -490,16 +490,16 @@ public class Agent {
    public void moveAlongPath(ArrayList<Position> sequenceOfMoves) {
 	   for (Position p: sequenceOfMoves) {	
 		   while ((curX != p.getX())||(curY != p.getY())){
-			    System.out.println("\n"+"////////////////////////////////////////////////////////////////////////");
-			    System.out.println(">>>MAKE MOVE towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]<<<");
-			    System.out.println(">>>Starting at [X,Y] = ["+ curX + ", " +  curY + "]<<<");
+			    //System.out.println("\n"+"////////////////////////////////////////////////////////////////////////");
+			    //System.out.println(">>>MAKE MOVE towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]<<<");
+			    //System.out.println(">>>Starting at [X,Y] = ["+ curX + ", " +  curY + "]<<<");
 				char action = this.goToAdjacent(view, p);
 				if (action == '.'){
-					System.out.println("    hit object");
+					//System.out.println("    hit object");
 				}
 				Move move = new Move(curX, curY, action);
 				moves.add(move);
-				System.out.println("AStar Action is:"+action);				
+				//System.out.println("AStar Action is:"+action);				
 			    try {
 					out.write( action );
 				} catch (IOException e) {
@@ -523,20 +523,20 @@ public class Agent {
     * @p is the position the player wants to move to.
     */
 	public boolean makeMove(Position p) {	
-		System.out.println("Make Move towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]");	
-		System.out.println("Starting at [X,Y] = ["+ curX + ", " +  curY + "]");
+		//System.out.println("Make Move towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]");	
+		//System.out.println("Starting at [X,Y] = ["+ curX + ", " +  curY + "]");
 		while ((curX != p.getX())||(curY != p.getY())){
-			    System.out.println("\n"+"////////////////////////////////////////////////////////////////////////");
-			    System.out.println(">>>MAKE MOVE towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]<<<");
-			    System.out.println(">>>Starting at [X,Y] = ["+ curX + ", " +  curY + "]<<<");
+			    //System.out.println("\n"+"////////////////////////////////////////////////////////////////////////");
+			    //System.out.println(">>>MAKE MOVE towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]<<<");
+			    //System.out.println(">>>Starting at [X,Y] = ["+ curX + ", " +  curY + "]<<<");
 				char action = this.goToAdjacent(view, p);
 				if (action == '.'){
-					System.out.println("    hit object");
+					//System.out.println("    hit object");
 					return false;
 				}
 				Move move = new Move(curX, curY, action);
 				moves.add(move);
-				System.out.println("AStar Action is:"+action);				
+				//System.out.println("AStar Action is:"+action);				
 			    try {
 					out.write( action );
 				} catch (IOException e) {
@@ -557,7 +557,7 @@ public class Agent {
 	 */
 	
 	public char[][] getCurrentView(){
-		System.out.println("get current view");
+		//System.out.println("get current view");
 		boolean gotView = true;
 		int i,j, ch = 0;
 	      char   v[][] = new char[5][5];
@@ -566,9 +566,9 @@ public class Agent {
 	             for( i=0; i < 5; i++ ) {
 	                for( j=0; j < 5; j++ ) {
 	                   if( !(( i == 2 )&&( j == 2 ))) {
-	                      //System.out.println("Reading in:");
+	                      ////System.out.println("Reading in:");
 	                	  ch = in.read();
-	                      //System.out.print("ch = "+ch+", ");
+	                      ////System.out.print("ch = "+ch+", ");
 	                      if( ch == -1 ) {
 	                         System.exit(-1);
 	                      }
@@ -579,11 +579,11 @@ public class Agent {
 	                }
 	             }	           
 	             gotView = false;
-	             System.out.println("got view");             
+	             //System.out.println("got view");             
 	          }
 	       }
 	       catch( IOException e ) {
-	          System.out.println("Lost connection to port: "+ port );
+	          //System.out.println("Lost connection to port: "+ port );
 	          System.exit(-1);
 	       }
 	      return v;
@@ -597,11 +597,11 @@ public class Agent {
 	 * @list is an ArrayList of Positions
 	 */
 	public void printPositions(ArrayList<Position> list){
-		System.out.print("Path is:");
+		//System.out.print("Path is:");
 		for (Position p: list){
-			System.out.print("["+p.getX()+", "+p.getY()+"]->");
+			//System.out.print("["+p.getX()+", "+p.getY()+"]->");
 		}
-		System.out.println();
+		//System.out.println();
 	}
 	
 	//getters

@@ -66,16 +66,16 @@ public class Learner {
 	 */
 	public void update(char[][] input, int direction){
 		if (direction == EAST){
-			System.out.println("EAST");
+			//System.out.println("EAST");
 			updateEast(input);
 		} else if (direction == NORTH){
-			System.out.println("NORTH");
+			//System.out.println("NORTH");
 			updateNorth(input);
 		} else if (direction == WEST){
-			System.out.println("WEST");
+			//System.out.println("WEST");
 			updateWest(input);
 		} else if (direction == SOUTH){
-			System.out.println("SOUTH");
+			//System.out.println("SOUTH");
 			updateSouth(input);
 		}	
 		foundGold = checkIfGold(input, direction);
@@ -94,22 +94,22 @@ public class Learner {
 	private boolean checkIfGold(char[][] input, int direction) {
 		for(int i = 0; i<5; i++){
 			if(input[0][i]=='g'){
-				System.out.println("Arrrr I see Gold!!!");
+				//System.out.println("Arrrr I see Gold!!!");
 				if (direction == EAST) {
-					System.out.println("Setting gold EAST");
+					//System.out.println("Setting gold EAST");
 					goldLocation.set(curX + 2, curY - 2 + i);
 				} else if (direction == NORTH) {
-					System.out.println("Setting gold NORTH, cur [x, y, i] is : [" + curX + ", " + curY + ", " + i + "].");
+					//System.out.println("Setting gold NORTH, cur [x, y, i] is : [" + curX + ", " + curY + ", " + i + "].");
 					goldLocation.set(curX - 2 + i, curY - 2);
 				} else if (direction == WEST) {
-					System.out.println("Setting gold WEST");
+					//System.out.println("Setting gold WEST");
 					goldLocation.set(curX - 2, curY + 2 - i);
 				} else {
-					System.out.println("Setting gold SOUTH");
+					//System.out.println("Setting gold SOUTH");
 					goldLocation.set(curX + 2 - i, curY + 2);
 				}
-					System.out.println("Arrrr I see Gold!!!");
-					System.out.println(" Set the gold location as [X,Y] = [" + goldLocation.getX() + ", " + goldLocation.getY() + "]");
+					//System.out.println("Arrrr I see Gold!!!");
+					//System.out.println(" Set the gold location as [X,Y] = [" + goldLocation.getX() + ", " + goldLocation.getY() + "]");
 					return true;
 			}
 		}
@@ -193,7 +193,7 @@ public class Learner {
 		}		curY--;
 		board[curY][curX] = 'P';
 		
-		System.out.println("Just moved one north, printing updated board");
+		//System.out.println("Just moved one north, printing updated board");
 		printBoard();
 	}
 	
@@ -227,22 +227,22 @@ public class Learner {
 	 * the player has seen as it moves around.
 	 */
 	public void printBoard(){
-		System.out.println("\n +--------------------------------------------------------------------------------+");
+		//System.out.println("\n +--------------------------------------------------------------------------------+");
 	      for(int i=0; i < BOARD_SIZE; i++ ) {
 	    	  if (i<10){
-	    		  System.out.print(" ");
+	    		  //System.out.print(" ");
 	    	  }
-	         System.out.print(i+"|");
+	         //System.out.print(i+"|");
 	         for(int j=0; j < BOARD_SIZE; j++ ) {
 	        	 if (board[i][j]== nullpointer){
-	        		 System.out.print(".");
+	        		 //System.out.print(".");
 	        	 } else {
-	        		 System.out.print(board[i][j]);
+	        		 //System.out.print(board[i][j]);
 	        	 }
 	         }
-	         System.out.println("|");
+	         //System.out.println("|");
 	      }
-	      System.out.println(" +--------------------------------------------------------------------------------+");
+	      //System.out.println(" +--------------------------------------------------------------------------------+");
 	}
 	
 	public int getX(){
@@ -299,7 +299,7 @@ public class Learner {
 		if(foundGold == true){
 			return goldLocation;
 		} else{
-			System.out.println("gold not found yet");
+			//System.out.println("gold not found yet");
 		}
 		return null;
 	}
