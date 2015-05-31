@@ -28,6 +28,7 @@ public class Agent {
    final static int GETGOLD = 3;
    final static int DONE = 4;
    final static int STUCK = 5;
+   final static int DYNO = 6;
    
    
    private static char[][] view;
@@ -48,6 +49,7 @@ public class Agent {
    private static ArrayList<Move> moves;
    private static int searchMode = 2;
    private static ArrayList<Position> pathHome1;
+   private static ArrayList<Position> walls;
    
    //NEEDS TO ACCESS out, in IN PLACES OTHER THAN main()
    private static OutputStream out = null;
@@ -91,30 +93,62 @@ public class Agent {
 		   if (pathHome1 == null){
 			   searchMode = STUCK;			 
 		   } else {
-			   searchMode = RETURNHOME;
+			   searchMode = DYNO;
 		   }
-		   searchMode = GETGOLD;
+	   }
+	   if (searchMode == DYNO){
+		   System.out.println("Find Dyno");
+		   if(num_dynamite==0){
+			   System.out.println("no dynamite :(");
+			   searchMode = GETGOLD;			   
+		   } else {
+			   Position gold = learner.getGoldLocation();
+			   walls = learner.getWallsClosestToPosition(gold);
+			   printPositions(walls);		   		   
+			   Position start = new Position(curX, curY);
+			   ArrayList<Position> path = new ArrayList<Position>();
+			   AStarAlgorithm aStarFindGoldWDyno = new AStarAlgorithm();
+			   while((curX != gold.getX())||(curY != gold.getY())){
+				   path = aStarFindGoldWDyno.searchForPositionWDynamite(learner, start, gold, BOARD_SIZE*BOARD_SIZE, this);
+				   if (path != null){
+					   System.out.println("found suitable path!!!");
+					   path.add(gold);
+					   printPositions(path);
+					   moveAlongPath(path);	 
+					   searchMode = RETURNHOME;
+					   break;
+				   } else {
+//					   Position r = removeClosestWall();
+//					   walls.add(r);
+//					   System.out.println("removed wall["+r.getX()+", "+r.getY()+"]");
+				   }
+			   }
+			   if (searchMode!=RETURNHOME){
+				   System.out.println("Failed to find path with Dynamite");
+				   searchMode = GETGOLD;
+			   }
+		   }
 	   }
 	   if (searchMode == GETGOLD) { 
 		   // GETGOLD uses an a star search to travel from current position to golds position
 		   // Then set searchMode to RETURNHOME
 		   System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		   Position start = new Position(curX, curY);
-		   //Position gold = learner.getGoldPos();
+		   Position gold = learner.getGoldLocation();
 		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
-		   pathHome1 = aStarFindGold.searchForGold(learner, start, learner.goldLocation, BOARD_SIZE*BOARD_SIZE, this);
+		   pathHome1 = aStarFindGold.searchForGold(learner, start, gold, BOARD_SIZE*BOARD_SIZE, this);
 		   if (pathHome1 == null){
-			   searchMode = STUCK;			 
+			   searchMode = DYNO;			 
 		   } else {
 			   searchMode = RETURNHOME;
 		   }
 	   }
-	   
-		   // RETURNHOME uses an a star search to get from current location (gold location)
-		   // to starting position [20,20]
-		   // **** SHOULD USE A STAR ON BUILT UP MAP IN LEARNER< THAT WAY DOESNT HAVE TO WASTE MOVES UNTIL KNOWS SHORTEST PATH TO HOM
-		   // Goal position for a star here is just [BOARD_SIZE,BOARD_SIZE]
-		   // Start is [curX, curY]
+
+	   // RETURNHOME uses an a star search to get from current location (gold location)
+	   // to starting position [20,20]
+	   // **** SHOULD USE A STAR ON BUILT UP MAP IN LEARNER< THAT WAY DOESNT HAVE TO WASTE MOVES UNTIL KNOWS SHORTEST PATH TO HOM
+	   // Goal position for a star here is just [BOARD_SIZE,BOARD_SIZE]
+	   // Start is [curX, curY]
 	   if (searchMode == RETURNHOME){  		  
 		   Position start = new Position(curX, curY);
 		   Position home = new Position(BOARD_SIZE/2, BOARD_SIZE/2);
@@ -129,7 +163,7 @@ public class Agent {
 		   path.add(home);
 		   printPositions(path);
 		   moveAlongPath(path);
-		   //pathHome1.remove(pathHome1.size());
+		   //pathHome1.remove(pathHome1.size()); 
 		   searchMode = DONE;		   
 	   } 
 	   if (searchMode == STUCK){
@@ -265,6 +299,9 @@ public class Agent {
 		   return 'f';
    	   } else if ((view[1][2] == 'T') && (have_axe == true)) { 
    		   return 'c';
+   	   } else if ((view[1][2] == '*') && (num_dynamite >= 1)) { 
+   		   num_dynamite--;
+		   return 'b';
        } else {
 		   return nullChar;
 	   }
@@ -289,47 +326,6 @@ public class Agent {
       }
       System.out.println("+-----+");
    }
-   
-   public ArrayList<Position> breadthFirstSearch(Position start, Position goal){
-		System.out.println("bfs from "+start+" to "+ goal);
-		HashMap<Position,Position> connectedTo = new HashMap<Position,Position>();
-		ArrayList<Position> visited = new ArrayList<Position>();
-		Queue<Position> queue = new ArrayDeque<Position>();
-		queue.add(start);
-		visited.add(start);
-		while (!queue.isEmpty()){
-			Position parentVertex = queue.remove();
-			System.out.println(parentVertex);
-			for (ListIterator<Position> adjacent = getAdjacent(parentVertex); adjacent.hasNext();){
-				Position child = adjacent.next();
-				System.out.print("	"+child);
-				if(!visited.contains(child))
-				{
-					System.out.print(" - added");
-                   connectedTo.put(child, parentVertex);
-                   visited.add(child); 	
-					queue.add(child);
-				}
-				System.out.println();
-			}
-		}
-		ArrayList<Position> path = new ArrayList<Position>();
-		path.add(goal);
-		while (connectedTo.get(goal) != start){
-			goal = connectedTo.get(goal);
-			path.add(goal);
-		}
-		path.add(start);
-		Collections.reverse(path);
-
-		return path;
-	}
-   
-   
-   private ListIterator<Position> getAdjacent(Position parentVertex) {
-	// TODO Auto-generated method stub
-	return null;
-}
 
 //Main
    public static void main( String[] args )
@@ -425,7 +421,7 @@ public class Agent {
 					e.printStackTrace();
 				}
 			    view = getCurrentView();
-	           this.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION	
+	            this.print_view( view ); // COMMENT THIS OUT BEFORE SUBMISSION	
 				startUpdate(view);
 			    
 			 }
@@ -516,6 +512,23 @@ public class Agent {
 	}
 	public boolean hasDeparted() {
 		return just_departed_vessel;
+	}
+	public int getDynamite() {
+		return num_dynamite;
+	}
+
+	public Position getClosestWall() {
+		//printPositions(walls);
+		Random random = new Random();
+		int randomNum =  random.nextInt(walls.size() - 0) + 0;
+		Position w = walls.get(randomNum);
+		return w;
+	}
+	public Position removeClosestWall() {
+		return walls.remove(0);
+	}
+	public ArrayList<Position> getWalls(){
+		return walls;
 	}
 
 }

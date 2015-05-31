@@ -162,9 +162,12 @@ public class Learner {
 	}
 	
 	public void printBoard(){
-		System.out.println("\n+--------------------------------------------------------------------------------+");
+		System.out.println("\n +--------------------------------------------------------------------------------+");
 	      for(int i=0; i < BOARD_SIZE; i++ ) {
-	         System.out.print("|");
+	    	  if (i<10){
+	    		  System.out.print(" ");
+	    	  }
+	         System.out.print(i+"|");
 	         for(int j=0; j < BOARD_SIZE; j++ ) {
 	        	 if (board[i][j]== nullpointer){
 	        		 System.out.print(".");
@@ -174,7 +177,7 @@ public class Learner {
 	         }
 	         System.out.println("|");
 	      }
-	      System.out.println("+--------------------------------------------------------------------------------+");
+	      System.out.println(" +--------------------------------------------------------------------------------+");
 	}
 	
 	public int getX(){
@@ -189,21 +192,42 @@ public class Learner {
 	public char[][] getBoard() {
 		return board;
 	}
-	public ArrayList<Position> getWallsClosestToGold(){
-		// fucked if this will work
+	public ArrayList<Position> getWallsClosestToPosition(Position goal){
 		ArrayList<Position> wallList = new ArrayList<Position>();
-		int x = goldLocation.getX();
-		int y = goldLocation.getY();
-		for(int i = 0; i < 3; i++){
-			for(int j = 0; j < 3; j++){
-				x = x+i;
-				y = y+j;
-				Position p = new Position(x, y);
-				wallList.add(p);
+		int x = goal.getX();
+		int y = goal.getY();
+		for(int i = 1; i < 6; i++){
+			for(int j = 0; j < i; j++){
+				Position p = new Position(x+i-j, y+j);
+				if(board[p.getY()][p.getX()]=='*'){
+					wallList.add(p);
+				}
 				
+				p = new Position(x-j, y+i-j);
+				if(board[p.getY()][p.getX()]=='*'){
+					wallList.add(p);
+				}
+				
+				p = new Position(x-i+j, y-j);
+				if(board[p.getY()][p.getX()]=='*'){
+					wallList.add(p);
+				}
+				
+				p = new Position(x+j, y-i+j);
+				if(board[p.getY()][p.getX()]=='*'){
+					wallList.add(p);
+				}	
 			}
 		}
 		return wallList;
+	}
+	public Position getGoldLocation() {
+		if(foundGold == true){
+			return goldLocation;
+		} else{
+			System.out.println("gold not found yet");
+		}
+		return null;
 	}
 	
 }
