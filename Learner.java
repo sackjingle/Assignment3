@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 
-
+/**
+ * The Learner class keeps track of what the agent has already seen in the game, and creates a 80x80 board
+ * that can be used to find paths between coordinates, as well as store important facts about the game state,
+ * including where the player is currently, where the gold is (once found).
+ */
 public class Learner {
 	final static int EAST   = 0;
 	final static int NORTH  = 1;
@@ -16,6 +20,11 @@ public class Learner {
 	private boolean foundGold;
 	public Position goldLocation = new Position (0,0);
 
+	/**
+	 * Learner constructor sets up the board as well as placing the agent in the center of the board.
+	 * @param input = first view of game state
+	 * @param agent = agent playing the game, to communicate facts quickly
+	 */
 	public Learner(char[][] input, Agent agent){
 		board = new char[BOARD_SIZE][BOARD_SIZE];
 		for (int i = 0; i < BOARD_SIZE; i++) {
@@ -31,6 +40,10 @@ public class Learner {
 		setUpMap(input);
 		printBoard();
 	}
+	/**
+	 * set up the first state in the board map
+	 * @param input
+	 */
 	private void setUpMap(char[][] input) {
 		int x = curX - 2;
 		int y = curY - 2;
@@ -45,6 +58,12 @@ public class Learner {
 		//goldLocation.set(1, 1);
 	}
 	
+	/**
+	 * update method takes in a new input from the game view, and depending on which direction relative
+	 * to the players original direction, updates board appropriately as to keep track of the entire visited board.
+	 * @param input = current view of map
+	 * @param direction = current direction facing.
+	 */
 	public void update(char[][] input, int direction){
 		if (direction == EAST){
 			System.out.println("EAST");
