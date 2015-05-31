@@ -27,7 +27,7 @@ public class AStarAlgorithm{
 	 * @return - an ArrayList of Positions for how to get to the destination.
 	 */
 	public ArrayList<Position> search(Learner learner, Position source, int size, Agent agent) {
-	   	////System.out.println("Start Search");
+	   	//System.out.println("Start Search");
 		boolean foundGoal = false;
 		Comparator<AStarNode> comparator = new AStarComparator<Position>();
 	   	PriorityQueue<AStarNode> queue = new PriorityQueue<AStarNode>(size, comparator);  
@@ -48,37 +48,37 @@ public class AStarAlgorithm{
         	visited.add(parentNode.getNode());
         	Position current = parentNode.getNode();
         	parentNode = queue.poll();
-        	//System.out.print("Walk from {"+current.getX()+", "+current.getY()+"} to ");
-        	//System.out.println("{"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}");
+        	System.out.print("Walk from {"+current.getX()+", "+current.getY()+"} to ");
+        	System.out.println("{"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}");
         	char[][] board = learner.getBoard();
 
         	AStarAlgorithm subSearch = new AStarAlgorithm();
         	ArrayList<Position> path = new ArrayList<Position>();
         	
         	if ((agent.hasBoat() == false) && (board[parentNode.getNode().getY()][parentNode.getNode().getX()] == ' ')) {
-        		//System.out.println("Making move from ' ' t ' ', locations [" + board[current.getY()][current.getX()] + ", " + 
-        		//board[parentNode.getNode().getY()][parentNode.getNode().getX()] + "].");
+        		System.out.println("Making move from ' ' t ' ', locations [" + board[current.getY()][current.getX()] + ", " + 
+        		board[parentNode.getNode().getY()][parentNode.getNode().getX()] + "].");
                 path = subSearch.searchForPosition(learner, current, parentNode.getNode(), size, agent);
         	} else if ((agent.hasBoat() == true) && (board[parentNode.getNode().getY()][parentNode.getNode().getX()] == '~')){
-        		//System.out.println("Making move from '~' t '~', locations [" + board[current.getY()][current.getX()] + ", " + 
-                //board[parentNode.getNode().getY()][parentNode.getNode().getX()] + "].");
+        		System.out.println("Making move from '~' t '~', locations [" + board[current.getY()][current.getX()] + ", " + 
+                board[parentNode.getNode().getY()][parentNode.getNode().getX()] + "].");
         		path = subSearch.searchForSeaPosition(learner, current, parentNode.getNode(), size, agent);
         	} else if ((agent.hasBoat() == false) && (board[parentNode.getNode().getY()][parentNode.getNode().getX()] == '~')) {
         		Position boatPosition = agent.getBoatPosition();
-        		//System.out.println("Making move from ' ' t '~', locations [" + board[current.getY()][current.getX()] + ", " + 
-                //board[parentNode.getNode().getY()][parentNode.getNode().getX()] + "], boat pos is" + boatPosition.getX() + boatPosition.getY());
+        		System.out.println("Making move from ' ' t '~', locations [" + board[current.getY()][current.getX()] + ", " + 
+                board[parentNode.getNode().getY()][parentNode.getNode().getX()] + "], boat pos is" + boatPosition.getX() + boatPosition.getY());
         		ArrayList<Position> pathToDestination = new ArrayList<Position>();
         		path = subSearch.searchForPosition(learner, current, boatPosition, size, agent);
                 pathToDestination = subSearch.searchForSeaPosition(learner, boatPosition, parentNode.getNode(), size, agent);
                 path.addAll(pathToDestination);
         	} else if ((agent.hasBoat() == false) && (board[parentNode.getNode().getY()][parentNode.getNode().getX()] == 'B')) { 
-        		//System.out.println("Going to the boat");
+        		System.out.println("Going to the boat");
         		path = subSearch.searchForPosition(learner, current, parentNode.getNode(), size, agent);
         	} else if (board[parentNode.getNode().getY()][parentNode.getNode().getX()] == 'g') {
-        		//System.out.println("Hunting for the gold");
+        		System.out.println("Hunting for the gold");
         		path = subSearch.searchForGold(learner, source, learner.getGoldLocation(), size, agent);
         	} else {
-        		//System.out.println("doing the shitty search");
+        		System.out.println("doing the shitty search");
         		path = subSearch.searchForPosition(learner, current, parentNode.getNode(), size, agent);
         	}
             
@@ -90,7 +90,7 @@ public class AStarAlgorithm{
 		    //check current.path if it has visited all required nodes
      	    if(foundGoal(learner)){
                 //found target nodes
-                //System.out.println("	Found target node!");
+                System.out.println("	Found target node!");
                 foundGoal = true;
                 goal = parentNode;
                 break;
@@ -111,18 +111,18 @@ public class AStarAlgorithm{
                     	h = getHeuristic(adjacent, queue.peek().getNode());
                     }
                     AStarNode next = new AStarNode(adjacent, tempPath, score, h);                              
-                    ////System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
+                    //System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
                     // add to queue
                     if (!visitedContains(adjacent.getX(),adjacent.getY(), visited)){
-                    	//System.out.println("Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
+                    	System.out.println("Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
                     	queue.add(next);
                     }
                 }
             }
         }        
-        //System.out.println(nodesExpanded +" nodes expanded");
+        System.out.println(nodesExpanded +" nodes expanded");
         if(foundGoal==false){
-        	//System.out.println("ASTAR FAILED");
+        	System.out.println("ASTAR FAILED");
         }
         if(goal==null){
         	return null;
@@ -144,7 +144,7 @@ public class AStarAlgorithm{
 	 * @return
 	 */
 	public ArrayList<Position> searchForGold(Learner learner, Position source, Position gold, int size, Agent agent) {
-	   	////System.out.println("Start Search");
+	   	//System.out.println("Start Search");
 		boolean foundGoal = false;
 	   	Comparator<AStarNode> comparator = new AStarComparator<Position>();
 	   	PriorityQueue<AStarNode> queue = new PriorityQueue<AStarNode>(size, comparator);  
@@ -167,8 +167,8 @@ public class AStarAlgorithm{
         	
         	Position current = parentNode.getNode();
         	parentNode = queue.poll();
-        	//System.out.print("Walk from {"+current.getX()+", "+current.getY()+"} to ");
-        	//System.out.println("{"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}");
+        	System.out.print("Walk from {"+current.getX()+", "+current.getY()+"} to ");
+        	System.out.println("{"+parentNode.getNode().getX()+", "+parentNode.getNode().getY()+"}");
         	
         	AStarAlgorithm subSearch = new AStarAlgorithm();
         	ArrayList<Position> path = new ArrayList<Position>();
@@ -182,7 +182,7 @@ public class AStarAlgorithm{
 		    //check current.path if it has visited all required nodes
      	    if((parentNode.getNode().getX() == gold.getX())&&(parentNode.getNode().getY() == gold.getY())){
                 //found target nodes
-                //System.out.println("	Found the GOLLLLLDD ARRR!");
+                System.out.println("	Found the GOLLLLLDD ARRR!");
                 foundGoal = true;
                 goal = parentNode;
                 break;
@@ -203,18 +203,18 @@ public class AStarAlgorithm{
                     	h = getHeuristic(adjacent, gold);
                     }
                     AStarNode next = new AStarNode(adjacent, tempPath, score, h);                              
-                    ////System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
+                    //System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
                     // add to queue
                     if (!visitedContains(adjacent.getX(),adjacent.getY(), visited)){
-                    	//System.out.println("Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
+                    	System.out.println("Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
                     	queue.add(next);
                     }
                 }
             }
         }        
-        //System.out.println(nodesExpanded +" nodes expanded");
+        System.out.println(nodesExpanded +" nodes expanded");
         if(!foundGoal){
-        	//System.out.println("Search4Gold - ASTAR FAILED");
+        	System.out.println("Search4Gold - ASTAR FAILED");
         }
         if(goal==null){
         	return null;
@@ -225,7 +225,7 @@ public class AStarAlgorithm{
 	
 	//search for known position, does not play moves
 	public ArrayList<Position> searchForPosition(Learner learner, Position source, Position gold, int size, Agent agent) {
-	   	////System.out.println("Start Search");
+	   	//System.out.println("Start Search");
 		boolean foundGoal = false;
 	   	Comparator<AStarNode> comparator = new AStarComparator<Position>();
 	   	PriorityQueue<AStarNode> queue = new PriorityQueue<AStarNode>(size, comparator);  
@@ -250,7 +250,7 @@ public class AStarAlgorithm{
 		    //check current.path if it has visited all required nodes
      	    if((parentNode.getNode().getX() == gold.getX())&&(parentNode.getNode().getY() == gold.getY())){
                 //found target nodes
-                //System.out.println("		Sub - Found the position");
+                System.out.println("		Sub - Found the position");
                 foundGoal = true;
                 goal = parentNode;
                 break;
@@ -260,7 +260,7 @@ public class AStarAlgorithm{
                 for (Position adjacent: getAdjacent(parentNode.getNode(), learner.getBoard(), agent)) {
                     //score given by current cost to state + appropriate heuristic
                     double score = parentNode.getG() + getWeight(parentNode.getNode(), adjacent);  
-                    ////System.out.println(score);
+                    //System.out.println(score);
                     tempPath.clear();
                     tempPath.addAll(parentNode.getPath());
                     tempPath.add(parentNode.getNode());                    
@@ -271,21 +271,21 @@ public class AStarAlgorithm{
                     } else {
                     	h = getHeuristic(adjacent, gold);
                     }
-                    ////System.out.println(h);
+                    //System.out.println(h);
                     AStarNode next = new AStarNode(adjacent, tempPath, score, h);                              
-                    ////System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
+                    //System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
                     // add to queue
                     if (!visitedContains(adjacent.getX(),adjacent.getY(), visited)){
-                    	//System.out.println("		Sub - Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
+                    	System.out.println("		Sub - Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
                     	visited.add(adjacent);
                     	queue.add(next);
                     }
                 }
             }
         }        
-        //System.out.println("		Sub - "+nodesExpanded +" nodes expanded");	      
+        System.out.println("		Sub - "+nodesExpanded +" nodes expanded");	      
         if(!foundGoal){
-        	//System.out.println("		Sub - ASTAR FAILED");
+        	System.out.println("		Sub - ASTAR FAILED");
         }
         if(goal==null){
         	return null;
@@ -294,9 +294,21 @@ public class AStarAlgorithm{
         }
 	}
 		
+	/**
+	 * does an A star search upon the entire map (though not if the player needs to
+	 * enter a boat first, finding the fastest way to the destination
+	 * node using an A Star on the map built up within learner to determine the best way.
+	 * 
+	 * @param learner - The learner that contains all information about the game so far
+	 * @param source - the starting position
+	 * @param gold - the end position
+	 * @param size - the size of the board
+	 * @param agent - the current agents state
+	 * @return
+	 */
 	//search for known position, does not play moves
 	public ArrayList<Position> searchForPositionWDynamite(Learner learner, Position source, Position gold, int size, Agent agent) {
-	   	////System.out.println("Start Search");
+	   	//System.out.println("Start Search");
 		boolean foundGoal = false;
 		num_dynamite = agent.getDynamite();
 	   	Comparator<AStarNode> comparator = new AStarComparator<Position>();
@@ -322,7 +334,7 @@ public class AStarAlgorithm{
 		    //check current.path if it has visited all required nodes
      	    if((parentNode.getNode().getX() == gold.getX())&&(parentNode.getNode().getY() == gold.getY())){
                 //found target nodes
-                //System.out.println("		Sub - Found the position");
+                System.out.println("		Sub - Found the position");
                 foundGoal = true;
                 goal = parentNode;
                 break;
@@ -332,7 +344,7 @@ public class AStarAlgorithm{
                 for (Position adjacent: getAdjacentSub(parentNode.getNode(), learner.getBoard(), agent)) {
                     //score given by current cost to state + appropriate heuristic
                     double score = parentNode.getG() + getWeight(parentNode.getNode(), adjacent);  
-                    ////System.out.println(score);
+                    //System.out.println(score);
                     tempPath.clear();
                     tempPath.addAll(parentNode.getPath());
                     tempPath.add(parentNode.getNode());                    
@@ -343,21 +355,21 @@ public class AStarAlgorithm{
                     } else {
                     	h = getHeuristic(adjacent, gold);
                     }
-                    ////System.out.println(h);
+                    //System.out.println(h);
                     AStarNode next = new AStarNode(adjacent, tempPath, score, h);                              
-                    ////System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
+                    //System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
                     // add to queue
                     if (!visitedContains(adjacent.getX(),adjacent.getY(), visited)){
-                    	//System.out.println("		Sub - Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
+                    	System.out.println("		Sub - Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
                     	visited.add(adjacent);
                     	queue.add(next);
                     }
                 }
             }
         }        
-        //System.out.println("		Sub - "+nodesExpanded +" nodes expanded");	      
+        System.out.println("		Sub - "+nodesExpanded +" nodes expanded");	      
         if(!foundGoal){
-        	//System.out.println("		Sub - ASTAR FAILED");
+        	System.out.println("		Sub - ASTAR FAILED");
         }
         if(goal==null){
         	return null;
@@ -368,9 +380,19 @@ public class AStarAlgorithm{
 				
 	
 
-
+	/**
+	 * does an A star search upon the entire sea region if the player is in a boat, finding the fastest way to the destination
+	 * node using an A Star on the map built up wihtin learner to determine the best way.
+	 * 
+	 * @param learner - The learner that contains all information about the game so far
+	 * @param source - the starting position
+	 * @param gold - the end position
+	 * @param size - the size of the board
+	 * @param agent - the current agents state
+	 * @return
+	 */
 	public ArrayList<Position> searchForSeaPosition(Learner learner, Position source, Position gold, int size, Agent agent) {
-	   	////System.out.println("Start Search");
+	   	//System.out.println("Start Search");
 		boolean foundGoal = false;
 	   	Comparator<AStarNode> comparator = new AStarComparator<Position>();
 	   	PriorityQueue<AStarNode> queue = new PriorityQueue<AStarNode>(size, comparator);  
@@ -395,8 +417,8 @@ public class AStarAlgorithm{
 		    //check current.path if it has visited all required nodes
      	    if((parentNode.getNode().getX() == gold.getX())&&(parentNode.getNode().getY() == gold.getY())){
                 //found target nodes
-                //System.out.println("		Sub - Found the position");
-                //System.out.println("Breaking from finding sea");
+                System.out.println("		Sub - Found the position");
+                System.out.println("Breaking from finding sea");
                 foundGoal = true;
                 goal = parentNode;
                 break;
@@ -406,7 +428,7 @@ public class AStarAlgorithm{
                 for (Position adjacent: getAdjacentWater(parentNode.getNode(), learner.getBoard(), agent)) {
                     //score given by current cost to state + appropriate heuristic
                     double score = parentNode.getG() + getWeight(parentNode.getNode(), adjacent);  
-                    ////System.out.println(score);
+                    //System.out.println(score);
                     tempPath.clear();
                     tempPath.addAll(parentNode.getPath());
                     tempPath.add(parentNode.getNode());                    
@@ -418,12 +440,12 @@ public class AStarAlgorithm{
                     } else {
                     	h = getHeuristic(adjacent, gold);
                     }
-                    ////System.out.println(h);
+                    //System.out.println(h);
                     AStarNode next = new AStarNode(adjacent, tempPath, score, h);                              
-                    ////System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
+                    //System.out.println("	" + prNode(next.getNode())+ "["+next.getScore()+"]");                    
                     // add to queue
                     if (!visitedContains(adjacent.getX(),adjacent.getY(), visited)){
-                    	//System.out.println("		Sub - Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
+                    	System.out.println("		Sub - Added ["+adjacent.getX()+", "+adjacent.getY()+"] to queue");
                     	visited.add(adjacent);
                     	queue.add(next);
                     }
@@ -433,9 +455,9 @@ public class AStarAlgorithm{
         
         Position currentPos = new Position(learner.getY(), learner.getX());
         
-        //System.out.println("		Sub - "+nodesExpanded +" nodes expanded");	      
+        System.out.println("		Sub - "+nodesExpanded +" nodes expanded");	      
         if(!foundGoal){
-        	//System.out.println("		Sub - ASTAR FAILED");
+        	System.out.println("		Sub - ASTAR FAILED");
         }
         if(goal==null){
         	return null;
@@ -470,7 +492,13 @@ private boolean foundGoal(Learner learner) {
 		return 1;
 	}
 	
-	
+	/**
+	 * Returns an arrayList of positions if the player can move to these positions.
+	 * 
+	 * @param node - the position the method tests positions around
+	 * @param board - the entire board within learner
+	 * @param agent - the agents current state
+	 */
 	private ArrayList<Position> getAdjacent(Position node, char[][] board, Agent agent) {		
 		ArrayList<Position> adjacentList = new ArrayList<Position>();
 		Position pU = new Position(node.getX(), node.getY()-1);
@@ -478,19 +506,19 @@ private boolean foundGoal(Learner learner) {
 		Position pL = new Position(node.getX()-1, node.getY());
 		Position pR = new Position(node.getX()+1, node.getY());
 		if (canWalkOver(pU, board, agent) == true) {
-			////System.out.println("Added pU["+ pU.getX() + ", " +  pU.getY() + "] to A* priority list");
+			//System.out.println("Added pU["+ pU.getX() + ", " +  pU.getY() + "] to A* priority list");
 			adjacentList.add(pU);
 		}
 		if (canWalkOver(pD, board, agent) == true) {
-			////System.out.println("Added pD["+ pD.getX() + ", " +  pD.getY() + "] to A* priority list");
+			//System.out.println("Added pD["+ pD.getX() + ", " +  pD.getY() + "] to A* priority list");
 			adjacentList.add(pD);
 		}
 		if (canWalkOver(pL, board, agent) == true) {
-			////System.out.println("Added pR["+ pR.getX() + ", " +  pR.getY() + "] to A* priority list");
+			//System.out.println("Added pR["+ pR.getX() + ", " +  pR.getY() + "] to A* priority list");
 			adjacentList.add(pL);
 		}
 		if (canWalkOver(pR, board, agent) == true) {
-			////System.out.println("Added pL["+ pL.getX() + ", " +  pL.getY() + "] to A* priority list");
+			//System.out.println("Added pL["+ pL.getX() + ", " +  pL.getY() + "] to A* priority list");
 			adjacentList.add(pR);
 		}
 		return adjacentList;
@@ -499,10 +527,10 @@ private boolean foundGoal(Learner learner) {
 	
 	
 	/**
-	 * canWalkOver determines whether or not the player can walk over the adjacent position p,
+	 * canWalkOver determines whether or not the player can walk over the adjacent positions around p,
 	 * given its current state in agent.
 	 * 
-	 * @param p - destination position
+	 * @param p - current position
 	 * @param board - the entire board in learner
 	 * @param agent - the agents state
 	 * @return - whether or not the player can walk on position
@@ -545,19 +573,19 @@ private boolean foundGoal(Learner learner) {
 		Position pL = new Position(node.getX()-1, node.getY());
 		Position pR = new Position(node.getX()+1, node.getY());
 		if (canWalkOverSub(pU, board, agent) == true) {
-			////System.out.println("Added pU["+ pU.getX() + ", " +  pU.getY() + "] to A* priority list");
+			//System.out.println("Added pU["+ pU.getX() + ", " +  pU.getY() + "] to A* priority list");
 			adjacentList.add(pU);
 		}
 		if (canWalkOverSub(pD, board, agent) == true) {
-			////System.out.println("Added pD["+ pD.getX() + ", " +  pD.getY() + "] to A* priority list");
+			//System.out.println("Added pD["+ pD.getX() + ", " +  pD.getY() + "] to A* priority list");
 			adjacentList.add(pD);
 		}
 		if (canWalkOverSub(pL, board, agent) == true) {
-			////System.out.println("Added pR["+ pR.getX() + ", " +  pR.getY() + "] to A* priority list");
+			//System.out.println("Added pR["+ pR.getX() + ", " +  pR.getY() + "] to A* priority list");
 			adjacentList.add(pL);
 		}
 		if (canWalkOverSub(pR, board, agent) == true) {
-			////System.out.println("Added pL["+ pL.getX() + ", " +  pL.getY() + "] to A* priority list");
+			//System.out.println("Added pL["+ pL.getX() + ", " +  pL.getY() + "] to A* priority list");
 			adjacentList.add(pR);
 		}
 		return adjacentList;
@@ -573,10 +601,10 @@ private boolean foundGoal(Learner learner) {
 	 */
 	private boolean canWalkOverSub(Position p, char[][] board, Agent agent) {
 		if (num_dynamite >= 1){	
-			//System.out.print(num_dynamite);
+			System.out.print(num_dynamite);
 			Position wall = agent.getClosestWall();
 				if ((board[p.getY()][p.getX()]=='*')&&(wall.getX()==p.getX())&&(wall.getY()==p.getY())) {
-					//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> destroy da wall at ["+wall.getX()+", "+wall.getY()+"]");
+					System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> destroy da wall at ["+wall.getX()+", "+wall.getY()+"]");
 					num_dynamite--;
 					//agent.removeClosestWall();
 					return true;
@@ -619,19 +647,19 @@ private boolean foundGoal(Learner learner) {
 		Position pL = new Position(node.getX()-1, node.getY());
 		Position pR = new Position(node.getX()+1, node.getY());
 		if (canWalkOverWater(pU, board, agent) == true) {
-			////System.out.println("Added pU["+ pU.getX() + ", " +  pU.getY() + "] to A* priority list");
+			//System.out.println("Added pU["+ pU.getX() + ", " +  pU.getY() + "] to A* priority list");
 			adjacentList.add(pU);
 		}
 		if (canWalkOverWater(pD, board, agent) == true) {
-			////System.out.println("Added pD["+ pD.getX() + ", " +  pD.getY() + "] to A* priority list");
+			//System.out.println("Added pD["+ pD.getX() + ", " +  pD.getY() + "] to A* priority list");
 			adjacentList.add(pD);
 		}
 		if (canWalkOverWater(pL, board, agent) == true) {
-			////System.out.println("Added pR["+ pR.getX() + ", " +  pR.getY() + "] to A* priority list");
+			//System.out.println("Added pR["+ pR.getX() + ", " +  pR.getY() + "] to A* priority list");
 			adjacentList.add(pL);
 		}
 		if (canWalkOverWater(pR, board, agent) == true) {
-			////System.out.println("Added pL["+ pL.getX() + ", " +  pL.getY() + "] to A* priority list");
+			//System.out.println("Added pL["+ pL.getX() + ", " +  pL.getY() + "] to A* priority list");
 			adjacentList.add(pR);
 		}
 		return adjacentList;
