@@ -470,7 +470,8 @@ private boolean foundGoal(Learner learner) {
 	private double getWeight(Position node, Position adjacentCity) {
 		return 1;
 	}
-
+	
+	
 	private ArrayList<Position> getAdjacent(Position node, char[][] board, Agent agent) {		
 		ArrayList<Position> adjacentList = new ArrayList<Position>();
 		Position pU = new Position(node.getX(), node.getY()-1);
@@ -496,6 +497,17 @@ private boolean foundGoal(Learner learner) {
 		return adjacentList;
 	}
 	
+	
+	
+	/**
+	 * canWalkOver determines whether or not the player can walk over the adjacent position p,
+	 * given its current state in agent.
+	 * 
+	 * @param p - destination position
+	 * @param board - the entire board in learner
+	 * @param agent - the agents state
+	 * @return - whether or not the player can walk on position
+	 */
 	private boolean canWalkOver (Position p, char[][] board, Agent agent) {		
 		if(board[p.getY()][p.getX()]==' '){
 			return true;
@@ -516,6 +528,17 @@ private boolean foundGoal(Learner learner) {
 		}
 	}
 	
+		
+	/**
+	 * getAdjacentSub returns an ArrayList of positions around the player,
+	 * seeing if the player can get walk there on, calling the
+	 * canWalkOverSub function.
+	 * 
+	 * @param node - the current position of the player
+	 * @param board - the entire board taken from learner
+	 * @param agent - the current state of the agent
+	 * @return - an ArrayList of Positions that are accessible.
+	 */
 	private ArrayList<Position> getAdjacentSub(Position node, char[][] board, Agent agent) {		
 		ArrayList<Position> adjacentList = new ArrayList<Position>();
 		Position pU = new Position(node.getX(), node.getY()-1);
@@ -542,12 +565,12 @@ private boolean foundGoal(Learner learner) {
 	}
 	
 	/**
-	 * Used by the A Star subroutines, that determines if a path can be made to the Position p
+	 * Used by the A Star subroutines, that determines if the player can walk over the adjacent Position p
 	 * 
 	 * @param p - goal position
-	 * @param board
-	 * @param agent
-	 * @return
+	 * @param board - the whole board built up in learner
+	 * @param agent - the current state of agent
+	 * @return - returns whether or not can walk over
 	 */
 	private boolean canWalkOverSub(Position p, char[][] board, Agent agent) {
 		if (num_dynamite >= 1){	
