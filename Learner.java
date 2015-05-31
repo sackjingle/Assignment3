@@ -82,6 +82,15 @@ public class Learner {
 		
 	}
 	
+	
+	/**
+	 * checkIfGold will use the 5x5 player view (called view in agent) and check if
+	 * the gold can be seen from where if is. If so, it sets goldLocation using direction
+	 * and the coordinates within input and returns true, otherwise it returns false. 
+	 * @param input - the 5x5 view the player can see
+	 * @param direction - the direction the player is facing
+	 * @return
+	 */
 	private boolean checkIfGold(char[][] input, int direction) {
 		for(int i = 0; i<5; i++){
 			if(input[0][i]=='g'){
@@ -107,6 +116,12 @@ public class Learner {
 		return false;
 	}
 	
+	/**
+	 * updateEast will update map within learner called Board, with new information
+	 * the player gains as it moves around the map.
+	 * 
+	 * @param input is the 5x5 view the player can see.
+	 */
 	private void updateEast(char[][] input){
 		
 		int x0 = curX - 3;
@@ -128,6 +143,13 @@ public class Learner {
 		printBoard();
 	}
 	
+	
+	/**
+	 * updateWest will update map within learner called Board, with new information
+	 * the player gains as it moves around the map.
+	 * 
+	 * @param input is the 5x5 view the player can see.
+	 */
 	private void updateWest(char[][] input){
 		int x0 = curX - 3;
 		int y0 = curY - 2;
@@ -148,6 +170,12 @@ public class Learner {
 		printBoard();
 	}
 	
+	/**
+	 * updateNorth will update map within learner called Board, with new information
+	 * the player gains as it moves around the map.
+	 * 
+	 * @param input is the 5x5 view the player can see.
+	 */
 	private void updateNorth(char[][] input){
 		int x0 = curX - 2;
 		int y0 = curY - 3;
@@ -169,6 +197,12 @@ public class Learner {
 		printBoard();
 	}
 	
+	/**
+	 * updateSouth will update map within learner called Board, with new information
+	 * the player gains as it moves around the map.
+	 * 
+	 * @param input is the 5x5 view the player can see.
+	 */
 	private void updateSouth(char[][] input){
 		int x0 = curX - 2;
 		int y0 = curY - 3;	
@@ -188,6 +222,10 @@ public class Learner {
 		printBoard();
 	}
 	
+	/**
+	 * printBoard prints out the entire board that the learner has built up from what
+	 * the player has seen as it moves around.
+	 */
 	public void printBoard(){
 		System.out.println("\n +--------------------------------------------------------------------------------+");
 	      for(int i=0; i < BOARD_SIZE; i++ ) {
@@ -219,6 +257,15 @@ public class Learner {
 	public char[][] getBoard() {
 		return board;
 	}
+	
+	/**
+	 * getWallsClosestToPosition will add the Positions of the walls closest to the goal
+	 * in order of how close they are (immediately adjacent walls first, etc.) Returns the
+	 * wall locations in order in an ArrayList of Positions.
+	 * 
+	 * @Position goal - what position you want to examine nearby walls
+	 * 
+	 */
 	public ArrayList<Position> getWallsClosestToPosition(Position goal){
 		ArrayList<Position> wallList = new ArrayList<Position>();
 		int x = goal.getX();

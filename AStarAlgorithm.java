@@ -14,15 +14,19 @@ public class AStarAlgorithm{
 	private int num_dynamite;
 	
 	/**
-	 * search through all positions until the position of the gold is found, prioritizing nodes with better scores.
-	 * Uses searchForPosition to find the path to the next unexplored node using information gathered so far in learner. 
+	 * search uses an A Star search algorithm to search across the map to find the gold. It uses a basic A
+	 * Star search algorithm to build up an ArrayList of the best nodes to explore, using another A Star
+	 * search to look through the map Learner has build up and find the most efficient way to get there.
+	 * The basic search has no goal, and so no heuristic making it a Breadth First Search. Depending on 
+	 * whether or not the start/end positions are on land or water, will determine how the search manages
+	 * to reach its destination.
 	 * 
-	 * @learner is the learner containing board state
-	 * @source is the starting position
-	 * @size is the size of the searchable space
-	 * @agent contains lots of valueable information about the game state
-	 * 
-	 **/
+	 * @param learner - the learner that stores all information about the game so far
+	 * @param source - the starting position for the search
+	 * @param size - the size of the board (total number of possible locations to visit)
+	 * @param agent - the state the current agent is in
+	 * @return - an ArrayList of Positions for how to get to the destination.
+	 */
 	public ArrayList<Position> search(Learner learner, Position source, int size, Agent agent) {
 	   	//System.out.println("Start Search");
 		boolean foundGoal = false;
@@ -128,8 +132,18 @@ public class AStarAlgorithm{
         }    
 	}
 	
-	
-	//search for position, does play moves;
+
+	/**
+	 * searchForGold will search for the gold using an A Star search. It uses source as the starting location
+	 * and gold as the final position. 
+	 * 
+	 * @param learner - the learner that has all information stored about the current game so far
+	 * @param source - the starting position
+	 * @param gold - the final position
+	 * @param size - the size of the board
+	 * @param agent - the agents current state
+	 * @return
+	 */
 	public ArrayList<Position> searchForGold(Learner learner, Position source, Position gold, int size, Agent agent) {
 	   	//System.out.println("Start Search");
 		boolean foundGoal = false;
@@ -527,6 +541,14 @@ private boolean foundGoal(Learner learner) {
 		return adjacentList;
 	}
 	
+	/**
+	 * Used by the A Star subroutines, that determines if a path can be made to the Position p
+	 * 
+	 * @param p - goal position
+	 * @param board
+	 * @param agent
+	 * @return
+	 */
 	private boolean canWalkOverSub(Position p, char[][] board, Agent agent) {
 		if (num_dynamite >= 1){	
 			System.out.print(num_dynamite);
@@ -557,6 +579,17 @@ private boolean foundGoal(Learner learner) {
 		}
 	}
 	
+	
+	/**
+	 * getAdjacentWater returns an ArrayList of positions around the player within the water,
+	 * seeing if the player can get there via the boat that it is currently on, calling the
+	 * canWalkOverWater function.
+	 * 
+	 * @param node - the current position of the player
+	 * @param board - the entire board taken from learner
+	 * @param agent - the current state of the agent
+	 * @return - an ArrayList of Positions that are accessible by water.
+	 */
 	private ArrayList<Position> getAdjacentWater(Position node, char[][] board, Agent agent) {		
 		ArrayList<Position> adjacentList = new ArrayList<Position>();
 		Position pU = new Position(node.getX(), node.getY()-1);
