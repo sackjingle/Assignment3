@@ -57,35 +57,24 @@ public class Agent {
    private static InputStream in  = null;
    private static int port;
 
+   /** Depending on which search mode agent is currently in, will use different ASTARMODE searches
+    *  to determine what moves to make, using one A Star search with no goal/heuristic (becomes BFS),
+    *  and another A Star search to find the best route to get there. ASTAR uses a general A star 
+    *  search to explore the map.DYNO searchMode checks if it can blow up enough walls with available
+    *  dynamite near gold to get to it. GETGOLD will begin another A star search using the current position
+    *  as the starting location and the gold as the finishing location.Once it has found the gold, RETURNHOME
+    *  mode will create a path from current position to home, using the map build up in learner to determine
+    *  the best route.
+    * @view is the 5x5 window that the get_action function is given to determine its next move
+    * @get_action returns its move as a char L, R, F, C, B.
+    */
+   
    public char get_action( char view[][] ) {  	  
 	   startUpdate(view);
   	  //getCurrentView();
 	  
   	  //Make Move now
-	   if (searchMode == FINDGOLD) {
-	   	  
-	   	  if (view[1][2] == ' ') {
-	   		  nextMove = 'f';
-	   	   	  System.out.println("Move is: "+nextMove);
-	   	  } else if (getCOMove(curX,curY)=='l') {
-	   		  nextMove = 'r';
-	   	   	  System.out.println("Move is: "+nextMove);
-	   		  //updateLearner(view, lastDirection);
-	   		  lastDirection = (lastDirection + 3) % 4;
-	   	  } else {
-	   	  	  nextMove = 'l';
-	   	   	  System.out.println("Move is: "+nextMove);
-	   		  //updateLearner(view, lastDirection);
-
-	   	  	  //learner.printBoard();
-	   	  	  lastDirection = (lastDirection + 1) % 4;
-	   	  } 
-	   	  
-	   	  Move move = new Move(curX, curY, nextMove);
-	   	  moves.add(move);
-	   	  return nextMove;
-	   	  
-	   } else if (searchMode == ASTARMODE){
+	   if (searchMode == ASTARMODE){
 		   // Use a star search until player can see gold from starting position blindly through map
 		   // then set searchMode to GETGOLD
 		   Position start = new Position(curX, curY);
@@ -153,12 +142,6 @@ public class Agent {
 			   searchMode = RETURNHOME;
 		   }
 	   }
-
-	   // RETURNHOME uses an a star search to get from current location (gold location)
-	   // to starting position [20,20]
-	   // **** SHOULD USE A STAR ON BUILT UP MAP IN LEARNER< THAT WAY DOESNT HAVE TO WASTE MOVES UNTIL KNOWS SHORTEST PATH TO HOM
-	   // Goal position for a star here is just [BOARD_SIZE,BOARD_SIZE]
-	   // Start is [curX, curY]
 	   if (searchMode == RETURNHOME){  	
 		   System.out.println("return home");
 		   Position start = new Position(curX, curY);
@@ -201,8 +184,13 @@ public class Agent {
 	   }
 	return nullChar;
    }
+
+   /** The startUpdate function updates the map in learner, adding new information about the map
+    * to learner, and updates the current position (curX, curY) of the player in Agent.
+    * 
+    * @view is a 5x5 grid as a two dimensional array of what the player can currently see.
+    **/
    
-   //need to update stuff before making a move
    static void startUpdate(char[][] view){
 	 //update learner if last move was an 'f'
 	   if(moves.size()!=0){
@@ -217,6 +205,13 @@ public class Agent {
   	  System.out.println("In front of player is: " + view[1][2]);
    }
 
+   /** updateLearner updates the learner, giving it the current view and direction so that
+    * learner can determine where abouts new map information needs to be added.
+    * 
+    * @view is the 5x5 view of what the player can see
+    * @lastDirection is the last direction that the player was facing
+    **/
+   
    static void updateLearner(char view[][], int lastDirection) {
 		  if (lastDirection == NORTH) {
      	   	  learner.update(view, NORTH);
@@ -242,10 +237,18 @@ public class Agent {
 	   return nullChar;
    }
    
-   
 
-   
-   
+   /**
+    * goToAdjacent will first determine which diretion the player is facing, by comparing it's
+    * current direction to its intended direction. Then, depending if its facing in the right direction,
+    * it will check if it can go forward using checkIfCanMoveFoward, or turn so that it faces the 
+    * right direction.
+    * 
+    * @view is the 5x5 view that the player can see
+    * @p is the Position of the space the player wishes to travel to
+    * @goToAdjacent returns a char L, R or F 
+    */
+
    private char goToAdjacent(char view[][], Position p) {
 	   
 	   char move = 'l';
@@ -300,6 +303,19 @@ public class Agent {
 	   return move;
    }
    
+   
+   /**
+    * checkIfCanMoveForward determines if a player can move forward. If there is a space or gold in front,
+    * it will return trye, and ensure that it is no longer in a boat, and if it was turn on the just_departed_vessel
+    * flag so that a boat can be dropped in the learner's map. If there is an axe, it will set the have_axe flag, 
+    * as with dynamite. The Boat will turn on the in boat flag. depending on whether the player is in a boat, has an axe,
+    * or dynamite, the player may sail, chop or blast respectively. Else, return nullChar (.), signifying move cant
+    * be made.
+    * 
+    * @view is the 5x5 view the player can see.
+    * @checkIfCanMoveForward returns a char F, C, B if it can move, or . if it cant.
+    **/
+   
    private char checkIfCanMoveFoward(char[][] view) {
 	   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
 		   if(in_boat==true){
@@ -336,6 +352,11 @@ public class Agent {
 	   }
    }
    
+   /**
+    * print_View iterates through the current view view[][], and prints the contents of each space.
+    * 
+    * @view is the 5x5 view the player can see.
+    */
    void print_view( char view[][] )
    {
       int i,j;
@@ -356,7 +377,12 @@ public class Agent {
       System.out.println("+-----+");
    }
 
-//Main
+
+   /**
+    * main is the main function, which communicates with the Bounty via a socket, sending and receiving data
+    * about the game being played, and calls the agent function to determine the next move.
+    */
+   
    public static void main( String[] args )
    {
       //InputStream in  = null;
@@ -430,6 +456,13 @@ public class Agent {
       }
    }
    
+   /**
+    * moveAlongPath takes in an ArrayList of Positions and moves the player along this path
+    * until it reaches the destination, calling go to adjacent to move it.
+    * 
+    * @sequenceOfMoves is an ArrayList of consecutive Positions the player will move along.
+    */
+   
    public void moveAlongPath(ArrayList<Position> sequenceOfMoves) {
 	   for (Position p: sequenceOfMoves) {	
 		   while ((curX != p.getX())||(curY != p.getY())){
@@ -458,7 +491,13 @@ public class Agent {
 	   
    }
    
-
+   /**
+    * makeMove takes in an adjacent Position p, and moves the player to this position, if it can.
+    * If it receives a nullChar from action, it will return false meaning it cant move to this position,
+    * otherwise it will return true.
+    * 
+    * @p is the position the player wants to move to.
+    */
 	public boolean makeMove(Position p) {	
 		System.out.println("Make Move towards [X,Y] = ["+ p.getX() + ", " +  p.getY() + "]");	
 		System.out.println("Starting at [X,Y] = ["+ curX + ", " +  curY + "]");
@@ -488,6 +527,11 @@ public class Agent {
 		}
 		return true;
 	}
+	
+	/**
+	 * getCurrentView gets the current view around the player.
+	 */
+	
 	public char[][] getCurrentView(){
 		System.out.println("get current view");
 		boolean gotView = true;
@@ -521,8 +565,13 @@ public class Agent {
 	      return v;
 	}
 	
-	
-	//helpers	
+
+	/**
+	 * printPositions prints all the positions in an ArrayList of Positions, so the debugger
+	 * can see which path the player is trying to take.
+	 * 
+	 * @list is an ArrayList of Positions
+	 */
 	public void printPositions(ArrayList<Position> list){
 		System.out.print("Path is:");
 		for (Position p: list){
