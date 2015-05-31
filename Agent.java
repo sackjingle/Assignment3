@@ -50,6 +50,7 @@ public class Agent {
    private static int searchMode = 2;
    private static ArrayList<Position> pathHome1;
    private static ArrayList<Position> walls;
+   private static Position boatPosition = new Position(-1,-1);
    
    //NEEDS TO ACCESS out, in IN PLACES OTHER THAN main()
    private static OutputStream out = null;
@@ -135,9 +136,18 @@ public class Agent {
 		   System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		   Position start = new Position(curX, curY);
 		   Position gold = learner.getGoldLocation();
+		   System.out.println(gold.getX()+", "+gold.getY());
 		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
-		   pathHome1 = aStarFindGold.searchForGold(learner, start, gold, BOARD_SIZE*BOARD_SIZE, this);
-		   if (pathHome1 == null){
+		   ArrayList<Position> path = new ArrayList<Position>();
+		   if(hasBoat()){
+			   path = aStarFindGold.searchForPosition(learner, start, gold, BOARD_SIZE*BOARD_SIZE, this);
+			   path.add(gold);
+			   printPositions(path);
+			   moveAlongPath(path);
+		   }else{
+			   path = aStarFindGold.searchForGold(learner, start, gold, BOARD_SIZE*BOARD_SIZE, this);
+		   }
+		   if (path == null){
 			   searchMode = DYNO;			 
 		   } else {
 			   searchMode = RETURNHOME;
@@ -149,22 +159,38 @@ public class Agent {
 	   // **** SHOULD USE A STAR ON BUILT UP MAP IN LEARNER< THAT WAY DOESNT HAVE TO WASTE MOVES UNTIL KNOWS SHORTEST PATH TO HOM
 	   // Goal position for a star here is just [BOARD_SIZE,BOARD_SIZE]
 	   // Start is [curX, curY]
-	   if (searchMode == RETURNHOME){  		  
+	   if (searchMode == RETURNHOME){  	
+		   System.out.println("return home");
 		   Position start = new Position(curX, curY);
 		   Position home = new Position(BOARD_SIZE/2, BOARD_SIZE/2);
 		   ArrayList<Position> path = new ArrayList<Position>();
 		   AStarAlgorithm aStarFindGold = new AStarAlgorithm();
-		   path = aStarFindGold.searchForPosition(learner, start, home, BOARD_SIZE*BOARD_SIZE, this);
-		   if (path == null){
-			   searchMode = STUCK;			 
+		   
+		   if ((getBoatPosition().getX() != -1) && (getBoatPosition().getY() != -1)) {
+			   if (hasBoat() == false) {
+				   System.out.println("Finding path to the boat");
+				   System.out.println("Boat is at " + getBoatPosition().getY() + getBoatPosition().getX());
+				   path = aStarFindGold.searchForPosition(learner, start, getBoatPosition(), BOARD_SIZE*BOARD_SIZE, this);
+				   //ArrayList<Position> pathTwo = new ArrayList<Position>();
+				   path.add(getBoatPosition());
+				   System.out.println("just made path to boat");
+				   moveAlongPath(path);
+
+				   System.out.println("Finding path from boat to home");
+				   path = aStarFindGold.searchForPosition(learner, getBoatPosition(), home, BOARD_SIZE*BOARD_SIZE, this);
+				   path.add(home);
+			   }
+			   System.out.println("Heading out of condition amoved boat");
 		   } else {
-			   searchMode = RETURNHOME;
+			   System.out.println("In the else here");
+			   path = aStarFindGold.searchForPosition(learner, start, home, BOARD_SIZE*BOARD_SIZE, this);
+			   path.add(home);
+
 		   }
-		   path.add(home);
+
 		   printPositions(path);
 		   moveAlongPath(path);
 		   //pathHome1.remove(pathHome1.size()); 
-		   searchMode = DONE;		   
 	   } 
 	   if (searchMode == STUCK){
 		   System.out.println("Help Im Stuck");
@@ -277,10 +303,13 @@ public class Agent {
    private char checkIfCanMoveFoward(char[][] view) {
 	   if ((view[1][2] == ' ')||(view[1][2] == 'g')) {
 		   if(in_boat==true){
+			   boatPosition.set(curX, curY);
+			   System.out.println("just dropped boat at: " + curX + curY);
 			   in_boat = false;
-			   just_departed_vessel=true;
-		   } else {
+			   just_departed_vessel = true;
+		   } else if (just_departed_vessel == true) {
 			   just_departed_vessel=false;
+			   System.out.println(just_departed_vessel);
 		   }
 		   return 'f';
 	   } else if (view[1][2] == 'a') {
@@ -531,6 +560,10 @@ public class Agent {
 		return walls;
 	}
 
+	public Position getBoatPosition() {
+		return boatPosition;
+	}
+	
 }
 
 

@@ -99,6 +99,8 @@ public class Learner {
 		
 		if (agent.hasDeparted()==true){
 			board[curY][curX] = 'B';
+		} else if (agent.hasBoat() == true) {
+			board[curY][curX] = '~';
 		} else {
 			board[curY][curX] = ' ';
 		}
@@ -117,6 +119,8 @@ public class Learner {
 		
 		if (agent.hasDeparted()==true){
 			board[curY][curX] = 'B';
+		} else if (agent.hasBoat() == true) {
+			board[curY][curX] = '~';
 		} else {
 			board[curY][curX] = ' ';
 		}		curX--;
@@ -135,6 +139,8 @@ public class Learner {
 
 		if (agent.hasDeparted()==true){
 			board[curY][curX] = 'B';
+		} else if (agent.hasBoat() == true) {
+			board[curY][curX] = '~';
 		} else {
 			board[curY][curX] = ' ';
 		}		curY--;
@@ -154,6 +160,8 @@ public class Learner {
 
 		if (agent.hasDeparted()==true){
 			board[curY][curX] = 'B';
+		} else if (agent.hasBoat() == true) {
+			board[curY][curX] = '~';
 		} else {
 			board[curY][curX] = ' ';
 		}		curY++;
